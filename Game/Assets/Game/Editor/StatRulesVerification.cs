@@ -646,8 +646,8 @@ namespace SwordPrototype.Editor
             // CharacterStats(체력, 기력, 속도, 힘, 특수기)
             var slow = new DefenseSession(new CharacterStats(2, 2, 0, 3, 3), t, () => 0.1f);
             var fast = new DefenseSession(new CharacterStats(2, 2, 3, 2, 1), t, () => 0.1f);
-            Check(Near(slow.FlashSeconds, 0.25f) && Near(slow.InputSeconds, 1.4f) && Near(fast.FlashSeconds, 0.32f) && Near(fast.InputSeconds, 1.85f),
-                "R8 속도 스탯이 높을수록 깜빡임·입력 시간 약간 길게(속도0 0.25/1.4초 · 속도3 0.32/1.85초)");
+            Check(Near(slow.FlashSeconds, 0.35f) && Near(slow.InputSeconds, 1.7f) && Near(fast.FlashSeconds, 0.46f) && Near(fast.InputSeconds, 2.2f) && Near(slow.GapSeconds, 0.1f),
+                "R8 속도 스탯이 높을수록 깜빡임·입력 시간 약간 길게(속도0 0.35/1.7초 · 속도3 0.46/2.2초 · 간격 0.1초)");
 
             DefenseSession Play(bool[] correct)
             {

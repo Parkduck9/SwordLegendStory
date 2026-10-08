@@ -88,9 +88,10 @@ namespace SwordPrototype.Battle
 
         // R8: 합 공격 방어(속도 스탯 0~3에 따라 약간 길어짐)
         [Header("Defense (R8)")]
-        public float[] defenseFlashSeconds = { 0.25f, 0.27f, 0.29f, 0.32f };
-        public float[] defenseInputSeconds = { 1.4f, 1.55f, 1.7f, 1.85f };
-        public float defenseGapSeconds = 0.06f;
+        // 2026-10-08 Play 의견 "붉은 칸이 너무 빠름" → 처음 값과 2배 느린 제안의 중간으로
+        public float[] defenseFlashSeconds = { 0.35f, 0.38f, 0.42f, 0.46f };
+        public float[] defenseInputSeconds = { 1.7f, 1.9f, 2.05f, 2.2f };
+        public float defenseGapSeconds = 0.1f;
 
         public static float At(float[] table, int level) => table[Mathf.Clamp(level, 0, table.Length - 1)];
     }
