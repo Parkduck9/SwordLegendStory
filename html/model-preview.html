@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>캐릭터 모델 비교</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fffdf8;--ink:#2a2826;--muted:#6d6862;--line:#ddd8cc;--accent:#8a2f25}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1c1b19;--card:#262421;--ink:#ece7de;--muted:#a59f95;--line:#3b3833;--accent:#e08a7c}}
+:root[data-theme="dark"]{--bg:#1c1b19;--card:#262421;--ink:#ece7de;--muted:#a59f95;--line:#3b3833;--accent:#e08a7c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Malgun Gothic",sans-serif;line-height:1.7}
+main{max-width:1100px;margin:auto;padding:28px 16px 60px}h1{font-size:28px;margin:0 0 6px}h2{font-size:21px;margin:0 0 8px}
+.meta{color:var(--muted);font-size:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin:20px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+figure{margin:0}img{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--line)}figcaption{font-size:13px;color:var(--muted);margin-top:4px}
+.tag{display:inline-block;font-size:12px;font-weight:bold;color:var(--accent);border:1px solid var(--accent);border-radius:20px;padding:1px 10px;margin-bottom:8px}
+ul{padding-left:20px;margin:6px 0}
+</style>
+</head>
+<body><main>
+<h1>캐릭터 모델 후보 비교</h1>
+<p class="meta">2026-10-08 · 무료 · 출처 표기 불필요 후보만 · 사진은 각 제작처 공개 미리보기(검토용)</p>
+
+<section class="card">
+<span class="tag">지금</span>
+<h2>현재: Quaternius 마네킹 + 코드로 만든 의상</h2>
+<div class="grid">
+<figure><img src="r6-strafe-mid.png" alt="현재 마네킹 캐릭터가 옆걸음하며 칼을 겨눈 모습"><figcaption>현재 플레이어(얼굴·손가락 디테일 없음)</figcaption></figure>
+<figure><img src="r6-wound-cut.png" alt="현재 적 캐릭터가 베임 반응을 보이는 모습"><figcaption>현재 적</figcaption></figure>
+</div>
+</section>
+
+<section class="card">
+<span class="tag">1순위 추천</span>
+<h2>Quaternius Universal Base Characters (CC0)</h2>
+<div class="grid">
+<figure><img src="model-preview/quaternius-1.png" alt="얼굴과 머리 모양이 있는 사람 모델 여섯 명"><figcaption>전체 라인업(유료판 포함 6종)</figcaption></figure>
+<figure><img src="model-preview/quaternius-3.png" alt="무료판에 들어 있는 남녀 기본 모델과 머리 모양 5종"><figcaption><b>무료판</b>: 남녀 기본 모델 2종 + 머리 모양 5종</figcaption></figure>
+<figure><img src="model-preview/quaternius-4.png" alt="유료판의 체형 6종과 머리 모양 20종"><figcaption>유료판(Source): 체형 6종 · 머리 20종 — 이번에는 쓰지 않음</figcaption></figure>
+</div>
+<ul>
+<li>지금 쓰는 동작 모음과 <b>같은 뼈대</b>라 모든 동작이 그대로 맞음 · 제가 바로 받을 수 있음</li>
+<li>얼굴·근육·손가락이 있는 사람 모델(실사보다는 게임풍) · 무료판 남자 모델은 근육질 체형</li>
+<li>여기에 도포·삿갓·허리띠를 입히고 수묵 질감을 씌우는 방향</li>
+</ul>
+</section>
+
+<section class="card">
+<span class="tag">2순위</span>
+<h2>MakeHuman (실사 인체 생성 프로그램, 내보낸 모델 CC0)</h2>
+<div class="grid">
+<figure><img src="model-preview/makehuman-1.png" alt="MakeHuman 프로그램 화면에서 정장을 입은 실사풍 남자 모델"><figcaption>프로그램 화면(위키미디어 공용, 옛 버전 스크린샷)</figcaption></figure>
+<figure><img src="model-preview/makehuman-3.png" alt="MakeHuman 머리 모델이 버전별로 정교해진 모습"><figcaption>머리 모델 버전별 변화(위키미디어 공용)</figcaption></figure>
+</div>
+<ul>
+<li>나이·체형·얼굴을 슬라이더로 만드는 실사풍 사람 모델</li>
+<li>프로그램 설치·실행이 필요(승인 필요) · 옷·머리 추가 파일은 라이선스를 하나씩 확인해야 함</li>
+<li>실사 질감은 지금 수묵 화면과 어울릴지 미지수(수묵 질감으로 덮을 수는 있음)</li>
+</ul>
+</section>
+
+<p class="meta">출처: quaternius.itch.io/universal-base-characters · commons.wikimedia.org (MakeHuman 스크린샷)</p>
+</main></body></html>

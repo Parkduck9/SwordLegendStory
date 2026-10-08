@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>단계별 설계도</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,'Malgun Gothic',sans-serif;background:#0d1520;color:#e7eef5}
+*{box-sizing:border-box}body{margin:0;background:#0d1520}
+main{max-width:1180px;margin:auto;padding:40px 24px}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.15;margin:12px 0}
+h2{font-size:24px;margin:0 0 16px}h3{font-size:17px;color:#89dcd7;margin:20px 0 8px}
+p,li{line-height:1.8;color:#bdccdc}
+section{padding:26px;background:#172333;border:1px solid #32465c;border-radius:18px;margin:22px 0}
+a{color:#8bdbd7}.label{color:#efc58c;font-size:13px;letter-spacing:.1em}
+nav{display:flex;gap:15px;flex-wrap:wrap;margin:20px 0}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #34465c;line-height:1.6;vertical-align:top}
+th{color:#91ded7}
+.badge{display:inline-block;border-radius:5px;padding:3px 8px;font-size:12px;white-space:nowrap}
+.done{background:#284b49;color:#a5eee3}.impl{background:#52442f;color:#f9d398}
+.wait{background:#493947;color:#ecc3dc}.todo{background:#2a3546;color:#a9b8c9}
+ul.check{list-style:none;padding:0;margin:8px 0}
+ul.check li{padding:6px 0 6px 30px;position:relative}
+ul.check li::before{content:"";position:absolute;left:0;top:11px;width:16px;height:16px;border:2px solid #607f94;border-radius:4px}
+ul.check li.ok::before{background:#3aa59b;border-color:#3aa59b}
+ul.check li.ok::after{content:"✓";position:absolute;left:3px;top:5px;color:#0d1520;font-weight:700}
+ul.check li.ask::before{border-color:#efc58c}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.steps div{background:#213248;border-radius:12px;padding:16px;line-height:1.6}
+.steps b{display:block;color:#efc58c;margin-bottom:4px}
+svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-serif;fill:#e7eef5;font-size:15px}
+.small{font-size:13px;color:#9ab0c5}
+@media(max-width:760px){.steps{grid-template-columns:1fr 1fr}main{padding:24px 16px}section{padding:18px}}
+</style>
+</head>
+<body><main>
+<p class="label">설계 → 확인 → 구현 → 검증 → 갱신</p>
+<h1>단계별 설계도 · 체크리스트</h1>
+<p>갱신 2026-10-07. 원문 기록: <a href="../md/roadmap.md">md/roadmap.md</a> · 요구사항 <a href="../md/game-plan.md">game-plan.md</a> · 구현 현황 <a href="../md/implementation-status.md">implementation-status.md</a></p>
+<nav><a href="#flow">작업 방식</a><a href="#stages">전체 단계</a><a href="#s3">S3 사후 확인</a><a href="#s4">S4 적 AI</a><a href="#s5">S5 교환 연출</a><a href="#s5r">S5 수정안</a><a href="#s6">S6 점프·맵 파괴</a><a href="#s7">S7 게임 흐름</a><a href="#art">S8 아트·사운드</a><a href="#s81">S8-1 렌더·환경</a><a href="#s82">S8-2 캐릭터</a><a href="#s83">S8-3 UI</a><a href="#s84">S8-4 사운드</a><a href="#next">다음 순서</a></nav>
+
+<section id="flow">
+<h2>작업 방식</h2>
+<div class="steps">
+<div><b>1 설계도</b>모듈·흐름·수치·결정 항목 작성</div>
+<div><b>2 체크리스트 확인</b>사용자 확인 전에는 코드 작성 안 함</div>
+<div><b>3 구현</b>확인된 범위만</div>
+<div><b>4 검증</b>배치 규칙 검사 → 사용자 Play 확인</div>
+<div><b>5 갱신</b>md·html·현황 동시 반영</div>
+</div>
+<p class="small">S0~S3은 이 방식이 정해지기 전에 만들어져, 사후 확인을 받습니다.</p>
+</section>
+
+<section id="stages">
+<h2>전체 단계</h2>
+<div class="scroll"><table>
+<tr><th>단계</th><th>내용</th><th>상태</th></tr>
+<tr><td>S0</td><td>기반: 프로젝트·씬·이동·카메라·락온·입구</td><td><span class="badge impl">구현 · Play 확인 대기</span></td></tr>
+<tr><td>S1</td><td>스탯 5종 규칙 계층</td><td><span class="badge impl">규칙 검사 통과 · Play 대기</span></td></tr>
+<tr><td>S2</td><td>전투 선택: 3m 진입·포커스·8방향 예약·판정·임시 연출·HUD</td><td><span class="badge impl">규칙 검사 통과 · Play 대기</span></td></tr>
+<tr><td>S3</td><td>Shift 대쉬·체력 3 패링·특수기 2 지나가며 베기</td><td><span class="badge impl">구현 · Play 확인 대기</span></td></tr>
+<tr><td>S4</td><td>적 AI: FSM·5개 공격 패턴·예고</td><td><span class="badge impl">구현 · Play 확인 대기</span></td></tr>
+<tr><td>S5</td><td>교환 연출: 성공/실패 각 5변형·치명타 모션 3개</td><td><span class="badge impl">구현 · Play 확인 대기</span></td></tr>
+<tr><td>S6</td><td>점프·맵 파괴</td><td><span class="badge impl">구현 · Play 확인 대기</span></td></tr>
+<tr><td>S7</td><td>타이틀·스탯 배분 화면·승패·재시작</td><td><span class="badge impl">구현 · Play 확인 대기</span></td></tr>
+<tr><td>S8</td><td>아트·한글 글꼴·사운드·템포</td><td><span class="badge impl">S8-1~4 구현 · Play 확인 대기</span></td></tr>
+</table></div>
+</section>
+
+<section>
+<h2>S0 기반 · S1 스탯 · S2 전투 선택</h2>
+<h3>S0</h3>
+<ul class="check">
+<li class="ok">컴파일·씬 생성</li>
+<li>Play: WASD 이동, 마우스 시점, 휠 락온</li>
+<li>Play: 입구 진입 표시, 중앙까지 약 5초 보행</li>
+</ul>
+<h3>S1</h3>
+<ul class="check">
+<li class="ok">스탯 0~3, 10포인트 초과 거부, 미소진 허용</li>
+<li class="ok">5종 효과 계산, 같은 방향 3번째 규칙·색, 좌우 막힘, 비도, 패링 환급</li>
+<li>Play: 스탯 조합별 체감 → 수치 조정</li>
+</ul>
+<h3>S2</h3>
+<svg viewBox="0 0 960 120" role="img" aria-label="전투 선택 흐름">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#89dcd7"/></marker></defs>
+<g>
+<rect x="5" y="30" width="135" height="56" rx="10" fill="#213248"/><text x="72" y="63" text-anchor="middle">실시간</text>
+<rect x="170" y="30" width="135" height="56" rx="10" fill="#213248"/><text x="237" y="55" text-anchor="middle">3m 안 좌클릭</text><text x="237" y="76" text-anchor="middle" class="small" style="font-size:12px;fill:#9ab0c5">밖: 허공 베기</text>
+<rect x="335" y="30" width="135" height="56" rx="10" fill="#213248"/><text x="402" y="55" text-anchor="middle">포커스 0.25초</text><text x="402" y="76" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">슬로모션·무적</text>
+<rect x="500" y="30" width="135" height="56" rx="10" fill="#2c4258"/><text x="567" y="55" text-anchor="middle">선택(실제 시간)</text><text x="567" y="76" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">1~2초</text>
+<rect x="665" y="30" width="135" height="56" rx="10" fill="#213248"/><text x="732" y="63" text-anchor="middle">판정 · 교환</text>
+<rect x="830" y="30" width="125" height="56" rx="10" fill="#213248"/><text x="892" y="63" text-anchor="middle">분리 → 실시간</text>
+<path d="M140 58H166M305 58H331M470 58H496M635 58H661M800 58H826" stroke="#89dcd7" stroke-width="2" marker-end="url(#ar)"/>
+</g></svg>
+<ul class="check">
+<li class="ok">3m 진입·속도별 타수와 시간·시간 초과 분기</li>
+<li class="ok">비도 원(예약 전에만, 던지면 종료), HUD와 판정 같은 계산</li>
+<li>Play: 마우스 감도·8방향 선택감</li>
+<li>Play: 한글·화살표 표시</li>
+<li>Play: 포커스 카메라·슬로모션 배율</li>
+</ul>
+</section>
+
+<section id="s3">
+<h2>S3 이동 기술 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<div class="scroll"><table>
+<tr><th>기능</th><th>입력</th><th>동작</th><th>시험값</th></tr>
+<tr><td>대쉬</td><td>Shift · 실시간</td><td>이동 방향(없으면 정면)으로 돌진</td><td>4m/0.18초 · 충전 2.5/1.8/1.2/0.6초 · 무적 특수기 1+ 0.3초</td></tr>
+<tr><td>가드 패링</td><td>우클릭 · 실시간 · 체력 3</td><td>0.3초 동안 들어오는 피해 패링</td><td>쿨 8초 · 성공 시 50% 환급</td></tr>
+<tr><td>지나가며 베기</td><td>선택 중 우클릭 · 특수기 2+</td><td>예약 타격 먼저 → 적 관통 2.5m 뒤로 베기</td><td>×2.5 · 쿨 10초×기력 배율</td></tr>
+<tr><td>테스트 공격</td><td>T · 디버그</td><td>0.6초 예고 후 4m 안 10 피해</td><td>S4에서 제거</td></tr>
+</table></div>
+<h3>사후 확인 답변 (9차)</h3>
+<ul class="check">
+<li class="ok">대쉬 4m · 0.18초 적당</li>
+<li class="ok">지나가며 베기: 예약 없이 바로 베기, 무조건 성공</li>
+<li class="ok">특수기 3 마무리도 무조건 성공</li>
+<li class="ok">베기 후 적 뒤에 서서 바로 공격</li>
+<li class="ok">패링 성공 → 적 무방비(기지개) → 좌클릭 공격 1회</li>
+</ul>
+<h3>수정 설계 <span class="badge done">확인 · 구현 · 규칙 검사 통과</span></h3>
+<div class="scroll"><table>
+<tr><th>항목</th><th>제안</th></tr>
+<tr><td>베기 사용 시점</td><td>아직 아무것도 예약하지 않았을 때만 우클릭(비도와 같은 규칙)</td></tr>
+<tr><td>베기 피해</td><td>×2.5 → ×4.5 (힘 2 기준 45, 일반 3타 최대 합 33보다 강함)</td></tr>
+<tr><td>마무리 표시</td><td>3번째 칸 "마무리 100%"</td></tr>
+<tr><td>무방비 시간</td><td>1.5초(실제 시간), 선택 화면 동안 정지</td></tr>
+<tr><td>무방비 연출</td><td>양팔·검을 위로 젖히며 뒤로 휘청(임시)</td></tr>
+<tr><td>반격 진입 거리</td><td>무방비 중 4m 안</td></tr>
+<tr><td>반격 방식</td><td>선택 화면, 속도와 상관없이 1타만 · 비도·베기 불가</td></tr>
+<tr><td>반격 성공률</td><td>무조건 성공, 일반 1타 피해(힘 3 치명타 가능)</td></tr>
+<tr><td>미사용 시</td><td>1.5초 지나면 해제</td></tr>
+</table></div>
+<h3>구현 체크</h3>
+<ul class="check">
+<li class="ok">규칙 검사: 베기 조건·쿨타임, 패링 구간 피해 무효, 선택 무적, 시간 초과 예외</li>
+<li>Play: 대쉬 무적 중 T 공격 회피 / 특수기 0은 피격</li>
+<li>Play: 가드 중 T 공격 패링</li>
+<li>Play: 선택 중 우클릭 관통 베기(예약 전에만, 확정)</li>
+<li class="ok">규칙 검사: 마무리·베기·반격 무조건 성공, 베기 ×4.5 &gt; 3타 합, 반격 1타</li>
+<li>Play: T 공격 가드 → 무방비 1.5초(기지개) → 4m 안 좌클릭 반격 1회</li>
+</ul>
+</section>
+
+<section id="s4">
+<h2>S4 적 AI · 설계 1.0 <span class="badge impl">확인 · 구현 · Play 확인 대기</span></h2>
+<p class="small">근거: R06 광역 중심·확률 방어 · R11 빠른 추적·3거리 패턴 · R16 가벼운 템포 · R20 돌진 + 후퇴 사격. 맵 파괴는 S6.</p>
+<h3>1. 상태 흐름</h3>
+<svg viewBox="0 0 960 230" role="img" aria-label="적 상태 흐름">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#efc58c"/></marker></defs>
+<rect x="10" y="40" width="110" height="50" rx="10" fill="#213248"/><text x="65" y="70" text-anchor="middle">대기</text>
+<rect x="160" y="40" width="120" height="50" rx="10" fill="#213248"/><text x="220" y="62" text-anchor="middle">추적</text><text x="220" y="80" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">6m/s</text>
+<rect x="320" y="40" width="140" height="50" rx="10" fill="#2c4258"/><text x="390" y="62" text-anchor="middle">예고</text><text x="390" y="80" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">끝 0.2초 고정</text>
+<rect x="500" y="40" width="120" height="50" rx="10" fill="#213248"/><text x="560" y="70" text-anchor="middle">공격</text>
+<rect x="660" y="40" width="130" height="50" rx="10" fill="#213248"/><text x="725" y="62" text-anchor="middle">후딜</text><text x="725" y="80" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">회전 안 함</text>
+<rect x="830" y="40" width="120" height="50" rx="10" fill="#493947"/><text x="890" y="70" text-anchor="middle">사망</text>
+<path d="M120 65H156M280 65H316M460 65H496M620 65H656" stroke="#efc58c" stroke-width="2" marker-end="url(#a4)"/>
+<path d="M725 90V130H220V94" fill="none" stroke="#efc58c" stroke-width="2" marker-end="url(#a4)"/>
+<text x="470" y="150" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">후딜 끝 3.5m 안 → 후퇴 사격 · 플레이어 공격 성공 → 경직 0.4초 → 추적</text>
+<rect x="160" y="170" width="640" height="44" rx="10" fill="#172738" stroke="#607f94"/>
+<text x="480" y="197" text-anchor="middle">정지: 플레이어 선택·교환 중 / 패링 무방비 중</text>
+</svg>
+<h3>2. 거리별 패턴</h3>
+<svg viewBox="0 0 960 300" role="img" aria-label="거리 구간">
+<g transform="translate(300 290)">
+<path d="M-280 0A280 280 0 0 1 280 0Z" fill="#2a3546"/>
+<path d="M-200 0A200 200 0 0 1 200 0Z" fill="#2c4258"/>
+<path d="M-110 0A110 110 0 0 1 110 0Z" fill="#345068"/>
+<path d="M-50 0A50 50 0 0 1 50 0Z" fill="#52442f"/>
+<circle cx="0" cy="-8" r="9" fill="#e06a5c"/>
+<text x="0" y="-25" text-anchor="middle" style="font-size:13px">휘두르기 0~3.5m</text>
+<text x="0" y="-78" text-anchor="middle">돌진 베기 3.5~8m</text>
+<text x="0" y="-155" text-anchor="middle">투척 8~15m</text>
+<text x="0" y="-235" text-anchor="middle">도약 내려찍기 15m+</text>
+</g>
+<text x="620" y="70">후퇴 사격</text>
+<text x="620" y="96" style="font-size:13px;fill:#9ab0c5">돌진·도약·휘두르기 후딜이 끝났을 때</text>
+<text x="620" y="118" style="font-size:13px;fill:#9ab0c5">플레이어가 3.5m 안이면 뒤로 4m + 투사체</text>
+<text x="620" y="170">선택 규칙</text>
+<text x="620" y="196" style="font-size:13px;fill:#9ab0c5">무작위 없음 · 같은 패턴 3연속 금지</text>
+<text x="620" y="218" style="font-size:13px;fill:#9ab0c5">(3번째는 인접 구간 패턴) · 공격 간 최소 0.3초</text>
+</svg>
+<div class="scroll"><table>
+<tr><th>패턴</th><th>예고</th><th>후딜</th><th>피해</th><th>범위</th></tr>
+<tr><td>큰 검 휘두르기</td><td>0.5초</td><td>0.6초</td><td>15</td><td>부채꼴 3.5m · 140°</td></tr>
+<tr><td>돌진 베기</td><td>0.6초</td><td>0.8초</td><td>18</td><td>폭 1.5m · 길이 8m</td></tr>
+<tr><td>투척</td><td>0.5초</td><td>0.5초</td><td>8</td><td>투사체 18m/s · 반경 0.4m · 유도 없음</td></tr>
+<tr><td>도약 내려찍기</td><td>0.9초(체공)</td><td>1.0초</td><td>25</td><td>착지 원형 4m</td></tr>
+<tr><td>후퇴 사격</td><td>0.4초</td><td>0.4초</td><td>8</td><td>뒤로 4m 도약 + 투사체 1발</td></tr>
+</table></div>
+<h3>3. 플레이어 시스템과 연결</h3>
+<div class="scroll"><table>
+<tr><th>상황</th><th>적 동작</th></tr>
+<tr><td>선택 화면·교환 연출 중</td><td>정지(예고도 멈춤) · 선택 중 피격 없음 유지</td></tr>
+<tr><td>플레이어 타격 하나라도 성공</td><td>진행 중 예고·공격 취소 → 경직 0.4초</td></tr>
+<tr><td>모두 막힘</td><td>예고 이어서 진행, 남은 예고 최소 0.3초 보장</td></tr>
+<tr><td>패링 성공</td><td>공격 취소 + 무방비 1.5초 → 후딜 0.3초</td></tr>
+<tr><td>투사체</td><td>패링 가능 · 대쉬 무적이면 통과</td></tr>
+<tr><td>T 테스트 공격</td><td>이 단계에서 제거</td></tr>
+</table></div>
+<h3>4. 수치 · 5. 모듈</h3>
+<p>적 체력 100 → <b>220</b> · 이동 6m/s · 회전 360°/초 · 전투장 반경 24m 안</p>
+<p class="small">EnemyBrain(상태·선택) · EnemyMoveset(패턴 데이터) · AttackShape(표시=판정 같은 데이터) · TelegraphView(바닥 표시) · EnemyMotor(이동) · EnemyProjectile · EnemyPose(자세 추가)</p>
+<h3>6. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">상태 흐름 · 예고 마지막 0.2초 고정</li>
+<li class="ok">패턴 5종 거리·예고·후딜·피해·범위</li>
+<li class="ok">선택 규칙: 무작위 없음 · 후퇴 사격 조건 · 3연속 금지 (규칙 검사)</li>
+<li>선택·교환 중 정지 / 성공 시 취소 / 전부 막히면 이어서 (구현 · Play 확인)</li>
+<li>패링 시 공격 취소 + 무방비 후 0.3초 후딜 (구현 · Play 확인)</li>
+<li>투사체 패링 가능 (구현 · Play 확인)</li>
+<li class="ok">적 체력 220 · 이동 6m/s</li>
+<li class="ok">T 테스트 공격 제거</li><li class="ok">범위 판정 규칙 검사</li><li>Play: 첫 공격 도약 · 패턴별 회피/패링 · 후딜 후면 공격 · 승패</li>
+</ul>
+</section>
+
+<section id="s5">
+<h2>S5 교환 연출 · 설계 1.0 <span class="badge impl">확인 · 구현 · Play 확인 대기</span></h2>
+<p class="small">근거: R05 결과만 애니메이션으로 · R15 성공 시 멀어짐 / 실패 시 충돌·힘겨루기, 각 약 5종 · R16 짧은 템포 · R18 같은 방향 몸 회전 · 1차 답변 검 궤적 예시 · 힘 3 치명타 모션 약 3개. 판정은 교환 전에 끝나 있고 연출은 결과만 보여줍니다.</p>
+<h3>1. 타격 1회 시간표</h3>
+<svg viewBox="0 0 960 120" role="img" aria-label="타격 시간표">
+<rect x="20" y="30" width="96" height="44" rx="6" fill="#2c4258"/><text x="68" y="57" text-anchor="middle" style="font-size:13px">준비 0.08</text>
+<rect x="120" y="30" width="168" height="44" rx="6" fill="#345068"/><text x="204" y="57" text-anchor="middle">궤적 0.14</text>
+<rect x="292" y="30" width="72" height="44" rx="6" fill="#52442f"/><text x="328" y="50" text-anchor="middle" style="font-size:12px">접촉</text><text x="328" y="66" text-anchor="middle" style="font-size:12px">스톱 0.06</text>
+<rect x="368" y="30" width="300" height="44" rx="6" fill="#213248"/><text x="518" y="57" text-anchor="middle">반응 0.25 (다음 타 준비와 겹침)</text>
+<text x="328" y="98" text-anchor="middle" style="font-size:12px;fill:#efc58c">▲ 피해 1회 적용</text>
+<text x="700" y="50" style="font-size:13px;fill:#9ab0c5">타격당 약 0.3초</text>
+<text x="700" y="72" style="font-size:13px;fill:#9ab0c5">3타 + 분리 ≤ 1.5초</text>
+</svg>
+<h3>2. 검 끝자세와 궤적</h3>
+<svg viewBox="0 0 960 300" role="img" aria-label="검 끝자세 예시">
+<defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#efc58c"/></marker></defs>
+<g transform="translate(150 150)">
+<circle r="110" fill="none" stroke="#34465c" stroke-width="2"/>
+<text x="0" y="-118" text-anchor="middle">↑</text><text x="84" y="-80" text-anchor="middle">↗</text><text x="122" y="6" text-anchor="middle">→</text><text x="84" y="92" text-anchor="middle">↘</text>
+<text x="0" y="132" text-anchor="middle">↓</text><text x="-84" y="92" text-anchor="middle">↙</text><text x="-122" y="6" text-anchor="middle">←</text><text x="-84" y="-80" text-anchor="middle">↖</text>
+<circle cx="-70" cy="70" r="9" fill="#89dcd7"/>
+<path d="M-62 62Q0 0 62 -62" fill="none" stroke="#efc58c" stroke-width="3" marker-end="url(#a5)"/>
+<text x="0" y="40" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">↙ → ↗ 올려 베기</text>
+</g>
+<g transform="translate(470 150)">
+<circle r="110" fill="none" stroke="#34465c" stroke-width="2"/>
+<circle cx="-70" cy="70" r="9" fill="#89dcd7"/>
+<path d="M-60 60A85 85 0 1 1 -48.7 69.6" fill="none" stroke="#efc58c" stroke-width="3" marker-end="url(#a5)"/>
+<text x="0" y="6" text-anchor="middle" style="font-size:13px">↙ → ↙</text>
+<text x="0" y="26" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">몸 한 바퀴 회전 베기</text>
+</g>
+<text x="640" y="70">끝자세 이월</text>
+<text x="640" y="96" style="font-size:13px;fill:#9ab0c5">콤보 안 · 다음 교환까지 유지</text>
+<text x="640" y="118" style="font-size:13px;fill:#9ab0c5">실시간 2초 무공격 → 기본 자세 ↘</text>
+<text x="640" y="160">선택 화면</text>
+<text x="640" y="186" style="font-size:13px;fill:#9ab0c5">현재 끝자세 방향에 작은 검 아이콘</text>
+<text x="640" y="228">이번 단계 제외</text>
+<text x="640" y="254" style="font-size:13px;fill:#9ab0c5">검 자세 → 성공률 영향(수식 확정 후)</text>
+</svg>
+<h3>3. 성공 반응 5종 · 적이 멀어짐</h3>
+<div class="scroll"><table>
+<tr><th>ID</th><th>반응</th><th>언제</th><th>끝 거리</th></tr>
+<tr><td>성1</td><td>뒤로 밀려나며 미끄러짐</td><td>기본</td><td>3.5m</td></tr>
+<tr><td>성2</td><td>비틀거리며 옆으로 돌아감</td><td>← → 수평</td><td>3.5m</td></tr>
+<tr><td>성3</td><td>무릎이 꺾였다 일어남</td><td>↓ ↙ ↘ 내려 베기</td><td>3m</td></tr>
+<tr><td>성4</td><td>크게 튕겨 뒤로 구름</td><td>치명타 · 마무리 · 지나가며 베기 · 반격</td><td>4.5m</td></tr>
+<tr><td>성5</td><td>상체를 젖히며 뒷걸음</td><td>↑ ↗ ↖ 올려 베기</td><td>3.5m</td></tr>
+</table></div>
+<p class="small">중간 타는 짧은 반응(0.15초, 0.5m) 후 다음 타로 이어집니다.</p>
+<h3>4. 실패 반응 5종 · 충돌·힘겨루기 후 분리 (위에서부터 우선)</h3>
+<div class="scroll"><table>
+<tr><th>ID</th><th>반응</th><th>언제</th></tr>
+<tr><td>실3</td><td>적이 검을 흘려냄 → 플레이어 옆으로 비틀</td><td>같은 방향 둘째 타 실패</td></tr>
+<tr><td>실5</td><td>적이 한 발 비켜 피함</td><td>좌우 막힘 누적 쪽으로 실패</td></tr>
+<tr><td>실4</td><td>적이 돌아서며 몸으로 막음</td><td>후면 공격 실패</td></tr>
+<tr><td>실2</td><td>칼날 맞대고 힘겨루기 0.4초 → 밀려남</td><td>체력 0~1 (반동 피해)</td></tr>
+<tr><td>실1</td><td>검이 맞부딪혀 둘 다 튕김</td><td>그 외 (체력 2~3)</td></tr>
+</table></div>
+<h3>5. 힘 3 치명타 모션 3종 · 6. 타격감</h3>
+<div class="scroll"><table>
+<tr><th>ID</th><th>모션</th><th>언제</th></tr>
+<tr><td>치1</td><td>같은 궤적 한 번 더(잔상)</td><td>← →</td></tr>
+<tr><td>치2</td><td>검을 돌려 찌르기</td><td>↑ ↗ ↖</td></tr>
+<tr><td>치3</td><td>어깨로 밀친 뒤 내려 베기</td><td>↓ ↙ ↘</td></tr>
+</table></div>
+<p>히트스톱 0.06초(성공) · 0.1초(치명타·마무리) · 0.05초(충돌) · 카메라 흔들림 · 검 잔상 · 충돌 불꽃 · 소리는 S8</p>
+<h3>7. 모듈</h3>
+<p class="small">ExchangeDirector(시간표·반응 선택·접촉 시 피해) · FighterRig(로우폴리 자세 출력, 나중에 Animator로 교체) · SwordStance(끝자세 이월) · ReactionLibrary(동작 데이터) · HitFeedback(히트스톱·흔들림·잔상·불꽃). 판정 코드는 바꾸지 않고 결과에 반응 선택용 기록만 추가.</p>
+<h3>8. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">타격 시간표 · 접촉 순간 피해 1회</li>
+<li class="ok">궤적 = 현재 끝자세 → 선택 방향, 같으면 회전 베기</li>
+<li class="ok">끝자세 이월 · 실시간 2초 후 기본 자세 ↘</li>
+<li>선택 화면 끝자세 표시 (구현 · Play 확인)</li>
+<li class="ok">검 자세 → 성공률 영향은 이번 단계 제외</li>
+<li class="ok">성공 반응 5종 · 선택 규칙</li>
+<li class="ok">실패 반응 5종 · 우선순위</li>
+<li class="ok">치명타 모션 3종</li>
+<li>히트스톱·흔들림·잔상·불꽃 (구현 · Play 확인)</li>
+<li>끝 거리 성공 3~4.5m · 실패 3m (구현 · Play 확인)</li>
+</ul>
+</section>
+<section id="s5r">
+<h2>S5 수정안 · 성공 반응을 반격·회피로 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<p class="small">사용자 의견: 맞는 모션은 별로 → 반격하거나 피하는 모션. 판정·피해는 그대로, 적의 보이는 동작만 바꾸고 맞은 표시는 파편·히트스톱·체력바로 전달.</p>
+<div class="scroll"><table>
+<tr><th>ID</th><th>기존(피격)</th><th>수정(반격·회피)</th><th>언제</th></tr>
+<tr><td>성1</td><td>뒤로 밀려남</td><td>백스텝 회피 · 다시 겨눔</td><td>기본·비도</td></tr>
+<tr><td>성2</td><td>옆으로 비틀</td><td>옆 구르기로 빠져나감</td><td>← →</td></tr>
+<tr><td>성3</td><td>무릎 꺾임</td><td>낮게 숙여 뒤로 미끄러짐</td><td>↓ ↙ ↘</td></tr>
+<tr><td>성4</td><td>크게 튕겨 구름</td><td>맞받아치다 크게 밀려남</td><td>치명타·마무리·베기·반격</td></tr>
+<tr><td>성5</td><td>상체 젖힘</td><td>젖혀 피하며 반격 헛베기(피해 없음)</td><td>↑ ↗ ↖</td></tr>
+</table></div>
+<ul class="check">
+<li>성공 반응 5종 교체 (구현 · Play 확인)</li>
+<li class="ok">반격 헛베기는 연출만(피해 없음)</li>
+<li class="ok">실패 반응 5종 유지</li>
+</ul>
+</section>
+<section id="s6">
+<h2>S6 점프 · 맵 파괴 · 설계 1.0 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<p class="small">근거: R10 점프를 선택에 활용 · R06 맵 파괴·광역 중심 · 파괴 범위·엄폐·복구 미정 항목. Space 키는 비도가 클릭으로 바뀌어 비어 있음.</p>
+<h3>1. 점프</h3>
+<svg viewBox="0 0 960 170" role="img" aria-label="점프 회피 타이밍">
+<line x1="40" y1="130" x2="920" y2="130" stroke="#607f94" stroke-width="2"/>
+<path d="M260 130Q360 40 460 130" fill="none" stroke="#89dcd7" stroke-width="3"/>
+<text x="360" y="60" text-anchor="middle">점프 1.2m · 0.55초</text>
+<rect x="330" y="122" width="60" height="16" rx="3" fill="#e06a5c" opacity="0.7"/>
+<text x="360" y="158" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">충격파 판정 순간 공중 → 회피</text>
+<text x="600" y="60">점프로 피함: 도약 충격파 · 휘두르기</text>
+<text x="600" y="86" style="fill:#9ab0c5;font-size:14px">못 피함: 돌진 베기 · 투사체</text>
+<text x="600" y="112" style="fill:#efc58c;font-size:14px">공중 3m 안 좌클릭 → 공중 베기 ↓↙↘ +10%</text>
+</svg>
+<div class="scroll"><table>
+<tr><th>항목</th><th>제안</th></tr>
+<tr><td>키 · 상태</td><td>Space · 실시간만 · 2단 점프·공중 대쉬 없음 · 쿨타임 없음</td></tr>
+<tr><td>공중 조작</td><td>방향 유지, 지상의 40%</td></tr>
+<tr><td>공중 베기</td><td>선택 화면 동안 공중 정지, 교환 후 착지</td></tr>
+<tr><td>스탯 영향</td><td>없음</td></tr>
+</table></div>
+<h3>2. 맵 파괴 · 소품 배치</h3>
+<svg viewBox="0 0 960 400" role="img" aria-label="전투장 소품 배치">
+<circle cx="200" cy="200" r="179" fill="#213248" stroke="#607f94" stroke-width="2"/>
+<rect x="186" y="378" width="28" height="22" fill="#2c4258"/>
+<circle cx="200" cy="200" r="86" fill="none" stroke="#34465c" stroke-dasharray="4 4"/>
+<circle cx="200" cy="200" r="129" fill="none" stroke="#34465c" stroke-dasharray="4 4"/>
+<rect x="226.9" y="114.5" width="12" height="12" fill="#8a9bb0"/><rect x="273.5" y="161.1" width="12" height="12" fill="#8a9bb0"/><rect x="273.5" y="226.9" width="12" height="12" fill="#8a9bb0"/><rect x="226.9" y="273.5" width="12" height="12" fill="#8a9bb0"/><rect x="161.1" y="273.5" width="12" height="12" fill="#8a9bb0"/><rect x="114.5" y="226.9" width="12" height="12" fill="#8a9bb0"/><rect x="114.5" y="161.1" width="12" height="12" fill="#8a9bb0"/><rect x="161.1" y="114.5" width="12" height="12" fill="#8a9bb0"/>
+<circle cx="264.5" cy="88.3" r="9" fill="#6d7a66"/><circle cx="329" cy="200" r="9" fill="#6d7a66"/><circle cx="264.5" cy="311.7" r="9" fill="#6d7a66"/><circle cx="135.5" cy="311.7" r="9" fill="#6d7a66"/><circle cx="71" cy="200" r="9" fill="#6d7a66"/><circle cx="135.5" cy="88.3" r="9" fill="#6d7a66"/>
+<circle cx="200" cy="200" r="9" fill="#e06a5c"/>
+<text x="200" y="395" text-anchor="middle" style="font-size:11px;fill:#9ab0c5">입구</text>
+<rect x="430" y="60" width="14" height="14" fill="#8a9bb0"/><text x="455" y="72">돌기둥 8 · 반경 12m</text>
+<circle cx="437" cy="104" r="8" fill="#6d7a66"/><text x="455" y="110">바위 더미 6 · 반경 18m</text>
+<text x="430" y="160">엄폐: 투사체·카메라를 막음</text>
+<text x="430" y="190" style="fill:#9ab0c5;font-size:14px">적 공격 범위 · 적 몸통에 닿으면 파괴</text>
+<text x="430" y="214" style="fill:#9ab0c5;font-size:14px">플레이어 공격은 파괴 안 함</text>
+<text x="430" y="250">부서짐: 조각 4~6개 → 3초 후 소멸</text>
+<text x="430" y="274" style="fill:#9ab0c5;font-size:14px">조각은 플레이어와 충돌 없음 · 피해 없음</text>
+<text x="430" y="310">흔적: 도약 착지 금 간 자국 30초</text>
+<text x="430" y="346">복구: 재시작(R)에서만 · 지형 변형 없음</text>
+</svg>
+<h3>3. 모듈</h3>
+<p class="small">PlayerJump(점프·착지·공중 여부) · DestructibleProp(소품·조각) · PropBreaker(적 공격 범위·몸통과 겹친 소품 파괴) · GroundScar(착지 자국) · PrototypeBuilder 소품 배치. EnemyBrain에 "착지 상태에만 맞음" 조건, 투사체 소품 차단, 판정에 공중 베기 보정 추가.</p>
+<h3>4. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">점프 Space · 1.2m · 0.55초 · 실시간만 · 2단/공중 대쉬 없음</li>
+<li class="ok">점프로 도약 충격파·휘두르기 회피 / 돌진·투사체는 못 피함</li>
+<li class="ok">공중 베기 ↓↙↘ +10% (공중 정지는 Play 확인)</li>
+<li class="ok">파괴는 소품만 · 기둥 8 + 바위 6</li>
+<li class="ok">소품이 투사체를 막는 엄폐</li>
+<li class="ok">적 공격·몸통에 닿으면 파괴, 플레이어 공격은 파괴 안 함</li>
+<li>조각 3초 소멸·충돌 없음 · 착지 자국 30초 (Play 확인)</li>
+<li class="ok">재시작 시에만 복구</li>
+</ul>
+</section>
+<section id="s7">
+<h2>S7 게임 흐름 · 설계 1.0 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<p class="small">근거: 원본 흐름 Title → Stage → Battle → Victory/Defeat → Title · R08 5스탯 0~3 총 10 · 7차 답변 미소진 허용·0포인트 하드코어 · 미정이던 스탯 화면 위치·승패·재시작·저장·이탈. 화면은 S8 전까지 임시 IMGUI.</p>
+<h3>1. 전체 흐름</h3>
+<svg viewBox="0 0 960 230" role="img" aria-label="게임 흐름">
+<defs><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#89dcd7"/></marker></defs>
+<rect x="10" y="40" width="120" height="50" rx="10" fill="#2c4258"/><text x="70" y="70" text-anchor="middle">타이틀</text>
+<rect x="170" y="40" width="130" height="50" rx="10" fill="#2c4258"/><text x="235" y="70" text-anchor="middle">스탯 배분</text>
+<rect x="340" y="40" width="150" height="50" rx="10" fill="#213248"/><text x="415" y="62" text-anchor="middle">진입로 → 전투장</text><text x="415" y="80" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">입구 닫힘</text>
+<rect x="530" y="40" width="110" height="50" rx="10" fill="#213248"/><text x="585" y="70" text-anchor="middle">전투</text>
+<rect x="680" y="40" width="150" height="50" rx="10" fill="#52442f"/><text x="755" y="62" text-anchor="middle">결과 화면</text><text x="755" y="80" text-anchor="middle" style="font-size:12px;fill:#f9d398">승리 / 패배</text>
+<path d="M130 65H166M300 65H336M490 65H526M640 65H676" stroke="#89dcd7" stroke-width="2" marker-end="url(#a7)"/>
+<path d="M740 90V150H415V94" fill="none" stroke="#89dcd7" stroke-width="2" marker-end="url(#a7)"/><text x="580" y="143" text-anchor="middle" style="font-size:13px">다시 하기(같은 스탯) · R</text>
+<path d="M770 90V180H235V94" fill="none" stroke="#efc58c" stroke-width="2" marker-end="url(#a7)"/><text x="500" y="173" text-anchor="middle" style="font-size:13px;fill:#efc58c">스탯 다시 배분</text>
+<path d="M800 90V210H70V94" fill="none" stroke="#9ab0c5" stroke-width="2" marker-end="url(#a7)"/><text x="430" y="203" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">타이틀로</text>
+<text x="860" y="70" style="font-size:12px;fill:#9ab0c5">Esc 일시정지</text>
+</svg>
+<p class="small">장면: Title(새로 · 타이틀 + 스탯 배분) · Foundation(기존 전투장 · 결과·일시정지). 스탯은 RunSetup으로 전달, Foundation 단독 실행은 Inspector 값 사용.</p>
+<h3>2. 스탯 배분 화면 (시안 · 수치는 실제 StatTuning에서 자동 생성)</h3>
+<div style="background:#101923;border:1px solid #607f94;border-radius:12px;padding:18px;max-width:760px">
+<div style="display:flex;justify-content:space-between;margin-bottom:12px"><b>스탯 배분</b><span style="color:#efc58c">남은 포인트 2 / 10</span></div>
+<div class="scroll"><table style="min-width:520px">
+<tr><td>체력</td><td style="color:#89dcd7">●●○</td><td>[-] [+]</td><td class="small">HP 100 · 실패 시 적 2 피해 · 정면 +5%</td></tr>
+<tr><td>기력</td><td style="color:#89dcd7">●●●</td><td>[-] [+]</td><td class="small">스킬 쿨 ×0.5 · 비도</td></tr>
+<tr><td>속도</td><td style="color:#89dcd7">●○○</td><td>[-] [+]</td><td class="small">이동 4.5 · 1타 1.3초 · 대쉬 1.8초</td></tr>
+<tr><td>힘</td><td style="color:#89dcd7">●●○</td><td>[-] [+]</td><td class="small">피해 ×1.0</td></tr>
+<tr><td>특수기</td><td style="color:#89dcd7">○○○</td><td>[-] [+]</td><td class="small">대쉬 무적 없음</td></tr>
+</table></div>
+<p class="small">프리셋: [균형 2·2·2·2·2] [공격형 1·2·2·3·2] [회피형 2·2·3·1·2] [초기화] · 마우스를 올리면 다음 레벨 변화 표시</p>
+<div style="text-align:right">[뒤로] [출발]</div>
+</div>
+<ul>
+<li>합계 10 초과 불가 · 남은 포인트가 있으면 출발 시 한 번 확인 · 0포인트는 "하드코어" 표시</li>
+<li>마지막으로 고른 스탯을 이 기기에 기억</li>
+</ul>
+<h3>3. 전투장 · 결과 · 일시정지</h3>
+<div class="scroll"><table>
+<tr><th>항목</th><th>제안</th></tr>
+<tr><td>입구</td><td>진입하면 닫힘(투명 벽 + 붉은 표시) · 전투 중 이탈 불가</td></tr>
+<tr><td>승패</td><td>적 체력 0 = 승리 · 플레이어 체력 0 = 패배</td></tr>
+<tr><td>끝 연출</td><td>마지막 타격 0.5초 슬로모션 → 결과 화면</td></tr>
+<tr><td>결과 내용</td><td>시간 · 남은 체력 · 받은 피해 · 공격 성공률 · 최대 연속 성공 · 패링 횟수 · 사용 스탯</td></tr>
+<tr><td>버튼</td><td>다시 하기(같은 스탯) · 스탯 다시 배분 · 타이틀로 · R 단축키 유지</td></tr>
+<tr><td>일시정지</td><td>Esc: 계속 · 다시 시작 · 타이틀로 · 종료 · 설정 (선택 화면 중에는 무시)</td></tr>
+<tr><td>설정</td><td>카메라 감도 · 선택 커서 감도 · 전체화면 (기기에 저장)</td></tr>
+<tr><td>저장</td><td>진행 저장 없음 · 마지막 스탯·설정만</td></tr>
+</table></div>
+<h3>4. 모듈</h3>
+<p class="small">RunSetup · TitleMenu / StatAllocationView · StatDescriber(설명 자동 생성) · ArenaGate · RunRecord(전투 기록) · ResultScreen · PauseMenu / GameSettings. 승패 판정은 BattleFlow 그대로.</p>
+<h3>5. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">장면 2개 + RunSetup (흐름은 Play 확인)</li>
+<li class="ok">게임 가제 "검협전"</li>
+<li class="ok">배분 규칙 · 설명 자동 생성 · 프리셋 3종 (화면은 Play 확인)</li>
+<li class="ok">마지막 스탯 기억 (확인 창·하드코어 표시는 Play 확인)</li>
+<li>입구 닫힘 (구현 · Play 확인)</li>
+<li class="ok">결과 기록 계산 (화면·버튼은 Play 확인)</li>
+<li>Esc 일시정지(선택·교환 중 무시) · 설정 3종 (구현 · Play 확인)</li>
+<li class="ok">진행 저장 없음</li>
+</ul>
+</section>
+<section id="art">
+<h2>S8 아트 · 사운드 · UI · 템포 · 설계 1.0 <span class="badge done">확인 · 하위 단계별 진행</span></h2>
+<p class="small">근거: R17 직접 제작 후 교체 · 사용자 의견("에셋이 없어 구려 보인다", "맞는 모션은 별로") · 1920×1080 · 한글 표시 미확인. 게임 규칙·판정 코드는 바꾸지 않고 표현 계층만 교체합니다. 이번엔 방향·순서를 확인받고, 하위 단계마다 세부 체크리스트를 다시 올립니다.</p>
+<h3>1. 하위 단계와 순서</h3>
+<svg viewBox="0 0 960 110" role="img" aria-label="S8 하위 단계">
+<defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#89dcd7"/></marker></defs>
+<rect x="10" y="25" width="160" height="56" rx="10" fill="#2c4258"/><text x="90" y="49" text-anchor="middle">S8-1 렌더·환경</text><text x="90" y="69" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">URP · 조명 · 소품 모델</text>
+<rect x="200" y="25" width="170" height="56" rx="10" fill="#2c4258"/><text x="285" y="49" text-anchor="middle">S8-2 캐릭터·애니</text><text x="285" y="69" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">모델 · 동작 · 검 IK</text>
+<rect x="400" y="25" width="160" height="56" rx="10" fill="#2c4258"/><text x="480" y="49" text-anchor="middle">S8-3 UI 교체</text><text x="480" y="69" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">TMP · 한글 글꼴</text>
+<rect x="590" y="25" width="160" height="56" rx="10" fill="#2c4258"/><text x="670" y="49" text-anchor="middle">S8-4 사운드</text><text x="670" y="69" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">효과음 · 예고음 · 배경음</text>
+<rect x="780" y="25" width="170" height="56" rx="10" fill="#52442f"/><text x="865" y="49" text-anchor="middle">S8-5 템포 조정</text><text x="865" y="69" text-anchor="middle" style="font-size:12px;fill:#f9d398">플레이 의견 기반</text>
+<path d="M170 53H196M370 53H396M560 53H586M750 53H776" stroke="#89dcd7" stroke-width="2" marker-end="url(#a8)"/>
+</svg>
+<h3>2. 아트 방향 · 분위기</h3>
+<div class="scroll"><table>
+<tr><th>선택지</th><th>내용</th><th>비고</th></tr>
+<tr><td>A</td><td>Mixamo 캐릭터·애니메이션(사용자가 Adobe 계정으로 직접 다운로드)</td><td>동작 품질 최고</td></tr>
+<tr><td>B</td><td>CC0 로우폴리 팩(Kenney·Quaternius 등)</td><td>환경 분위기 통일</td></tr>
+<tr><td>C</td><td>블록 모델 개선</td><td>한계 큼</td></tr>
+<tr><td><b>추천 A + B</b></td><td>캐릭터·애니메이션 A, 환경 B</td><td>각 강점만</td></tr>
+</table></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0">
+<div style="background:#213248;border-radius:12px;padding:14px"><b>① 수묵 무협 (추천)</b><div style="display:flex;gap:6px;margin-top:10px"><span style="width:34px;height:34px;border-radius:6px;background:#e9e1cf"></span><span style="width:34px;height:34px;border-radius:6px;background:#2b2a28"></span><span style="width:34px;height:34px;border-radius:6px;background:#8c8577"></span><span style="width:34px;height:34px;border-radius:6px;background:#b3261e"></span></div><p class="small">한지·먹색, 붉은 포인트, 붓 터치 UI</p></div>
+<div style="background:#213248;border-radius:12px;padding:14px"><b>② 선명한 로우폴리</b><div style="display:flex;gap:6px;margin-top:10px"><span style="width:34px;height:34px;border-radius:6px;background:#4fb3a9"></span><span style="width:34px;height:34px;border-radius:6px;background:#f2c14e"></span><span style="width:34px;height:34px;border-radius:6px;background:#e4572e"></span><span style="width:34px;height:34px;border-radius:6px;background:#3d5a80"></span></div><p class="small">밝은 색, 단순 도형</p></div>
+<div style="background:#213248;border-radius:12px;padding:14px"><b>③ 사실적</b><div style="display:flex;gap:6px;margin-top:10px"><span style="width:34px;height:34px;border-radius:6px;background:#6b5b4b"></span><span style="width:34px;height:34px;border-radius:6px;background:#9a8f7e"></span><span style="width:34px;height:34px;border-radius:6px;background:#3e4a3d"></span><span style="width:34px;height:34px;border-radius:6px;background:#c7c2b8"></span></div><p class="small">질감 중심, 에셋 부담 큼</p></div>
+</div>
+<h3>3. 8방향 검 궤적 유지 방식</h3>
+<svg viewBox="0 0 960 200" role="img" aria-label="검 팔 IK 개념">
+<rect x="20" y="30" width="250" height="140" rx="12" fill="#213248"/><text x="145" y="62" text-anchor="middle">몸 전체</text><text x="145" y="90" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">애니메이션 파일</text><text x="145" y="114" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">대기·이동·대쉬·점프·백스텝</text><text x="145" y="136" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">구르기·막기·힘겨루기·반격</text>
+<text x="300" y="104" style="font-size:22px">+</text>
+<rect x="330" y="30" width="250" height="140" rx="12" fill="#2c4258"/><text x="455" y="62" text-anchor="middle">검을 든 팔</text><text x="455" y="90" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">지금의 궤적 계산(FighterRig)</text><text x="455" y="114" text-anchor="middle" style="font-size:13px;fill:#9ab0c5">→ 손 위치 IK (Animation Rigging)</text><text x="455" y="136" text-anchor="middle" style="font-size:13px;fill:#efc58c">8방향 × 시작 자세 조합 그대로</text>
+<text x="610" y="104" style="font-size:22px">=</text>
+<rect x="640" y="30" width="300" height="140" rx="12" fill="#52442f"/><text x="790" y="62" text-anchor="middle">AnimatorRig</text><text x="790" y="90" text-anchor="middle" style="font-size:13px;fill:#f9d398">FighterRig와 같은 호출</text><text x="790" y="114" text-anchor="middle" style="font-size:13px;fill:#f9d398">게임 규칙 코드 변경 없음</text><text x="790" y="136" text-anchor="middle" style="font-size:13px;fill:#f9d398">동작 파일 64개 제작 불필요</text>
+</svg>
+<h3>4. 각 하위 단계 요약</h3>
+<div class="scroll"><table>
+<tr><th>단계</th><th>제안</th></tr>
+<tr><td>S8-1 렌더·환경</td><td>URP 전환(후처리 블룸·색보정) · 해 질 녘 조명·안개 · 돌판 바닥·돌담·목조 문 · 기둥·바위 모델(충돌체 크기 유지)</td></tr>
+<tr><td>S8-2 캐릭터</td><td>플레이어 장검 인간형 · 적 큰 체구 대검 · 이동·회피·반격 동작 · AnimatorRig로 교체</td></tr>
+<tr><td>S8-3 UI</td><td>uGUI + TextMeshPro · Noto Sans KR(OFL) + 제목 붓글씨체 · 원형 선택 휠·HUD·메뉴 재디자인 · 1920×1080 기준</td></tr>
+<tr><td>S8-4 사운드</td><td>베기·타격·충돌·패링·치명타 · 발소리·대쉬·점프 · <b>적 패턴별 예고음 5종</b> · 소품 파괴 · UI · 배경음 2곡 · 믹서와 음량 설정</td></tr>
+<tr><td>S8-5 템포</td><td>F1 디버그 표시 + 플레이 의견 → 수치 조정 → 튜닝 기록</td></tr>
+</table></div>
+<h3>5. 외부 자원과 승인</h3>
+<ul>
+<li>패키지 설치(URP, Animation Rigging)는 설치 전 확인</li>
+<li>Mixamo는 사용자가 로그인해 직접 다운로드 → 지정 폴더에 넣기</li>
+<li>CC0 팩·글꼴·효과음은 파일마다 이름·출처·크기를 알리고 승인 후 다운로드</li>
+<li>출처·라이선스는 Assets/Game/Art/LICENSES.md에 기록</li>
+</ul>
+<h3>6. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">하위 단계 5개와 순서</li>
+<li class="ok">아트 방향 A + B 혼합</li>
+<li class="ok">분위기 ① 수묵 무협</li>
+<li class="ok">검 팔만 궤적 IK, 몸은 애니메이션</li>
+<li class="ok">URP 전환</li>
+<li class="ok">uGUI + TextMeshPro · Noto Sans KR + 붓글씨 제목체</li>
+<li class="ok">사운드 목록 · 출처 방식</li>
+<li class="ok">템포 조정은 마지막</li>
+<li class="ok">패키지·다운로드 항목마다 사전 승인</li>
+</ul>
+</section>
+<section id="s81">
+<h2>S8-1 렌더·환경 · 세부 설계 <span class="badge impl">구현 완료 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (Unity URP)</h3><img src="s8-1-preview.png" alt="수묵풍 전투장 전경" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="s8-1-preview-close.png" alt="플레이어 시점 전투장" style="width:100%;border-radius:12px">
+<p class="small">목표: 캐릭터는 아직 블록이지만 전투장 전체를 "안개 낀 수묵 무협"으로. 충돌체·판정 크기는 그대로, 보이는 것만 교체.</p>
+<svg viewBox="0 0 960 300" role="img" aria-label="수묵 분위기 시안">
+<defs>
+<linearGradient id="sky81" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8f99a3"/><stop offset="0.7" stop-color="#e3dccb"/></linearGradient>
+<linearGradient id="fog81" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e1cf" stop-opacity="0"/><stop offset="1" stop-color="#e9e1cf" stop-opacity="0.9"/></linearGradient>
+</defs>
+<rect width="960" height="300" rx="12" fill="url(#sky81)"/>
+<path d="M0 170L120 110L230 150L360 90L470 140L600 100L720 150L850 105L960 140V300H0Z" fill="#a9a59a"/>
+<path d="M0 195L90 150L210 185L320 135L450 180L560 145L700 190L820 150L960 180V300H0Z" fill="#6f6c64"/>
+<path d="M0 225L140 180L260 215L380 175L520 220L640 185L780 225L900 195L960 210V300H0Z" fill="#3a3834"/>
+<rect y="150" width="960" height="110" fill="url(#fog81)"/>
+<ellipse cx="480" cy="268" rx="330" ry="30" fill="#8c8577"/>
+<ellipse cx="480" cy="268" rx="300" ry="24" fill="#b5ad9c"/>
+<rect x="400" y="236" width="10" height="30" fill="#2b2a28"/><rect x="560" y="236" width="10" height="30" fill="#2b2a28"/><rect x="300" y="246" width="8" height="22" fill="#2b2a28"/><rect x="660" y="246" width="8" height="22" fill="#2b2a28"/>
+<path d="M460 262L480 240L500 262Z" fill="#b3261e" opacity="0.6"/>
+<circle cx="480" cy="245" r="6" fill="#b3261e"/>
+<text x="20" y="30" style="fill:#2b2a28;font-size:14px">시안 · 한지색 안개 · 먼 산 3겹 · 붉은 포인트(예고·적)</text>
+</svg>
+<div class="scroll"><table>
+<tr><th>항목</th><th>제안</th></tr>
+<tr><td>URP 설치</td><td>Package Manager로 설치(버전 자동, 인터넷 필요) · <b>설치 전 승인</b></td></tr>
+<tr><td>재질</td><td>장면 생성 코드 재질 → URP Lit · 예고·잔상·파편·자국 → URP Unlit/Particles(분홍 깨짐 방지)</td></tr>
+<tr><td>시간대·조명</td><td>안개 낀 흐린 저녁 · 낮은 따뜻한 방향광 · 부드러운 그림자 · 3색 주변광</td></tr>
+<tr><td>안개·하늘·원경</td><td>한지색 안개 · 회청→한지색 하늘 · 먼 산 실루엣 3겹(코드로 생성, 에셋 불필요)</td></tr>
+<tr><td>후처리</td><td>색보정(채도↓·따뜻한 색조) · 약한 블룸 · 비네트</td></tr>
+<tr><td>먹선</td><td>화면 전체 외곽선(깊이·법선 기반, 직접 작성) · <b>포함 여부 결정</b></td></tr>
+<tr><td>바닥·벽·문</td><td>석판 질감(CC0) + 먹 얼룩 · 낮은 돌담 · 목조 문(입구 닫힘 연동)</td></tr>
+<tr><td>기둥·바위</td><td>CC0 로우폴리 모델(충돌체 유지) · 같은 재질 조각</td></tr>
+</table></div>
+<p class="small">외부 자원 후보: Kenney 또는 Quaternius(CC0) 바위·돌담·목조 팩 1~2개, ambientCG 또는 Poly Haven(CC0) 석판 질감 1종 — 내용·크기 확인 후 파일별 승인.</p>
+<p class="small">검증: URP 에셋 지정 · 모든 렌더러 URP 호환(분홍 없음) · 충돌체 크기 불변 · 진입 경로 · 전투장 미리보기 이미지 html/s8-1-preview.png · Play로 분위기·예고 가독성·프레임 확인.</p>
+<ul class="check">
+<li class="ok">URP 17.3.0 설치</li>
+<li class="ok">안개 낀 흐린 저녁 · 한지색 안개 · 먼 산 3겹</li>
+<li class="ok">후처리(색보정·약한 블룸·비네트)</li>
+<li class="ok">먹선 포함(직접 작성 셰이더)</li>
+<li class="ok">석판·돌담·나무 질감 코드 생성 · 목조 문(닫힘은 Play 확인)</li>
+<li class="ok">기둥·바위 Kenney Nature Kit(CC0 확인 · 출처 표기 의무 없음) · 판정 상자에 맞춤</li>
+<li class="ok">후보 확인 · 석판 질감은 직접 생성으로 대체</li>
+</ul>
+</section>
+<section id="s82">
+<h2>S8-2 캐릭터·애니메이션 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (편집 모드 · IK는 플레이 중에만 반영)</h3><img src="s8-2-preview-idle.png" alt="수묵 의상 마네킹 플레이어와 적" style="width:100%;border-radius:12px">
+<p class="small">목표: 블록 인형 → 사람 모양 캐릭터 + 실제 애니메이션. 8방향 검 궤적·판정·연출 규칙은 그대로, 보이는 몸만 교체.</p>
+<h3>1. 출처 비교 (공식 페이지 확인 2026-10-08)</h3>
+<div class="scroll"><table>
+<tr><th>후보</th><th>라이선스</th><th>받는 방법</th><th>비고</th></tr>
+<tr><td>Mixamo</td><td>무료 · 상업 로열티 없음 · 게임 명시</td><td>Adobe 로그인, 사용자가 직접</td><td>출처 표기 언급 없음</td></tr>
+<tr><td><b>Quaternius Animation Library (추천)</b></td><td><b>CC0 · 출처 표기 불필요</b></td><td>itch.io 0원 선택, 승인 후 다운로드</td><td>무료판 15MB · 120+ 동작 · 검 휘두르기 · Mixamo 뼈대 호환</td></tr>
+<tr><td>Quaternius Base Characters</td><td>CC0 · 출처 표기 불필요</td><td>위와 같음</td><td>무료판 122MB · 사람 6종</td></tr>
+</table></div>
+<h3>2. 외형 시안</h3>
+<svg viewBox="0 0 960 300" role="img" aria-label="캐릭터 실루엣 시안">
+<rect width="960" height="300" rx="12" fill="#e3dccb"/>
+<g transform="translate(260 40)">
+<path d="M-70 40Q0 0 70 40L60 46Q0 20 -60 46Z" fill="#2b2a28"/>
+<rect x="-6" y="40" width="12" height="16" fill="#2b2a28"/>
+<path d="M-30 60Q0 50 30 60L44 200L-44 200Z" fill="#2f4a52"/>
+<rect x="-34" y="118" width="68" height="10" fill="#2b2a28"/>
+<path d="M-44 200L-30 250L-10 250L-6 200ZM6 200L10 250L30 250L44 200Z" fill="#2b2a28"/>
+<path d="M36 80L120 20" stroke="#c9c6be" stroke-width="5"/><rect x="28" y="78" width="16" height="6" transform="rotate(-35 36 81)" fill="#2b2a28"/>
+<text x="0" y="285" text-anchor="middle" style="fill:#2b2a28;font-size:14px">플레이어 · 삿갓 · 남청 도포 · 직검</text>
+</g>
+<g transform="translate(640 20)">
+<path d="M-38 70Q0 55 38 70L56 250L-56 250Z" fill="#8e2a22"/>
+<circle cx="0" cy="52" r="20" fill="#2b2a28"/>
+<rect x="-42" y="150" width="84" height="12" fill="#2b2a28"/>
+<path d="M-56 250L-40 280L-14 280L-8 250ZM8 250L14 280L40 280L56 250Z" fill="#2b2a28"/>
+<path d="M-46 100L-150 30" stroke="#c9c6be" stroke-width="14"/>
+<text x="0" y="296" text-anchor="middle" style="fill:#2b2a28;font-size:14px">적 · 1.25배 체구 · 붉은 도포 · 대도</text>
+</g>
+</svg>
+<div class="scroll"><table>
+<tr><th>안</th><th>내용</th><th>용량</th></tr>
+<tr><td><b>① 마네킹 + 수묵 의상 (추천)</b></td><td>애니메이션 팩의 인간형 마네킹(포함 여부 다운로드 후 확인) + 먹빛 재질 + 코드로 만든 삿갓·도포 자락·허리띠</td><td>15MB</td></tr>
+<tr><td>② 기본 캐릭터</td><td>Base Characters 사람 모델 + 수묵 재질 (①이 안 되면 다시 확인)</td><td>+122MB</td></tr>
+</table></div>
+<h3>3. 애니메이션 · 기술 방식</h3>
+<svg viewBox="0 0 960 150" role="img" aria-label="애니메이션 구조">
+<rect x="20" y="30" width="280" height="90" rx="10" fill="#213248"/><text x="160" y="62" text-anchor="middle">애니메이터 (코드로 생성)</text><text x="160" y="88" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">이동·대쉬·점프·반응·가드·무방비·쓰러짐</text>
+<rect x="340" y="30" width="280" height="90" rx="10" fill="#2c4258"/><text x="480" y="62" text-anchor="middle">오른팔 Humanoid IK</text><text x="480" y="88" text-anchor="middle" style="font-size:12px;fill:#9ab0c5">8방향 궤적 계산 → 손 위치 (패키지 설치 없음)</text>
+<rect x="660" y="30" width="280" height="90" rx="10" fill="#52442f"/><text x="800" y="62" text-anchor="middle">"반응 종류 재생" 호출</text><text x="800" y="88" text-anchor="middle" style="font-size:12px;fill:#f9d398">새 캐릭터 / 블록 인형 둘 다 같은 호출</text>
+</svg>
+<p class="small">루트 모션 끔(이동은 지금처럼 코드) · 충돌체·판정·속도 변경 없음 · 무기는 코드로 생성(직검·대도) · 팩에 없는 동작은 가까운 동작 + 코드 보정으로 대신하고 목록에 표시.</p>
+<h3>4. 다운로드 (승인 필요)</h3>
+<div class="scroll"><table>
+<tr><th>파일</th><th>출처</th><th>크기</th><th>라이선스</th></tr>
+<tr><td>Universal Animation Library[Standard].zip</td><td>quaternius.itch.io (0원 선택)</td><td>15MB</td><td>CC0</td></tr>
+<tr><td>(②일 때만) Universal Base Characters[Standard].zip</td><td>quaternius.itch.io</td><td>122MB</td><td>CC0</td></tr>
+</table></div>
+<p class="small">받은 뒤 압축 안 라이선스 파일로 CC0 재확인 → 필요한 파일만 프로젝트에 → Art/LICENSES.md 기록.</p>
+<h3>5. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">출처 Quaternius(CC0, 압축 안 License.txt 재확인)</li>
+<li class="ok">마네킹 포함 확인 · 먹빛 몸 + 도포·허리띠·삿갓</li>
+<li class="ok">직검·대도 코드 생성</li>
+<li>검 팔 Humanoid IK (Play 확인)</li>
+<li class="ok">동작 신호(FighterCue) 정리 · 블록 인형 자동 대체</li>
+<li class="ok">Animation Library 15.2MB 받음 · Unity용 FBX만 사용</li>
+</ul>
+</section>
+<section id="s83">
+<h2>S8-3 UI 교체 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (Unity · 편집 모드라 캐릭터는 T자세)</h3><img src="s8-3-title.png" alt="타이틀" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="s8-3-alloc.png" alt="스탯 배분" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="s8-3-battle.png" alt="선택 휠과 전투 HUD" style="width:100%;border-radius:12px">
+<p class="small">목표: 임시 IMGUI → 수묵 분위기 정식 UI, 한글·화살표 깨짐 해결. 보여주는 값과 버튼 동작은 지금과 같음.</p>
+<h3>1. 글꼴 라이선스 (공식 Google Fonts 저장소 확인)</h3>
+<div class="scroll"><table>
+<tr><th>글꼴</th><th>용도</th><th>라이선스</th><th>크기</th></tr>
+<tr><td>Noto Sans KR</td><td>본문·숫자·버튼</td><td>OFL 1.1</td><td>9.9MB</td></tr>
+<tr><td><b>나눔손글씨 붓 (추천)</b></td><td>제목·승리/패배</td><td>OFL 1.1</td><td>3.4MB</td></tr>
+<tr><td>동해 독도</td><td>제목 후보 2</td><td>OFL 1.1</td><td>3.0MB</td></tr>
+<tr><td>송명</td><td>제목 후보 3</td><td>OFL 1.1</td><td>1.9MB</td></tr>
+</table></div>
+<p class="note">OFL 1.1: 무료 · 상업 게임 배포 가능 · 화면 크레딧 의무 없음. <b>단 CC0과 달리, 게임에 글꼴을 넣어 배포할 때 저작권 표시 + 라이선스 문서를 함께 넣어야 함</b> → 빌드에 Licenses/OFL.txt 자동 포함으로 처리(화면 표기 없음).</p>
+<h3>2. 선택 휠 시안</h3>
+<svg viewBox="0 0 960 420" role="img" aria-label="수묵 선택 휠 시안">
+<rect width="960" height="420" rx="12" fill="#e3dccb"/>
+<g transform="translate(80 10)">
+<circle cx="200" cy="200" r="170" fill="none" stroke="#c9c1ae" stroke-width="10"/>
+<path d="M200 30 A170 170 0 1 1 53 115" fill="none" stroke="#b3261e" stroke-width="10" stroke-linecap="round"/>
+<path d="M142.6,61.4 A150 150 0 0 1 257.4,61.4 L229.8,127.9 A78 78 0 0 0 170.2,127.9 Z" fill="#2b2a28" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="200.0" y="82.0" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">↑</text><text x="200.0" y="98.0" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">62%</text><path d="M257.4,61.4 A150 150 0 0 1 338.6,142.6 L272.1,170.2 A78 78 0 0 0 229.8,127.9 Z" fill="#b3261e" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="280.6" y="115.4" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">↗</text><text x="280.6" y="131.4" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">47% 파랑</text><path d="M338.6,142.6 A150 150 0 0 1 338.6,257.4 L272.1,229.8 A78 78 0 0 0 272.1,170.2 Z" fill="#2b2a28" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="314.0" y="196.0" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">→</text><text x="314.0" y="212.0" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">62%</text><path d="M338.6,257.4 A150 150 0 0 1 257.4,338.6 L229.8,272.1 A78 78 0 0 0 272.1,229.8 Z" fill="#8c8577" opacity="0.45" stroke="#e3dccb" stroke-width="3"/><text x="280.6" y="276.6" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">↘</text><text x="280.6" y="292.6" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">불가</text><path d="M257.4,338.6 A150 150 0 0 1 142.6,338.6 L170.2,272.1 A78 78 0 0 0 229.8,272.1 Z" fill="#2b2a28" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="200.0" y="310.0" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">↓</text><text x="200.0" y="326.0" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">62%</text><path d="M142.6,338.6 A150 150 0 0 1 61.4,257.4 L127.9,229.8 A78 78 0 0 0 170.2,272.1 Z" fill="#2b2a28" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="119.4" y="276.6" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">↙</text><text x="119.4" y="292.6" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">62%</text><path d="M61.4,257.4 A150 150 0 0 1 61.4,142.6 L127.9,170.2 A78 78 0 0 0 127.9,229.8 Z" fill="#2b2a28" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="86.0" y="196.0" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">←</text><text x="86.0" y="212.0" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">58%</text><path d="M61.4,142.6 A150 150 0 0 1 142.6,61.4 L170.2,127.9 A78 78 0 0 0 127.9,170.2 Z" fill="#2b2a28" opacity="0.92" stroke="#e3dccb" stroke-width="3"/><text x="119.4" y="115.4" text-anchor="middle" style="fill:#e9e1cf;font-size:15px">↖</text><text x="119.4" y="131.4" text-anchor="middle" style="fill:#e9e1cf;font-size:11px">62%</text>
+<circle cx="200" cy="200" r="54" fill="#e9e1cf" stroke="#2b2a28" stroke-width="3"/>
+<text x="200" y="196" text-anchor="middle" style="fill:#2b2a28;font-size:15px">비도</text><text x="200" y="215" text-anchor="middle" style="fill:#2b2a28;font-size:12px">70%</text>
+<text x="200" y="398" text-anchor="middle" style="fill:#b3261e;font-size:12px">바깥 고리 = 남은 시간</text>
+</g>
+<g transform="translate(560 60)">
+<text x="0" y="0" style="fill:#2b2a28;font-size:18px">예약 슬롯 (낙관)</text>
+<rect x="0" y="20" width="56" height="56" rx="6" fill="#b3261e"/><text x="28" y="56" text-anchor="middle" style="fill:#e9e1cf;font-size:22px">↗</text>
+<rect x="70" y="20" width="56" height="56" rx="6" fill="#b3261e"/><text x="98" y="56" text-anchor="middle" style="fill:#e9e1cf;font-size:22px">↗</text>
+<rect x="140" y="20" width="56" height="56" rx="6" fill="none" stroke="#2b2a28" stroke-dasharray="5 4"/><text x="168" y="56" text-anchor="middle" style="fill:#8c8577;font-size:18px">3타</text>
+<text x="0" y="120" style="fill:#2b2a28;font-size:14px">붉은 칸 = 마우스가 가리키는 방향</text>
+<text x="0" y="146" style="fill:#2b2a28;font-size:14px">흐린 칸 = 불가 · 반복 색 띠(노랑·파랑·빨강)</text>
+<text x="0" y="172" style="fill:#2b2a28;font-size:14px">검 끝자세 칸 = "회전 베기" 표시</text>
+<text x="0" y="198" style="fill:#2b2a28;font-size:14px">가운데 = 비도(기력 3)</text>
+<text x="0" y="250" style="fill:#2b2a28;font-size:16px">적 후면 · 공중 베기 ↓↙↘ +10%</text>
+<text x="0" y="278" style="fill:#2b2a28;font-size:16px">우클릭: 지나가며 베기 (확정)</text>
+</g>
+</svg>
+<h3>3. 전투 HUD · 다른 화면</h3>
+<svg viewBox="0 0 960 220" role="img" aria-label="HUD 시안">
+<rect width="960" height="220" rx="12" fill="#6f6c64"/>
+<text x="480" y="28" text-anchor="middle" style="fill:#e9e1cf;font-size:14px">적 · 예고 · 돌진 베기</text>
+<path d="M300 44 Q480 34 660 44 L660 56 Q480 50 300 56Z" fill="#b3261e"/>
+<path d="M40 176 Q180 168 330 176 L330 190 Q180 186 40 190Z" fill="#e9e1cf"/>
+<text x="40" y="164" style="fill:#e9e1cf;font-size:13px">체력 100 / 100</text>
+<g transform="translate(720 150)" style="font-size:11px">
+<circle cx="0" cy="20" r="20" fill="#2b2a28" stroke="#e9e1cf" stroke-width="2"/><text x="0" y="24" text-anchor="middle" style="fill:#e9e1cf">대쉬</text>
+<circle cx="52" cy="20" r="20" fill="#2b2a28" stroke="#e9e1cf" stroke-width="2"/><path d="M52 0 A20 20 0 0 1 72 20 L52 20Z" fill="#8c8577"/><text x="52" y="24" text-anchor="middle" style="fill:#e9e1cf">베기</text>
+<circle cx="104" cy="20" r="20" fill="#2b2a28" stroke="#e9e1cf" stroke-width="2"/><text x="104" y="24" text-anchor="middle" style="fill:#e9e1cf">가드</text>
+<circle cx="156" cy="20" r="20" fill="#2b2a28" stroke="#e9e1cf" stroke-width="2"/><text x="156" y="24" text-anchor="middle" style="fill:#e9e1cf">마무리</text>
+</g>
+<text x="40" y="110" style="fill:#e9e1cf;font-size:12px;opacity:.8">↗ 성공 -10</text><text x="40" y="128" style="fill:#e9e1cf;font-size:12px;opacity:.55">패링 성공 · 적 무방비</text>
+</svg>
+<div class="scroll"><table>
+<tr><th>화면</th><th>내용 (값·동작 동일)</th></tr>
+<tr><td>타이틀</td><td>붓글씨 "검협전" + 낙관 · 시작·조작법·종료</td></tr>
+<tr><td>스탯 배분</td><td>먹점 ●○ · −/+ · 설명 · 다음 레벨 · 프리셋 · 하드코어 · 확인 창</td></tr>
+<tr><td>결과</td><td>두루마리 판넬 · 붓글씨 승리/패배 · 기록 7항목 · 버튼 3개</td></tr>
+<tr><td>일시정지·설정</td><td>한지 판넬 · 버튼 5개 · 감도 2 · 전체화면</td></tr>
+<tr><td>조작 안내</td><td>첫 진입 시만, F1로 다시</td></tr>
+</table></div>
+<p class="small">기술: uGUI + TextMeshPro(Unity 내장) · 동적 한글 글꼴 · 화면을 에디터 코드로 생성 · 1920×1080 기준 · IMGUI 스크립트는 교체 후 삭제.</p>
+<h3>4. 다운로드 (승인 필요)</h3>
+<div class="scroll"><table>
+<tr><th>파일</th><th>출처</th><th>크기</th></tr>
+<tr><td>NotoSansKR[wght].ttf + OFL.txt</td><td>github.com/google/fonts (ofl/notosanskr)</td><td>9.9MB</td></tr>
+<tr><td>NanumBrushScript-Regular.ttf + OFL.txt (제목 선택에 따라)</td><td>github.com/google/fonts (ofl/nanumbrushscript)</td><td>3.4MB</td></tr>
+</table></div>
+<h3>5. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">OFL — 화면 크레딧 없음, 빌드에 OFL.txt 자동 포함</li>
+<li class="ok">제목 글꼴: 나눔손글씨 붓</li>
+<li class="ok">uGUI + TextMeshPro · 동적 한글 · 코드로 화면 생성</li>
+<li class="ok">수묵 UI 스타일</li>
+<li class="ok">선택 휠 설계(원형 8칸 · 바깥 고리 타이머 · 낙관 슬롯)</li>
+<li>조작 안내 첫 진입 + F1 (Play 확인)</li>
+<li class="ok">글꼴 2개 다운로드 승인</li>
+</ul>
+</section>
+<section id="s84">
+<h2>S8-4 사운드 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<h3>들어 보기 (합성한 실제 소리)</h3>
+<div class="scroll"><table>
+<tr><th>소리</th><th>재생</th></tr>
+<tr><td>예고 · 휘두르기 (금속 긁힘)</td><td><audio controls preload="none" src="audio/CueSweep.wav"></audio></td></tr>
+<tr><td>예고 · 돌진 베기 (북 3연타)</td><td><audio controls preload="none" src="audio/CueCharge.wav"></audio></td></tr>
+<tr><td>예고 · 투척 (높은 딱 2회)</td><td><audio controls preload="none" src="audio/CueThrow.wav"></audio></td></tr>
+<tr><td>예고 · 도약 내려찍기 (징)</td><td><audio controls preload="none" src="audio/CueLeap.wav"></audio></td></tr>
+<tr><td>예고 · 후퇴 사격 (딱딱이)</td><td><audio controls preload="none" src="audio/CueRetreat.wav"></audio></td></tr>
+<tr><td>베기 바람 · 회전 베기 · 큰 북</td><td><audio controls preload="none" src="audio/Swing0.wav"></audio> <audio controls preload="none" src="audio/SpinSwing.wav"></audio> <audio controls preload="none" src="audio/HeavyDrum.wav"></audio></td></tr>
+<tr><td>승리 · 패배 가락</td><td><audio controls preload="none" src="audio/Victory.wav"></audio> <audio controls preload="none" src="audio/Defeat.wav"></audio></td></tr>
+<tr><td>배경음 · 타이틀 / 전투</td><td><audio controls preload="none" src="audio/BgmTitle.wav"></audio> <audio controls preload="none" src="audio/BgmBattle.wav"></audio></td></tr>
+</table></div>
+<p class="small">목표: 전투가 소리로도 읽히게, 특히 적 패턴 5종을 예고음만 듣고 구분. 규칙·판정 변경 없음.</p>
+<h3>1. 출처 (확인 2026-10-08)</h3>
+<div class="scroll"><table>
+<tr><th>출처</th><th>라이선스</th><th>크기</th><th>쓰는 곳</th></tr>
+<tr><td>Kenney Impact Sounds</td><td>CC0 · 표기 불필요</td><td>0.8MB</td><td>타격·충돌·패링·착지·파괴·문</td></tr>
+<tr><td>Kenney RPG Audio</td><td>CC0</td><td>0.9MB</td><td>발소리·천·무기</td></tr>
+<tr><td>Kenney Interface Sounds</td><td>CC0</td><td>0.8MB</td><td>버튼·휠·예약·불가</td></tr>
+<tr><td><b>코드 합성 (추천)</b></td><td>직접 만든 소리</td><td>—</td><td>베기 바람·대쉬·적 예고음 5종·결과 가락·배경음 2곡</td></tr>
+</table></div>
+<p class="note">Kenney에는 반복 배경음악이 없어, 배경음은 우선 오음계 합성으로 만들고 나중에 실제 곡으로 바꿀 수 있게 분리합니다(합성 음악은 단순하다는 한계).</p>
+<h3>2. 적 예고음 5종 — 서로 다른 음색·리듬</h3>
+<svg viewBox="0 0 960 330" role="img" aria-label="적 예고음 5종 리듬">
+<rect width="960" height="330" rx="12" fill="#172738"/>
+<g style="font-size:15px">
+<text x="20" y="48" style="fill:#e7eef5">휘두르기</text><text x="20" y="66" style="font-size:12px;fill:#9ab0c5">금속 긁힘 상승</text>
+<path d="M200 60 L420 30" stroke="#efc58c" stroke-width="6" stroke-linecap="round"/>
+<text x="20" y="108" style="fill:#e7eef5">돌진 베기</text><text x="20" y="126" style="fill:#9ab0c5;font-size:12px">북 3연타 빨라짐</text>
+<circle cx="210" cy="110" r="12" fill="#e06a5c"/><circle cx="300" cy="110" r="12" fill="#e06a5c"/><circle cx="360" cy="110" r="12" fill="#e06a5c"/>
+<text x="20" y="168" style="fill:#e7eef5">투척</text><text x="20" y="186" style="fill:#9ab0c5;font-size:12px">높은 딱 2회</text>
+<rect x="205" y="160" width="8" height="24" fill="#89dcd7"/><rect x="250" y="160" width="8" height="24" fill="#89dcd7"/>
+<text x="20" y="228" style="fill:#e7eef5">도약 내려찍기</text><text x="20" y="246" style="fill:#9ab0c5;font-size:12px">낮은 징 상승</text>
+<path d="M200 240 Q320 200 460 228 Q520 238 560 236" fill="none" stroke="#b3a2e0" stroke-width="10" stroke-linecap="round" opacity=".8"/>
+<text x="20" y="288" style="fill:#e7eef5">후퇴 사격</text><text x="20" y="306" style="fill:#9ab0c5;font-size:12px">나무 딱딱이</text>
+<rect x="205" y="282" width="16" height="16" fill="#c9a26b"/><rect x="232" y="282" width="16" height="16" fill="#c9a26b"/><rect x="259" y="282" width="16" height="16" fill="#c9a26b"/>
+<text x="620" y="60" style="fill:#e7eef5">적 위치에서 들림(입체음 60%)</text>
+<text x="620" y="88" style="fill:#9ab0c5;font-size:13px">뒤에서 오는 공격도 방향을 알 수 있음</text>
+<text x="620" y="140" style="fill:#e7eef5">선택 화면 동안 배경음 먹먹하게</text>
+<text x="620" y="168" style="fill:#9ab0c5;font-size:13px">저역 필터 → 끝나면 원래대로</text>
+<text x="620" y="220" style="fill:#e7eef5">반복 단조로움 방지</text>
+<text x="620" y="248" style="fill:#9ab0c5;font-size:13px">클립 무작위 + 음높이 ±5%</text>
+</g>
+</svg>
+<h3>3. 소리 목록</h3>
+<div class="scroll"><table>
+<tr><th>분류</th><th>소리</th><th>방법</th></tr>
+<tr><td>공격</td><td>베기 바람(방향별 음높이), 회전 베기</td><td>합성</td></tr>
+<tr><td>결과</td><td>성공 타격, 치명타·마무리(+낮은 북), 검 충돌, 패링(맑은 금속음)</td><td>Kenney Impact</td></tr>
+<tr><td>이동</td><td>발소리, 대쉬, 점프·착지</td><td>Kenney RPG · 합성 · Impact</td></tr>
+<tr><td>환경</td><td>소품 부서짐, 입구 문</td><td>Kenney Impact</td></tr>
+<tr><td>UI</td><td>버튼, 휠 칸 이동, 예약 확정, 불가</td><td>Kenney Interface</td></tr>
+<tr><td>음악</td><td>타이틀(가야금풍·바람), 전투(북 장단·오음계 선율), 승리·패배 가락</td><td>합성</td></tr>
+</table></div>
+<p class="small">구조: SoundBank(소리 이름 → 클립·음량·음높이) · AudioService(재생·분류별 음량·배경음·필터) · 합성 WAV 생성기 · 설정에 음량 슬라이더 3개(전체·배경음·효과음).</p>
+<h3>4. 다운로드 (승인 필요)</h3>
+<div class="scroll"><table>
+<tr><th>파일</th><th>크기</th><th>라이선스</th></tr>
+<tr><td>kenney_impact-sounds.zip</td><td>0.8MB</td><td>CC0</td></tr>
+<tr><td>kenney_rpg-audio.zip</td><td>0.9MB</td><td>CC0</td></tr>
+<tr><td>kenney_interface-sounds.zip</td><td>0.8MB</td><td>CC0</td></tr>
+</table></div>
+<h3>5. 확인 체크리스트</h3>
+<ul class="check">
+<li class="ok">출처: Kenney 3팩(CC0) + 코드 합성</li>
+<li class="ok">배경음 우선 합성, 나중에 교체 가능</li>
+<li class="ok">적 예고음 5종 설계 · 적 위치 입체음</li>
+<li>선택 화면 동안 배경음 먹먹하게 (Play 확인)</li>
+<li class="ok">음량 슬라이더 3개</li>
+<li class="ok">Kenney 3팩 다운로드 승인</li>
+</ul>
+</section>
+<section id="r5">
+<h2>R5 검 자세 판정 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<figure><img src="s8-3-battle.png" alt="선택 휠: 오른쪽 위를 예약한 뒤 왼쪽 아래 칸에 크게 +10%, 위 칸에 짧게 -10% 표시" style="width:100%;border-radius:10px"><figcaption class="small">↗ 예약 후 다음 타: ↙ 크게 +10% · ↓·← 넓게 +5% · ↑·→ 짧게 −10%. 값은 StatTuning에서 바꾸면 휠·판정이 함께 바뀜.</figcaption></figure>
+<h3>일정</h3>
+<div class="scroll"><table>
+<tr><th>순서</th><th>작업</th></tr>
+<tr><td>R5-1</td><td>바꾸기 쉬운 구조 — 모든 값·표를 데이터로(각도 단계표, 비워 두는 8×8 상성표, 이동→자세 표, 공중·기본 자세, 시간)</td></tr>
+<tr><td>R5-2</td><td>규칙 — 각도 보정(표시 = 판정), 움직임·점프·대쉬 → 자세</td></tr>
+<tr><td>R5-3</td><td>보이기 — 실시간 검이 자세로 부드럽게, 휠 칸에 크게/넓게/짧게</td></tr>
+<tr><td>R5-4</td><td>규칙 검사 · 문서 갱신 → Play 확인</td></tr>
+<tr><td>나중</td><td>상성표가 필요하면 64칸만 채우면 됨(코드 변경 없음)</td></tr>
+</table></div>
+<p class="note"><b>정정:</b> 검은 시작 자세에서 목표 방향 끝까지 움직입니다. 그래서 ↗ 다음 ↙는 몸을 가로지르는 가장 큰 베기(유리)이고, ↗ 다음 ↑는 45°만 꺾는 짧은 베기(불리)입니다. 앞서 대화에서 든 예시는 반대였습니다.</p>
+<h3>1. 얼마나 크게 휘두르나</h3>
+<svg viewBox="0 0 960 300" role="img" aria-label="시작 자세 오른쪽 위에서 각 방향까지의 성공률 보정">
+<rect width="960" height="300" rx="12" fill="#172738"/>
+<g transform="translate(200,150)" style="font-size:15px">
+<circle r="105" fill="none" stroke="#3b5068" stroke-width="2"/>
+<g style="fill:#e7eef5" text-anchor="middle">
+<text x="0" y="-115">↑ −10%</text>
+<text x="92" y="-82" style="fill:#efc58c">↗ 시작</text>
+<text x="140" y="5">→ −10%</text>
+<text x="100" y="92">↘ 0</text>
+<text x="0" y="128">↓ +5%</text>
+<text x="-98" y="92" style="fill:#8fd19e">↙ +10%</text>
+<text x="-142" y="5">← +5%</text>
+<text x="-96" y="-82">↖ 0</text>
+</g>
+<path d="M70 -70 L-70 70" stroke="#8fd19e" stroke-width="5" stroke-linecap="round" marker-end="url(#arr)"/>
+</g>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#8fd19e"/></marker></defs>
+<g style="font-size:15px;fill:#e7eef5">
+<text x="440" y="70">180° 크게 베기 +10%</text>
+<text x="440" y="105">135° 넓게 베기 +5%</text>
+<text x="440" y="140">90° 보통 0</text>
+<text x="440" y="175">45° 짧게 꺾기 −10%</text>
+<text x="440" y="210">0° 회전 베기 — 기존 규칙 그대로</text>
+<text x="440" y="250" style="fill:#9ab0c5;font-size:13px">연속 예약은 바로 앞 타 방향이 다음 시작 자세 · 표시 = 판정 · 시험값</text>
+</g>
+</svg>
+<h3>2. 움직임 → 검 자세: 검은 움직이는 반대쪽으로 끌린다</h3>
+<div class="scroll"><table>
+<tr><th>움직임 (0.25초 이상)</th><th>검 자세</th><th>크게 베기가 되는 공격</th></tr>
+<tr><td>앞으로 달리기</td><td>↓ 낮게 끌기</td><td>↑ 올려 베기</td></tr>
+<tr><td>뒤로 물러남</td><td>↑ 머리 위로</td><td>↓ 내려 베기</td></tr>
+<tr><td>왼쪽 / 오른쪽 옆걸음</td><td>→ / ←</td><td>← / →</td></tr>
+<tr><td>대각선 이동</td><td>대각선 반대</td><td>그 반대 대각</td></tr>
+<tr><td>점프(공중)</td><td>↑ 위로 듦</td><td>↓ ↙ ↘ (공중 +10%와 겹침)</td></tr>
+<tr><td>대쉬</td><td>대쉬 방향 반대쪽</td><td>대쉬 방향 쪽</td></tr>
+<tr><td>멈춤</td><td>마지막 자세 유지 → 2초 후 ↘</td><td>—</td></tr>
+</table></div>
+<p class="small">의도: “들어가는 방향으로 크게 벤다” — 접근 방법이 곧 다음 공격 준비. 검이 실시간으로 그 자세에 들려 있고, 선택 화면 칸마다 크게/짧게를 표시합니다.</p>
+<h3>3. 자세를 정하는 방법 비교</h3>
+<div class="scroll"><table>
+<tr><th>순위</th><th>방법</th><th>장점</th><th>단점</th><th>한줄평</th></tr>
+<tr><td><b>1</b></td><td><b>움직임에 따라 자동</b></td><td>추가 키 없음</td><td>원치 않는 자세 가능(검·표시로 보완)</td><td>이동과 공격이 이어짐</td></tr>
+<tr><td>2</td><td>별도 키로 자세 고르기</td><td>완전한 통제</td><td>조작 증가</td><td>정확하지만 번거로움</td></tr>
+<tr><td>3</td><td>마지막 끝자세만</td><td>가장 단순</td><td>이동이 판정과 무관</td><td>요청 미반영</td></tr>
+</table></div>
+<h3>4. 체크리스트</h3>
+<ul>
+<li>✔ 각도 보정 4단계(+10/+5/0/−10, 회전 베기 제외) — 규칙 검사</li>
+<li>✔ 연속 예약은 앞 타 방향을 시작 자세로, 표시 = 판정 — 규칙 검사</li>
+<li>✔ 움직임 → 자세 규칙(0.25초 유지·점프·대쉬·멈춤) — 규칙 검사 / 실제 조작은 Play 확인</li>
+<li>◐ 실시간 검 모습이 자세를 따라감 — Play 확인 / ✔ 선택 화면 칸 표시 — 미리보기</li>
+<li>✔ 확정 성공 기술 영향 없음 — 규칙 검사</li>
+<li>✔ 규칙 검사 CheckStance 9항 · 상성표 64칸 교체 동작</li>
+</ul>
+</section>
+
+<section id="r6">
+<h2>R6 검 이동 자세 · 적 피격 반응 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<p class="small">Play 모드에서 실제로 움직이며 찍은 미리보기(IK·팔 층이 반영된 실제 모습). UAL2 무료판(CC0, 라이선스 확인)에는 옆·뒷걸음 동작이 없어 다리 돌림 + 상체 되비틀기 · 걷기 거꾸로 재생으로 만들었습니다.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px">
+<figure><img src="r6-run-low.png" alt="앞으로 달리며 칼을 낮게 든 하단 자세" style="width:100%;border-radius:8px"><figcaption class="small">앞으로 달리기 · 하단(↓)</figcaption></figure>
+<figure><img src="r6-strafe-mid.png" alt="옆걸음하며 칼끝을 앞으로 겨눈 중단 자세" style="width:100%;border-radius:8px"><figcaption class="small">왼쪽 옆걸음 · 중단(→) — 다리는 옆, 상체·칼끝은 적</figcaption></figure>
+<figure><img src="r6-back-high.png" alt="뒷걸음하며 칼을 머리 위로 든 상단 자세" style="width:100%;border-radius:8px"><figcaption class="small">뒷걸음 · 상단(↑) — 걷기 거꾸로 재생</figcaption></figure>
+<figure><img src="r6-wound-graze.png" alt="적 가슴에 얇은 먹 선이 남은 스침" style="width:100%;border-radius:8px"><figcaption class="small">스침 — 얇은 먹 선 + 움찔</figcaption></figure>
+<figure><img src="r6-wound-cut.png" alt="적이 몸을 젖히며 사선 자국이 남은 베임" style="width:100%;border-radius:8px"><figcaption class="small">베임 — 굵은 사선 + 상체 젖힘·비틀림</figcaption></figure>
+</div>
+<p class="small">Play 의견: 이동 중 검이 부자연스럽고, 적이 "살짝 베이는" 느낌이 부족. 무료(CC0) 에셋만 Claude가 받아서 진행: Quaternius Universal Animation Library 2 [Standard] 17MB.</p>
+<h3>A. 보이는 검 자세 3종 (판정 8방향은 그대로)</h3>
+<div class="scroll"><table>
+<tr><th>판정</th><th>보이는 자세</th><th>언제</th></tr>
+<tr><td>↓ ↙ ↘</td><td>하단·와키가마에 — 칼을 낮게 옆·뒤로</td><td>달릴 때</td></tr>
+<tr><td>↑ ↖ ↗</td><td>상단·팔상 — 칼을 세워 어깨 위로</td><td>물러날 때·점프</td></tr>
+<tr><td>← →</td><td>중단 — 칼끝은 적에게</td><td>옆걸음</td></tr>
+</table></div>
+<p class="small">상체만 검 겨눔 동작으로 덮어 팔 흔들기 제거, 오른손은 자세별 데이터 위치로. 옆·뒤 이동은 스텝 동작(있으면) 또는 걷기 거꾸로 재생 + 상하체 비틀기.</p>
+<h3>B. 적 피격 3단계 (동작 위에 덧입히기)</h3>
+<div class="scroll"><table>
+<tr><th>단계</th><th>언제</th><th>몸</th><th>흔적</th></tr>
+<tr><td>스침</td><td>일반 성공</td><td>몸을 빼며 반 발 물러남 · 상체 15° 젖힘</td><td>얇은 먹 선 1.5초</td></tr>
+<tr><td>베임</td><td>같은 방향 둘째 타 · 큰 피해</td><td>어깨·허리 30° 꺾임 · 한 발 밀림</td><td>굵은 붓 자국 · 먹 튀김</td></tr>
+<tr><td>깊게</td><td>치명타·마무리·반격</td><td>기존 크게 튕김</td><td>굵은 자국</td></tr>
+</table></div>
+<h3>일정</h3>
+<ol class="small"><li>R6-1 UAL2 받기 · 라이선스 확인</li><li>R6-2 검 자세 3종</li><li>R6-3 옆·뒤 이동</li><li>R6-4 적 피격 3단계</li><li>R6-5 검사 · 미리보기 · 문서 → Play 확인</li></ol>
+</section>
+
+<section id="r7">
+<h2>R7 캐릭터 모델 교체 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<p class="small">후보 비교는 <a href="model-preview.html">model-preview.html</a>. 선택: Quaternius Universal Base Characters 무료판(CC0, 라이선스 확인). 마네킹 대신 얼굴·손가락이 있는 사람 모델에 먹빛 무복·도포·깃·끝동, 피부·머리는 수묵 톤. 예전 마네킹은 남겨 둠(되돌리기 가능).</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px">
+<figure><img src="r7-face-player.png" alt="새 모델 플레이어: 짧은 머리, 삿갓, 청록 끝동" style="width:100%;border-radius:8px"><figcaption class="small">플레이어 — 짧은 머리 · 삿갓(그림자) · 청록 깃·끝동</figcaption></figure>
+<figure><img src="r7-face-enemy.png" alt="새 모델 적: 짧게 깎은 머리, 붉은 깃" style="width:100%;border-radius:8px"><figcaption class="small">적 — 짧게 깎은 머리 · 수염 · 붉은 깃 · 베인 자국</figcaption></figure>
+<figure><img src="r6-wound-graze.png" alt="새 모델 적이 대도를 든 전신" style="width:100%;border-radius:8px"><figcaption class="small">적 전신 — 대도 · 붉은 도포</figcaption></figure>
+<figure><img src="r6-strafe-mid.png" alt="새 모델 플레이어 옆걸음 전신" style="width:100%;border-radius:8px"><figcaption class="small">플레이어 전신 — 옆걸음 · 중단 자세</figcaption></figure>
+</div>
+</section>
+
+<section id="r8">
+<h2>R8 Play 의견 2차 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+<figure><img src="r6-strafe-mid.png" alt="옆으로 달리기 실제 동작" style="width:100%;border-radius:8px"><figcaption class="small">옆으로 달리기(KayKit)</figcaption></figure>
+<figure><img src="r6-back-high.png" alt="뒷걸음 실제 동작" style="width:100%;border-radius:8px"><figcaption class="small">뒷걸음(KayKit)</figcaption></figure>
+<figure><img src="r8-enemy-kick.png" alt="적 밀쳐 차기" style="width:100%;border-radius:8px"><figcaption class="small">적 밀쳐 차기(새 기술)</figcaption></figure>
+<figure><img src="r8-enemy-spin.png" alt="적 회전 베기" style="width:100%;border-radius:8px"><figcaption class="small">적 회전 베기(새 기술)</figcaption></figure>
+<figure><img src="r8-player-block.png" alt="플레이어가 검으로 막으며 튕겨냄" style="width:100%;border-radius:8px"><figcaption class="small">합 공격 방어 — 막으며 튕겨냄</figcaption></figure>
+</div>
+<p class="small">확정: 같은 쪽 이어 베기 = 회전(보정 유지), ↑↑·↓↓ 불가 · 적 예고·후딜 ×0.7 · 턴 교대 + 재진입 1.2초 + 적 적응(+5%/타, 최대 25%, 회복) · 합 공격 3칸 기억 입력(속도 스탯으로 시간 약간↑, 모두 막으면 반격 1회) · 새 기술 5종 + 거리별 확률표.</p>
+<p class="small">옷 보강 완료(근육 굴곡을 다듬어 천처럼, 발은 천 신발 모양) — <a href="r6-run-low.png">달리기 미리보기</a>. git 보류 · 삿갓 그림자 유지.</p>
+<div class="scroll"><table>
+<tr><th>#</th><th>의견</th><th>제안</th></tr>
+<tr><td>1</td><td>↗→↘ 이어 베기 부자연</td><td>같은 쪽 연속(↖←↙끼리 / ↗→↘끼리)이면 회전 베기</td></tr>
+<tr><td>2·7</td><td>애니메이션 부족</td><td>KayKit 무료(CC0, 150+) 시험 → 부족하면 Quaternius 유료판(사용자 구매) → 코드 보강</td></tr>
+<tr><td>3</td><td>적 공격 더 짧게</td><td>예고·후딜 ×0.7</td></tr>
+<tr><td>4</td><td>연속 공격으로 너무 쉬움</td><td>턴 교대(교환 뒤 적 반격) / 재진입 대기 1.2초 / 적 방어율 상승</td></tr>
+<tr><td>5</td><td>3~6m 적 공격 막기</td><td>합 공격: 3칸이 순서대로 붉게 → 같은 순서로 입력, 칸마다 검 튕김/피해, 3개 성공 시 적 경직</td></tr>
+<tr><td>6</td><td>적 기술 단조로움</td><td>새 기술 5개(회전 베기·밀쳐 차기·합 공격·찌르기 돌진·부채 투척) + 거리별 확률표, 도약은 모든 거리 확률</td></tr>
+</table></div>
+<p class="small">세부 확률표와 확인할 질문은 roadmap.md R8.</p>
+</section>
+
+<section id="next">
+<h2>다음 진행 순서</h2>
+<ol>
+<li>S0~S8-4 Play 확인 (사용자) — Title 장면에서 시작<br><small>2026-10-08 발견·수정: 캐릭터가 진행 방향 반대를 보고 달림(동작 가져오기 회전 기준) → 수정 · 검사 추가<br>2026-10-08 의견 반영: 회전 베기 때 카메라 고정, 캐릭터와 검만 회전 → Play 확인<br>2026-10-08 review R1·R2·R3·R4 적용, 규칙 검사 통과 → Play 확인 · R5는 규칙 결정 필요 (<a href="review-fix-plan.html">review-fix-plan</a>)</small></li>
+<li>Play 확인 → S8-5 템포 조정</li>
+</ol>
+</section>
+</main></body>
+</html>

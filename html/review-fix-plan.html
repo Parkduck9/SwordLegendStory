@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>검협전 · 검토와 수정 제안</title>
+<style>
+:root{--paper:#f5f1e8;--ink:#292d2c;--muted:#686e6b;--line:#d8d9ce;--accent:#28685d;--warn:#945329;--soft:#e6eee7}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Malgun Gothic",sans-serif;line-height:1.8}main{max-width:1080px;margin:auto;padding:50px 26px 70px}header{border-bottom:2px solid var(--ink);padding-bottom:28px}.eyebrow{font-size:13px;letter-spacing:.12em;color:var(--accent)}h1{font-size:clamp(28px,5vw,46px);line-height:1.3;margin:13px 0}h2{font-size:25px;line-height:1.45;margin:0 0 14px}h3{font-size:17px;margin:16px 0 6px}p{margin:9px 0}a{color:var(--accent)}.lead{font-size:18px;max-width:820px}.meta,.caption{font-size:13px;color:var(--muted)}.notice{background:var(--soft);border-left:4px solid var(--accent);padding:15px 20px;margin:24px 0}.overview,.card{background:#fffdf8;border:1px solid var(--line);border-radius:14px;padding:26px;margin:24px 0}.tag{display:inline-block;padding:2px 10px;border-radius:30px;font-size:12px;font-weight:bold;background:var(--soft);color:var(--accent);margin-bottom:10px}.high{background:#f5e5d8;color:var(--warn)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.pane{background:#f2f3ed;padding:15px 19px;border-radius:9px}.pane p{margin:5px 0}.step{display:flex;gap:13px;margin:14px 0}.num{background:var(--accent);color:white;width:29px;height:29px;flex-shrink:0;border-radius:50%;text-align:center;line-height:29px}.step strong{display:block}ul,ol{padding-left:23px;margin:8px 0}li{margin:5px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted)}.table-wrap{overflow-x:auto}svg{width:100%;height:auto;background:#f7f8f2;border-radius:10px;margin-top:17px;display:block}svg text{font-family:"Malgun Gothic",sans-serif;fill:var(--ink)}figure{margin:20px 0}figure img{display:block;width:100%;border-radius:10px;border:1px solid var(--line)}figcaption{font-size:13px;color:var(--muted);margin-top:7px}.check{border-top:1px dashed var(--line);padding-top:13px;margin-top:17px}.check b{color:var(--accent)}details{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}summary{cursor:pointer;color:var(--accent);font-weight:bold}code{font-family:Consolas,monospace;font-size:.9em;overflow-wrap:anywhere}.footer{padding-top:20px;border-top:2px solid var(--ink)}@media(max-width:720px){main{padding:26px 16px}.card,.overview{padding:20px}.grid{grid-template-columns:1fr;gap:10px}h2{font-size:22px}table{min-width:620px}svg text{font-size:15px}}@media print{body{background:white}main{padding:0}.card{break-inside:avoid}a{color:inherit}details{display:block}svg{max-height:260px}figure img{max-height:300px;object-fit:contain}}
+</style>
+</head>
+<body><main>
+<header>
+<div class="eyebrow">검협전 · 설계 검토 / 2026.10.08 / v1.0</div>
+<h1>어디를 고치고,<br>어떻게 고칠 것인가</h1>
+<p class="lead">전투 계산과 연출이 나뉘어 있고, 모델 교체를 위한 인터페이스도 있어 확장하기 좋은 구조입니다. 다음 단계에서는 시간과 충돌 판정을 먼저 안정화한 뒤, 검을 보는 화면과 자세에 따른 성공률을 다듬는 것이 좋겠습니다.</p>
+<p class="meta"><a href="../md/review-fix-plan.md">개발 인계용 MD 읽기</a> · <a href="roadmap.html">기존 로드맵</a></p>
+</header>
+<div class="notice"><strong>2026-10-08 갱신: R1~R5 모두 적용(규칙 검사 통과, Play 확인 대기). R5는 각도 수식 + 움직임→검 자세로 구현(<a href="roadmap.html#r5">로드맵 R5</a>).</strong> 해결법 3안·순위·적용 기록은 <a href="#solutions">아래 “해결법과 순위”</a>에 있습니다. 그 아래 원래 제안 카드는 작성 당시 그대로입니다.</div>
+
+<section class="overview">
+<h2>먼저 볼 다섯 가지</h2>
+<p>“확인”은 코드에서 읽은 사실, “위험”은 플레이에서 재현해야 할 문제, “제안”은 아직 적용하지 않은 해결 방법입니다.</p>
+<div class="table-wrap"><table><thead><tr><th>항목</th><th>예상 영향</th><th>우선순위</th><th>이동</th></tr></thead><tbody>
+<tr><td>R1 · 일시정지 시간</td><td>충전은 진행되고 무적은 끝나는 불일치</td><td>높음</td><td><a href="#r1">보기</a></td></tr>
+<tr><td>R2 · 투사체 판정</td><td>점프 높이 무시 / 빠른 투사체 통과 위험</td><td>높음</td><td><a href="#r2">보기</a></td></tr>
+<tr><td>R3 · 구현 현황 문서</td><td>다른 개발자가 완료된 작업을 다시 구현할 수 있음</td><td>높음</td><td><a href="#r3">보기</a></td></tr>
+<tr><td>R4 · 선택 화면 배치</td><td>중앙 선택 휠이 플레이어와 검을 가림</td><td>중간</td><td><a href="#r4">보기</a></td></tr>
+<tr><td>R5 · 자세와 성공률</td><td>검 위치·적 스탯에 따른 핵심 전술이 아직 부족</td><td>기능 확장</td><td><a href="#r5">보기</a></td></tr>
+</tbody></table></div>
+</section>
+
+<section class="card" id="r1">
+<span class="tag high">R1 · 동작 수정 · 우선순위 높음</span>
+<h2>메뉴를 열었을 때 모든 전투 시간이 함께 멈춰야 합니다</h2>
+<div class="grid"><div><h3>확인한 구현</h3><p>대쉬 충전은 게임 속도와 무관한 시간으로 진행됩니다. 무적도 같은 절대 시각으로 종료되지만, 전투 관리자 안의 일부 쿨타임은 일시정지 중 멈춥니다.</p><h3>플레이에서 생길 수 있는 일</h3><p>대쉬 직후 메뉴를 열고 기다리면 충전은 회복되고 짧은 무적은 소진될 수 있습니다. 메뉴를 닫았을 때 시간 규칙이 서로 달라집니다.</p></div><div class="pane"><h3>제가 수정한다면</h3><p>전투용 시간 공급원을 하나 두겠습니다. 메뉴 중에는 그 시간이 0만큼 흐르도록 하고, 충전과 무적은 그 시간을 사용합니다.</p><p>선택 제한시간은 슬로모션 중에도 실제 시간으로 세되, 메뉴 정지와 구분합니다. UI 애니메이션도 별도 시간을 사용합니다.</p><p>적 행동 가능 조건에 일시정지를 명시해 피해·충돌 처리도 막겠습니다.</p></div></div>
+<svg viewBox="0 0 920 205" role="img" aria-label="메뉴 일시정지 중 서로 다른 타이머를 공통 전투 시간으로 통일하는 그림">
+<text x="28" y="35" font-size="18" font-weight="bold">현재: 타이머마다 다름</text><text x="495" y="35" font-size="18" font-weight="bold">제안: 전투 시간으로 통일</text>
+<rect x="28" y="57" width="380" height="120" rx="9" fill="#f2e5d9"/><text x="48" y="88" font-size="16">메뉴에서 3초 기다림</text><text x="48" y="122" font-size="16">대쉬 충전 진행 · 무적 만료</text><text x="48" y="153" font-size="16">일부 특수기 충전은 정지</text>
+<path d="M429 115 H474 L462 106 M474 115 L462 124" fill="none" stroke="#28685d" stroke-width="3"/>
+<rect x="495" y="57" width="397" height="120" rx="9" fill="#e6eee7"/><text x="515" y="88" font-size="16">메뉴에서 3초 기다림</text><text x="515" y="122" font-size="16">충전·무적·적 행동 모두 정지</text><text x="515" y="153" font-size="16">닫으면 남은 시간부터 이어짐</text>
+</svg>
+<div class="check"><b>검증:</b> 일시정지 전후 충전·무적 잔여시간 비교, 정지 중 HP와 투사체 위치 유지, 기존 속도별 선택 제한시간 유지.</div>
+<details><summary>변경할 코드와 확인할 규칙</summary><p><code>PlayerDash / Health / BattleFlow / EnemyBrain / EnemyProjectile</code> 및 시간 관련 기록을 함께 확인합니다. 타이머를 한 프레임에 두 번 갱신하지 않도록 담당자를 한 곳으로 정합니다.</p><p><strong>확인할 정책:</strong> 메뉴에서는 모든 전투 시간이 정지하도록 할지. 현재 그림은 이 정책을 제안한 것입니다.</p></details>
+</section>
+
+<section class="card" id="r2">
+<span class="tag high">R2 · 동작 수정 · 우선순위 높음</span>
+<h2>돌은 플레이어의 실제 몸과 겹쳤을 때 맞아야 합니다</h2>
+<div class="grid"><div><h3>확인한 구현</h3><p>투사체와 플레이어 사이 거리를 수평면으로 계산해 높이를 제외합니다. 이동 후 위치에서만 판정하므로 빠르게 이동할 때 몸을 지나칠 위험도 있습니다.</p><h3>플레이에서 생길 수 있는 일</h3><p>점프로 돌 위를 넘었는데 맞거나, 프레임이 낮을 때 돌이 몸을 관통해도 피격되지 않을 수 있습니다. 실제 재현 검증이 필요합니다.</p></div><div class="pane"><h3>제가 수정한다면</h3><p>플레이어의 CharacterController 캡슐과 돌의 반지름을 사용하겠습니다. 이전 위치에서 새 위치까지 이동한 구간 전체를 검사합니다.</p><p>벽과 몸이 모두 경로에 있으면 먼저 만난 대상을 처리합니다. 기존 피해 진입점을 사용해 무적·패링 규칙도 유지합니다.</p></div></div>
+<svg viewBox="0 0 920 240" role="img" aria-label="옆에서 본 점프 캡슐과 돌 이동 구간의 충돌 판정 개념도">
+<text x="28" y="34" font-size="18" font-weight="bold">옆에서 본 장면 · 제안 판정</text>
+<line x1="35" y1="210" x2="890" y2="210" stroke="#92998e" stroke-width="3"/>
+<rect x="419" y="48" width="62" height="106" rx="31" fill="#c7ded2" stroke="#28685d" stroke-width="3"/>
+<text x="502" y="90" font-size="16">점프 중인 실제 몸체</text><text x="502" y="117" font-size="16">경로와 겹치면 피격</text>
+<path d="M75 179 H790" stroke="#a26740" stroke-width="15" stroke-opacity=".2"/><path d="M75 179 H790" stroke="#a26740" stroke-width="2" stroke-dasharray="8 6"/>
+<circle cx="75" cy="179" r="9" fill="#a26740"/><circle cx="790" cy="179" r="9" fill="#a26740"/>
+<text x="55" y="151" font-size="15">이전 위치</text><text x="757" y="151" font-size="15">새 위치</text><text x="260" y="233" font-size="15">몸 아래로 지나간 돌 → 겹치지 않으므로 피격 없음</text>
+</svg>
+<p class="caption">점프 자체에 무적을 주는 제안이 아닙니다. 돌과 몸이 겹치면 점프 중에도 맞습니다.</p>
+<div class="check"><b>검증:</b> 지상에서 1회 피격, 점프 아래로 지나가면 회피, 몸 높이에서는 피격, 낮은 프레임에서도 판정, 벽이 먼저면 벽에서 종료.</div>
+<details><summary>변경할 코드와 확인할 규칙</summary><p><code>EnemyProjectile</code>의 수평 거리 판정을 이동 구간 검사로 교체합니다. 시작점 겹침도 처리하고 <code>EnemyBrain.ReportHit → Health</code> 흐름을 유지합니다.</p><p><strong>확인할 기준:</strong> 몸체와 겹쳐야 피격되는 방식. 캡슐 크기와 돌 반지름은 플레이를 보며 조정해야 합니다.</p></details>
+</section>
+
+<section class="card" id="r3">
+<span class="tag high">R3 · 인계 문서 수정 · 우선순위 높음</span>
+<h2>현재 상태와 과거 기록을 분리하면 인계가 쉬워집니다</h2>
+<p>구현 현황 문서 위쪽에는 “적이 아직 정지 상태” 같은 오래된 내용과 이전 다음 작업이 남아 있습니다. 아래쪽 기록에는 이미 적 AI와 후속 구현이 진행되어 있습니다.</p>
+<svg viewBox="0 0 920 202" role="img" aria-label="오래된 상태와 최신 기록이 섞인 문서를 현재 요약과 보존된 이력으로 분리">
+<rect x="28" y="25" width="380" height="151" rx="9" fill="#f2e5d9"/><text x="49" y="59" font-size="18" font-weight="bold">현재 문서</text><text x="49" y="94" font-size="16">위쪽: 이전 상태 · 이전 다음 작업</text><text x="49" y="126" font-size="16">아래쪽: 후속 완료 기록</text><text x="49" y="157" font-size="16">읽는 위치에 따라 다른 결론</text>
+<path d="M429 100 H474 L462 91 M474 100 L462 109" fill="none" stroke="#28685d" stroke-width="3"/>
+<rect x="495" y="25" width="397" height="151" rx="9" fill="#e6eee7"/><text x="515" y="59" font-size="18" font-weight="bold">수정 제안</text><text x="515" y="94" font-size="16">첫 화면: 최신 구현 · 남은 작업</text><text x="515" y="126" font-size="16">별도 이력: 과거 기록 그대로 보존</text><text x="515" y="157" font-size="16">로드맵 S 번호로 서로 연결</text>
+</svg>
+<div class="grid"><div><h3>제가 수정한다면</h3><p>최신 코드와 로드맵을 대조해 문서 맨 위에 현황 요약을 다시 씁니다. 오래된 기록은 날짜를 붙여 이력으로 옮기고, 이미 완료된 다음 작업과 없어진 클래스 이름을 정리합니다.</p></div><div class="pane"><h3>완료 표시도 구분</h3><p>코드 작성 / 컴파일 확인 / 규칙 검증 / 실제 Play 확인 / 사용자 체감 확인을 나눕니다. 빌드가 통과했다고 재미나 연출까지 확인된 것으로 표시하지 않습니다.</p></div></div>
+<div class="check"><b>검증:</b> 문서 상단과 로드맵·코드의 상태 일치, 파일 경로 확인, 과거 기록 보존. 진행 중인 사운드 등 최신 작업도 다시 읽고 반영합니다.</div>
+</section>
+
+<section class="card" id="r4">
+<span class="tag">R4 · UI 개선 · 배치 확인 필요</span>
+<h2>공격을 고르면서 검의 시작 위치도 볼 수 있어야 합니다</h2>
+<figure><img src="s8-3-battle.png" alt="저장된 전투 미리보기. 중앙의 큰 선택 휠이 플레이어와 검을 겹쳐 가리는 모습"><figcaption>기존 s8-3 저장 미리보기입니다. 현재 작업 중인 최신 화면과는 다를 수 있습니다.</figcaption></figure>
+<p>현재 선택 휠은 화면 중앙 근처에 크게 배치되어 있습니다. 사용자가 원하는 “플레이어와 검에 카메라 포커싱”이 잘 보이려면 인물과 선택 UI가 서로 가리는 면적을 줄여야 합니다.</p>
+<svg viewBox="0 0 920 320" role="img" aria-label="플레이어와 검은 왼쪽 중앙, 방향 선택 휠은 오른쪽에 둔 화면 제안">
+<rect x="24" y="24" width="872" height="267" rx="10" fill="#eeeee3" stroke="#b8c0b5"/>
+<text x="46" y="55" font-size="18" font-weight="bold">배치 제안 A · 실제 게임 화면이 아닌 시안</text>
+<circle cx="320" cy="106" r="22" fill="#58756a"/><path d="M320 130 V210 M320 154 L267 191 M320 154 L376 167 M320 210 L281 259 M320 210 L361 259" fill="none" stroke="#58756a" stroke-width="12" stroke-linecap="round"/>
+<path d="M376 167 L449 87" stroke="#a26740" stroke-width="7"/><text x="75" y="127" font-size="16">검과 몸 전체가</text><text x="75" y="154" font-size="16">보이는 포커싱</text>
+<circle cx="713" cy="174" r="82" fill="#fffdf8" stroke="#28685d" stroke-width="3"/><path d="M631 174 H795 M713 92 V256 M655 116 L771 232 M655 232 L771 116" stroke="#b5c8ba" stroke-width="2"/>
+<text x="685" y="178" font-size="16">8방향</text><text x="632" y="79" font-size="15">예약한 공격 · 남은 시간</text><text x="639" y="280" font-size="15">선택 방향 / 성공률 %</text>
+</svg>
+<div class="grid"><div><h3>제가 수정한다면</h3><p>우측 휠 배치부터 간단한 시안으로 확인받고 적용하겠습니다. 검과 플레이어는 중앙 왼쪽에 보이게 하고, 공격 예약과 제한시간을 휠 가까이에 모읍니다.</p></div><div class="pane"><h3>다른 선택지도 가능</h3><p>중앙 휠을 유지하면서 크기와 불투명도를 낮추는 방법도 있습니다. 우측 이동 시에는 마우스 방향 입력과 UI 중심이 어긋나지 않게 함께 검토해야 합니다.</p></div></div>
+<div class="check"><b>검증:</b> 1920×1080·1280×720·16:10에서 검과 글자 확인, 8방향 선택 정확도, 같은 방향 두 번과 특수기 세 번 입력, 타이머 가독성.</div>
+<details><summary>변경할 코드와 사용자 확인</summary><p><code>SelectionWheelView</code> 배치와 입력 표시를 조정합니다. 고정 픽셀값만 옮기지 않고 화면 크기에 맞춰 배치합니다.</p><p><strong>확인할 내용:</strong> 우측 휠과 중앙 축소 휠 중 선호하는 배치. 정확한 크기·투명도는 아직 정하지 않았습니다.</p></details>
+</section>
+
+<section class="card" id="r5">
+<span class="tag">R5 · 핵심 기능 확장 · 규칙 확정 후 구현</span>
+<h2>검 자세와 적 스탯이 실제 성공률에 연결되어야 합니다</h2>
+<div class="grid"><div><h3>현재 연결된 것</h3><p>성공률 계산에는 플레이어 스탯, 정면·후면, 반복 공격, 공중 공격 등의 조건이 들어갑니다. 검 자세는 연출과 선택 안내에 사용됩니다.</p><h3>아직 부족한 것</h3><p>플레이어 검의 시작 위치·선택 방향·적 검 위치·적 스탯을 함께 비교하는 성공률 계산이 없습니다. 처음 요청한 전술을 완성하기 위한 추가 작업입니다.</p></div><div class="pane"><h3>제가 수정한다면</h3><p>공격 선택 시 두 캐릭터의 스탯·위치·시선·검 자세를 하나의 전투 스냅샷으로 모읍니다. 공통 계산기가 성공률과 피해량을 평가하게 하겠습니다.</p><p>화면에 표시하는 성공률과 실행 때 사용하는 성공률은 같은 계산을 사용합니다. 각 타격 결과의 확률 추첨은 연출 전에 처리하며 추첨 화면은 보여주지 않습니다.</p></div></div>
+<svg viewBox="0 0 920 243" role="img" aria-label="플레이어와 적 전투 정보를 스냅샷에 모으고 공통 평가 결과를 성공률 UI와 실제 전투가 공유하는 구조">
+<rect x="24" y="25" width="216" height="77" rx="9" fill="#e6eee7"/><text x="43" y="54" font-size="17" font-weight="bold">플레이어 정보</text><text x="43" y="80" font-size="15">스탯 · 위치 · 시선 · 검</text>
+<rect x="24" y="138" width="216" height="77" rx="9" fill="#ece7db"/><text x="43" y="167" font-size="17" font-weight="bold">적 정보</text><text x="43" y="193" font-size="15">스탯 · 위치 · 시선 · 검</text>
+<path d="M240 63 H274 V119 H307 M240 176 H274 V119" fill="none" stroke="#28685d" stroke-width="2"/>
+<rect x="308" y="78" width="177" height="83" rx="9" fill="#e6eee7"/><text x="329" y="111" font-size="17">전투 스냅샷</text><text x="329" y="137" font-size="15">선택 시점 정보</text>
+<path d="M485 119 H526" stroke="#28685d" stroke-width="2"/><rect x="527" y="78" width="160" height="83" rx="9" fill="#28685d"/><text x="551" y="112" font-size="17" style="fill:white">공통 평가기</text><text x="551" y="137" font-size="15" style="fill:white">확률 · 피해량</text>
+<path d="M687 119 H717 V63 H749 M717 119 V176 H749" fill="none" stroke="#28685d" stroke-width="2"/>
+<rect x="750" y="25" width="146" height="77" rx="9" fill="#e6eee7"/><text x="770" y="55" font-size="16">성공률 표시</text><text x="770" y="81" font-size="15">선택 화면</text>
+<rect x="750" y="138" width="146" height="77" rx="9" fill="#ece7db"/><text x="770" y="168" font-size="16">전투 실행</text><text x="770" y="194" font-size="15">결과 → 연출</text>
+</svg>
+<h3>먼저 함께 정해야 할 규칙</h3>
+<ul><li>8방향 기준: 화면 방향, 플레이어 몸 방향, 적을 기준으로 한 방향 중 무엇인지.</li><li>검 자세 상성: 어떤 조합이 유리·중립·불리인지. 적 스탯은 어떤 항목과 값을 갖는지.</li><li>연속타 계산: 1타 성공·방어 뒤 바뀐 검 자세를 2·3타 확률에 어떻게 반영할지.</li><li>방어와 패링: 하나의 실패 결과로 묶을지, 별도 확률과 효과로 나눌지.</li></ul>
+<p class="caption">아직 정하지 않은 확률 수치와 상성표를 임의로 넣지 않겠습니다. 기존 반복 공격·치명타·특수기 보장 규칙과 충돌하지 않는지 먼저 확인합니다.</p>
+<div class="check"><b>검증:</b> 동일한 정보에서 표시 확률과 실행 확률 일치, 검 자세·적 스탯 변화 반영, 고정 난수로 결과 재현, 반복타와 보장 특수기 유지.</div>
+<details><summary>변경할 코드와 설계 선택</summary><p><code>StrikeContext / StatEffects / CombatResolver</code>와 검 자세 데이터의 연결을 확장합니다. 예시 이름인 <code>CombatSnapshot / CombatEvaluator</code>는 아직 추가된 클래스가 아닙니다.</p><p>예약 때 확률을 고정할지, 앞선 타격 결과에 따라 다음 타격을 다시 계산할지 결정해야 합니다. 재계산을 택한다면 미리 보여주는 확률의 의미도 설명해야 합니다.</p></details>
+</section>
+
+<section class="overview" id="solutions">
+<div class="tag">2026-10-08 · Claude</div>
+<h2>해결법과 순위</h2>
+<p>코드를 다시 읽어 R1~R5를 모두 사실로 확인했습니다. R2는 투사체 높이가 1.3m라 지금은 체감이 작지만, 빠르게 날아갈 때 몸을 통과할 위험은 실제로 있습니다. R5는 버그가 아니라 게임 규칙을 정해야 하는 확장입니다. 굵은 줄(1순위)로 적용했습니다.</p>
+<h3>R1 · 일시정지 시간</h3>
+<div class="table-wrap"><table><thead><tr><th>순위</th><th>해결법</th><th>장점</th><th>단점</th><th>한줄평</th></tr></thead><tbody>
+<tr><td><b>1</b></td><td><b>전투 시계 BattleClock</b> — 메뉴 시간을 뺀 시각·Δ를 한 곳에서 제공</td><td>규칙이 한 곳, 새 기능도 같은 시계 사용</td><td>씬마다 초기화 필요</td><td>원인을 직접 고친다</td></tr>
+<tr><td>2</td><td>각 부품이 일시정지 여부를 직접 확인</td><td>줄 수 최소</td><td>새 기능마다 잊기 쉬움</td><td>다시 샐 구멍</td></tr>
+<tr><td>3</td><td>메뉴 동안 부품을 꺼 버림</td><td>코드 거의 없음</td><td>절대 시각 무적은 그래도 만료</td><td>증상만 가린다</td></tr>
+</tbody></table></div>
+<h3>R2 · 투사체 판정</h3>
+<div class="table-wrap"><table><thead><tr><th>순위</th><th>해결법</th><th>장점</th><th>단점</th><th>한줄평</th></tr></thead><tbody>
+<tr><td><b>1</b></td><td><b>경로 훑기 + 실제 몸 캡슐</b> — 앞에서부터 엄폐→몸 순서</td><td>높이·빠른 이동·엄폐 순서 모두 해결, 검사 가능</td><td>코드 20줄 정도</td><td>정확하고 검증 가능</td></tr>
+<tr><td>2</td><td>Physics.SphereCast</td><td>엔진 기능</td><td>레이어 설정 의존, 코드 기반 엄폐와 기준이 갈림</td><td>기존 방식과 안 맞음</td></tr>
+<tr><td>3</td><td>높이 범위만 추가</td><td>1줄</td><td>빠른 이동 통과는 그대로</td><td>반쪽 해결</td></tr>
+</tbody></table></div>
+<h3>R3 · 구현 현황 문서</h3>
+<div class="table-wrap"><table><thead><tr><th>순위</th><th>해결법</th><th>장점</th><th>단점</th><th>한줄평</th></tr></thead><tbody>
+<tr><td><b>1</b></td><td><b>맨 위 “현재 상태” + 아래는 날짜별 이력</b></td><td>기록 보존, 처음 읽어도 바로 파악</td><td>요약을 계속 갱신해야 함</td><td>지우지 않고 정리</td></tr>
+<tr><td>2</td><td>현재/이력 두 파일로 분리</td><td>역할 명확</td><td>문서 수 증가</td><td>문서가 더 많아짐</td></tr>
+<tr><td>3</td><td>낡은 문장만 고쳐 쓰기</td><td>빠름</td><td>이력 손실, 또 어긋남</td><td>다음에 또 낡음</td></tr>
+</tbody></table></div>
+<h3>R4 · 선택 휠이 검을 가림</h3>
+<div class="table-wrap"><table><thead><tr><th>순위</th><th>해결법</th><th>장점</th><th>단점</th><th>한줄평</th></tr></thead><tbody>
+<tr><td><b>1</b></td><td><b>휠을 오른쪽(가로 68%)으로, 0.78배</b></td><td>적·플레이어·검이 안 가려짐</td><td>시선이 오른쪽으로, 글씨 조금 작아짐</td><td>보는 곳과 고르는 곳을 분리</td></tr>
+<tr><td>2</td><td>가운데 유지 + 축소 + 반투명</td><td>시선 이동 없음</td><td>겹침 남고 글씨가 묻힘</td><td>덜 가리지만 여전히 가림</td></tr>
+<tr><td>3</td><td>포커스 카메라 구도 변경</td><td>UI 그대로</td><td>카메라 연출 전체 재조정</td><td>손이 많이 감</td></tr>
+</tbody></table></div>
+<figure><img src="s8-3-battle.png" alt="선택 화면: 휠이 오른쪽에 있고 가운데 적과 왼쪽 플레이어가 보임"><figcaption>R4 적용 후 실제 포커스 카메라 구도(편집 모드라 캐릭터는 기본 자세).</figcaption></figure>
+<h3>R5 · 검 자세·적 스탯 판정 — 1순위로 구현(2026-10-08)</h3>
+<div class="table-wrap"><table><thead><tr><th>순위</th><th>해결법</th><th>장점</th><th>단점</th><th>한줄평</th></tr></thead><tbody>
+<tr><td><b>1</b></td><td><b>각도 수식</b> — 직전 검 끝자세→목표 방향 각도 차로 성공률 ±</td><td>정할 수치 1~2개, HUD에 바로 보임</td><td>상성 깊이 얕음</td><td>작게 시작해 체감 확인</td></tr>
+<tr><td>2</td><td>상성표(내 자세 × 목표 × 적 방어 자세)</td><td>깊은 전략</td><td>표 전체를 정해야 함</td><td>완성형, 결정량 많음</td></tr>
+<tr><td>3</td><td>적 스탯만 먼저</td><td>구현 쉬움</td><td>핵심 목표 미해결</td><td>우회로</td></tr>
+</tbody></table></div>
+<div class="check"><b>적용 기록:</b> R1 BattleClock(메뉴 3초 정지·재개 검사) · R2 Sweep(7항 검사: 지상 피격·점프 아래 통과·점프 중 피격·10m 한 프레임·앞 엄폐 우선·뒤 엄폐 무시·옆 빗나감) · R3 현황 문서 재구성 · R4 16:9·16:10 배치 계산 검사. 전체 STAT_RULES_OK. Play 확인 대기.</div>
+</section>
+
+<section class="overview">
+<h2>수정에 들어간다면 이 순서로 진행하겠습니다</h2>
+<div class="step"><span class="num">1</span><div><strong>최신 상태를 다시 읽고 문서를 정리</strong>진행 중인 업데이트를 보존하고, 실제 코드와 현재 현황을 맞춥니다.</div></div>
+<div class="step"><span class="num">2</span><div><strong>시간과 투사체 판정을 작은 변경으로 안정화</strong>R1·R2를 각각 재현하고 수정한 뒤, 해당 문제를 검증합니다.</div></div>
+<div class="step"><span class="num">3</span><div><strong>선택 화면 시안을 확인한 뒤 UI 적용</strong>검을 보며 방향을 고르는 경험이 나아지는지 확인합니다.</div></div>
+<div class="step"><span class="num">4</span><div><strong>검 자세와 적 스탯 규칙을 확정한 뒤 확장</strong>상성표와 연속타 계산 정책을 확인받고 계산·표시·연출을 연결합니다.</div></div>
+<div class="step"><span class="num">5</span><div><strong>전체 흐름을 다시 플레이</strong>타이틀 → 스탯 선택 → 입장 → 실시간 전투 → 공격 예약 → 연출 → 결과 → 재시작을 확인하고 MD·HTML을 함께 갱신합니다.</div></div>
+</section>
+<footer class="footer"><p><strong>이 문서에서 확정한 것은 검토 내용과 수정 제안의 정리입니다.</strong> 제안한 게임 규칙·UI 배치·새 계산 구조는 아직 적용하지 않았습니다.</p><p class="meta">개발자가 이어서 작업할 때는 <a href="../md/review-fix-plan.md">MD 수정 제안서</a>의 근거·변경 범위·검증 항목을 함께 읽어 주세요.</p></footer>
+</main></body></html>

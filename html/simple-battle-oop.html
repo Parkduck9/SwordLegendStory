@@ -1,0 +1,36 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>상속과 다형성 · 작은 전투 시스템</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f5f1e8;color:#292d2c;font:16px/1.8 "Malgun Gothic",sans-serif}main{max-width:1000px;margin:auto;padding:45px 24px}h1{font-size:36px;line-height:1.4}h2{font-size:24px}section{background:#fffdf8;border:1px solid #d6d8cd;border-radius:14px;padding:25px;margin:24px 0}.intro{font-size:19px}.muted{color:#68706a;font-size:14px}a{color:#28685d}pre{background:#202d29;color:#edf3eb;padding:20px;overflow:auto;border-radius:8px;font:15px/1.7 Consolas,monospace}code{font-family:Consolas,monospace}svg{width:100%;height:auto;display:block}svg text{font-family:"Malgun Gothic",sans-serif;fill:#292d2c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #dedfd4;text-align:left}.note{border-left:4px solid #28685d;padding-left:17px}@media(max-width:650px){.grid{grid-template-columns:1fr}h1{font-size:28px}main{padding:25px 15px}section{padding:19px}}</style></head><body><main>
+<p class="muted">C# 학습 예제 · 기존 Unity 게임과 별도 · 2026.10.08</p><h1>객체는 서로 다르게 공격하고,<br>전투 시스템은 같은 방법으로 호출합니다.</h1><p class="intro">검사·마법사·슬라임은 하나의 부모를 상속합니다. Main은 사용할 객체를 선택하고, 전투 시스템은 그 객체의 가상함수를 호출합니다.</p><p><a href="../md/simple-battle-oop.md">개발 설명 MD</a> · <a href="../Examples/SimpleBattle/Program.cs">Main 코드</a></p>
+<section><h2>1. 공통 기능을 부모에 둡니다</h2><svg viewBox="0 0 880 285" role="img" aria-label="Character 부모의 공통 이름 체력 피격 기능을 Warrior Mage Slime이 상속하고 공격 함수를 각자 재정의">
+<rect x="275" y="15" width="330" height="100" rx="12" fill="#dceadf"/><text x="440" y="45" text-anchor="middle" font-size="21" font-weight="bold">Character · 공통 부모</text><text x="440" y="73" text-anchor="middle" font-size="16">이름 / HP / TakeDamage</text><text x="440" y="99" text-anchor="middle" font-size="16">virtual GetAttackDamage() → 5</text>
+<path d="M440 116 V146 M150 146 H730 M150 146 V178 M440 146 V178 M730 146 V178" fill="none" stroke="#28685d" stroke-width="3"/>
+<rect x="25" y="180" width="250" height="90" rx="10" fill="#eeeadf"/><text x="150" y="215" text-anchor="middle" font-size="20">Warrior · 검사</text><text x="150" y="245" text-anchor="middle" font-size="16">override → 피해 12</text>
+<rect x="315" y="180" width="250" height="90" rx="10" fill="#eeeadf"/><text x="440" y="215" text-anchor="middle" font-size="20">Mage · 마법사</text><text x="440" y="245" text-anchor="middle" font-size="16">override → 피해 18</text>
+<rect x="605" y="180" width="250" height="90" rx="10" fill="#eeeadf"/><text x="730" y="215" text-anchor="middle" font-size="20">Slime · 슬라임</text><text x="730" y="245" text-anchor="middle" font-size="16">override → 피해 6</text></svg><p>이름·체력·피격은 물려받고, 공격 피해만 각자 바꿉니다. HP는 외부에서 직접 수정할 수 없습니다.</p>
+<pre>public abstract class Character
+{
+    public virtual int GetAttackDamage() =&gt; 5;
+    // 이름·HP·피격 처리도 이곳에 둡니다.
+}
+
+public sealed class Warrior : Character
+{
+    public Warrior(string name) : base(name, 50) { }
+    public override int GetAttackDamage() =&gt; 12;
+}</pre><p class="muted">위 코드는 설명용 일부입니다. 실행 가능한 전체 코드는 Examples/SimpleBattle 폴더에 있습니다.</p></section>
+<section><h2>2. 역할을 세 곳으로 나눕니다</h2><table><tr><th>역할</th><th>담당</th><th>하는 일</th></tr><tr><td>데이터와 행동</td><td>Character와 자식들</td><td>HP 보관, 피격 처리, 공격 피해 결정</td></tr><tr><td>전투 진행</td><td>BattleSystem</td><td>턴 순서, 공격 실행, 살아 있는 적의 반격, 승패</td></tr><tr><td>선택과 연결</td><td>Main</td><td>실제 캐릭터 생성, 출력 함수 연결, 전투 시작</td></tr></table><p class="note">전투 시스템에는 “검사면 12, 마법사면 18”이라는 종류별 분기가 없습니다. 각 객체에 공격 피해를 물어봅니다.</p></section>
+<section><h2>3. Main에서 실제 대상을 넣습니다</h2><pre>Character player = new Warrior("검사");
+Character enemy = new Slime("슬라임");
+
+var battle = new BattleSystem(Console.WriteLine);
+battle.Fight(player, enemy);</pre><p>마법사를 쓰고 싶다면 <code>new Warrior("검사")</code>를 <code>new Mage("마법사")</code>로 바꿉니다. 전투 시스템은 그대로 사용합니다. 실제 예제는 실행 인수 <code>mage</code>로 선택합니다.</p></section>
+<section><h2>4. 이것이 다형성입니다</h2><pre>// BattleSystem 안의 동일한 코드
+int damage = attacker.GetAttackDamage();
+int applied = target.TakeDamage(damage);</pre><svg viewBox="0 0 880 175" role="img" aria-label="동일한 Character 가상함수 호출이 실제 객체에 따라 검사12 마법사18 슬라임6으로 실행되는 다형성">
+<rect x="15" y="46" width="355" height="82" rx="10" fill="#dceadf"/><text x="192" y="79" text-anchor="middle" font-size="18">Character 타입으로 호출</text><text x="192" y="108" text-anchor="middle" font-size="17">attacker.GetAttackDamage()</text>
+<path d="M370 87 H425 M425 31 V143 M425 31 H478 M425 87 H478 M425 143 H478" fill="none" stroke="#28685d" stroke-width="3"/>
+<text x="500" y="38" font-size="19">실제 객체가 검사 → 12</text><text x="500" y="94" font-size="19">실제 객체가 마법사 → 18</text><text x="500" y="150" font-size="19">실제 객체가 슬라임 → 6</text></svg><div class="grid"><div><h3>virtual</h3><p>부모가 기본 행동을 제공하고 자식이 바꿀 수 있도록 허용합니다.</p></div><div><h3>override</h3><p>자식이 부모의 가상함수를 자신의 행동으로 재정의합니다.</p></div></div></section>
+<section><h2>5. 실행해 보기</h2><p>C:\Unity\1에서 다음 명령을 실행합니다. .NET SDK가 필요하며 Unity 씬 실행은 필요하지 않습니다.</p><pre>dotnet run --project Examples/SimpleBattle/SimpleBattle.csproj
+
+dotnet run --project Examples/SimpleBattle/SimpleBattle.csproj -- mage</pre><p>플레이어가 먼저 공격하고 적이 살아 있으면 반격합니다. 어느 한쪽의 HP가 0이면 종료합니다.</p><p class="muted">새 궁수도 Character를 상속하고 GetAttackDamage를 재정의한 뒤 Main에서 선택하면 됩니다. 움직임·확률·무기 교체 등은 이 작은 예제에 아직 넣지 않았습니다.</p></section>
+</main></body></html>

@@ -1,0 +1,19 @@
+# Unity 장면·프리팹·에셋은 텍스트(YAML) — 줄바꿈을 그대로 두어 불필요한 변경을 막는다
+*.unity    -text merge=unityyamlmerge diff
+*.prefab   -text merge=unityyamlmerge diff
+*.asset    -text merge=unityyamlmerge diff
+*.mat      -text merge=unityyamlmerge diff
+*.anim     -text merge=unityyamlmerge diff
+*.controller -text merge=unityyamlmerge diff
+*.mask     -text merge=unityyamlmerge diff
+*.meta     -text
+
+# 바이너리
+*.fbx  binary
+*.glb  binary
+*.png  binary
+*.jpg  binary
+*.ttf  binary
+*.ogg  binary
+*.wav  binary
+*.zip  binary

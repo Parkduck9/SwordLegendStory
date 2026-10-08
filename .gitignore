@@ -1,0 +1,53 @@
+# 검협전(SwordLegendStory) — 올리지 않을 파일
+# Unity가 자동으로 다시 만드는 폴더(가장 큼: Library 약 1.6GB)
+/[Gg]ame/[Ll]ibrary/
+/[Gg]ame/[Tt]emp/
+/[Gg]ame/[Oo]bj/
+/[Gg]ame/[Bb]uild/
+/[Gg]ame/[Bb]uilds/
+/[Gg]ame/[Ll]ogs/
+/[Gg]ame/[Uu]ser[Ss]ettings/
+/[Gg]ame/[Mm]emory[Cc]aptures/
+/[Gg]ame/[Rr]ecordings/
+
+# 코드 편집기·IDE가 만드는 파일
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity 크래시·빌드 부산물
+sysinfo.txt
+*.apk
+*.aab
+*.unitypackage
+*.app
+crashlytics-build.properties
+
+# 작업 로그·백업(로컬 전용)
+*.log
+/Backups/
+
+# 예제 콘솔 프로젝트 빌드 결과
+/Examples/**/bin/
+/Examples/**/obj/
+
+# 검토용으로 받은 외부 미리보기 사진(배포 권리가 명확하지 않음 — 비교 페이지 model-preview.html은 로컬에서만)
+/html/model-preview/
+
+# 운영체제
+.DS_Store
+Thumbs.db
+desktop.ini

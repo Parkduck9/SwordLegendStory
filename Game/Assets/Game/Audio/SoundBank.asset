@@ -1,0 +1,301 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30a3070c6e097c6419bebc66a8011dc3, type: 3}
+  m_Name: SoundBank
+  m_EditorClassIdentifier: Assembly-CSharp::SwordPrototype.Audio.SoundBank
+  entries:
+  - name: Swing
+    clips:
+    - {fileID: 8300000, guid: ee1e42ca761de594dadb1d5ce483c018, type: 3}
+    - {fileID: 8300000, guid: b7b1dc799873dd14cb9e5a49ceb602ae, type: 3}
+    - {fileID: 8300000, guid: c5ebaa1f433ddd24da9a09ced465400e, type: 3}
+    volume: 0.7
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: SpinSwing
+    clips:
+    - {fileID: 8300000, guid: 444ef72cf3e2d5b4a8ebc16ba506739a, type: 3}
+    volume: 0.8
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: Dash
+    clips:
+    - {fileID: 8300000, guid: 944c9851a6fb7994cbd3b73a4f535bce, type: 3}
+    - {fileID: 8300000, guid: bd94b15a397d9a84fa6f39307a9fb53f, type: 3}
+    - {fileID: 8300000, guid: 8004370556072eb479fb2c10fd77f9ef, type: 3}
+    - {fileID: 8300000, guid: 1375483c64a3a2144acdc86ed6f6d320, type: 3}
+    - {fileID: 8300000, guid: c7123a7909e443d4d9d4ee24353c36d3, type: 3}
+    volume: 0.6
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: Jump
+    clips:
+    - {fileID: 8300000, guid: bd94b15a397d9a84fa6f39307a9fb53f, type: 3}
+    - {fileID: 8300000, guid: 8004370556072eb479fb2c10fd77f9ef, type: 3}
+    - {fileID: 8300000, guid: 1375483c64a3a2144acdc86ed6f6d320, type: 3}
+    - {fileID: 8300000, guid: c7123a7909e443d4d9d4ee24353c36d3, type: 3}
+    volume: 0.5
+    pitchMin: 1.05
+    pitchMax: 1.2
+    category: 1
+  - name: Land
+    clips:
+    - {fileID: 8300000, guid: 0861ca0abf8339c4ea878ce1939bd262, type: 3}
+    - {fileID: 8300000, guid: df841c49cacfbb840abeceb50508c58b, type: 3}
+    - {fileID: 8300000, guid: 565e5ecc5bbec8349b4385b9309acce4, type: 3}
+    - {fileID: 8300000, guid: bc21baa6ca603694693a9426c7a061b3, type: 3}
+    - {fileID: 8300000, guid: b4489a0564c9fe94980be8ce13fbdbc9, type: 3}
+    volume: 0.45
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: Footstep
+    clips:
+    - {fileID: 8300000, guid: 1ce3a3f3aa86a0f47b2fec6d933889e9, type: 3}
+    - {fileID: 8300000, guid: 5cb143d499adbd44f9a560973c0e62d7, type: 3}
+    - {fileID: 8300000, guid: 3537b9e3ef65569428d30eedfe143b0c, type: 3}
+    - {fileID: 8300000, guid: 2724907d977ef18478bb553ac35499af, type: 3}
+    - {fileID: 8300000, guid: 36074ab6e0e1c6d41b242f5e87a136d0, type: 3}
+    volume: 0.3
+    pitchMin: 0.9
+    pitchMax: 1.1
+    category: 1
+  - name: Hit
+    clips:
+    - {fileID: 8300000, guid: 4c9a40048abd3404bbd884349712cbcf, type: 3}
+    - {fileID: 8300000, guid: c0f226ba8331f5946aa0d3094abd7be3, type: 3}
+    - {fileID: 8300000, guid: e999cf23863b7424398e75cd472a6a4b, type: 3}
+    - {fileID: 8300000, guid: 5400d40333a43a3478bb4167bf4a1fff, type: 3}
+    - {fileID: 8300000, guid: 9617f2de68b28a34c9e361c38385b9df, type: 3}
+    - {fileID: 8300000, guid: 5965649a525a3484cb8449eef990f5fc, type: 3}
+    - {fileID: 8300000, guid: 61c4dc2c6d8eb514c92aa1216a8906ce, type: 3}
+    volume: 0.85
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: HeavyHit
+    clips:
+    - {fileID: 8300000, guid: e0d82aaf37cfd87478bb739c18ace51f, type: 3}
+    - {fileID: 8300000, guid: e23527a93e42f1d4da28630585f32a81, type: 3}
+    - {fileID: 8300000, guid: 8e961a3e01afc4a48955d96b6dcc4d3a, type: 3}
+    - {fileID: 8300000, guid: 36897e860e535e3418ed7c0440f37bad, type: 3}
+    - {fileID: 8300000, guid: a5dc5ecf57b5f8e42ade64c4690d2beb, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: HeavyDrum
+    clips:
+    - {fileID: 8300000, guid: 88b511802f7aed74f99219954b255588, type: 3}
+    volume: 0.9
+    pitchMin: 0.97
+    pitchMax: 1.03
+    category: 1
+  - name: Clash
+    clips:
+    - {fileID: 8300000, guid: 8951c804e9f3edc4e84fde3570d03f80, type: 3}
+    - {fileID: 8300000, guid: 96ec6f01814bb1549acf7e17870ef651, type: 3}
+    - {fileID: 8300000, guid: 2618514f365e8fa40bf95a2911f7fa38, type: 3}
+    - {fileID: 8300000, guid: fed8f8e6c47d0154badc0d772d96505b, type: 3}
+    - {fileID: 8300000, guid: 695fce7ede45746418e7e8dc6b5f3641, type: 3}
+    volume: 0.85
+    pitchMin: 0.95
+    pitchMax: 1.05
+    category: 1
+  - name: Parry
+    clips:
+    - {fileID: 8300000, guid: 9d3b8b307c549444bb787a3a8693d04b, type: 3}
+    - {fileID: 8300000, guid: fcc45747bb40db24291a9e81041400a0, type: 3}
+    - {fileID: 8300000, guid: fa6a5f94bffaeb44291eae54bd5ddef1, type: 3}
+    - {fileID: 8300000, guid: 781062ffc3d37bb499911783d00dec05, type: 3}
+    - {fileID: 8300000, guid: c56524dd84e43da42a506ba9d5c8335a, type: 3}
+    volume: 1
+    pitchMin: 1.2
+    pitchMax: 1.35
+    category: 1
+  - name: Hurt
+    clips:
+    - {fileID: 8300000, guid: e0d82aaf37cfd87478bb739c18ace51f, type: 3}
+    - {fileID: 8300000, guid: e23527a93e42f1d4da28630585f32a81, type: 3}
+    - {fileID: 8300000, guid: 8e961a3e01afc4a48955d96b6dcc4d3a, type: 3}
+    - {fileID: 8300000, guid: 36897e860e535e3418ed7c0440f37bad, type: 3}
+    - {fileID: 8300000, guid: a5dc5ecf57b5f8e42ade64c4690d2beb, type: 3}
+    volume: 0.9
+    pitchMin: 0.75
+    pitchMax: 0.85
+    category: 1
+  - name: KnifeThrow
+    clips:
+    - {fileID: 8300000, guid: 220544336f0471d4cb6f3344b7c884e6, type: 3}
+    - {fileID: 8300000, guid: 479e8108114b0964b8a2a8a6b4a06524, type: 3}
+    - {fileID: 8300000, guid: 6f5ef8eaa1bd8a4489ba1c1ccfbda026, type: 3}
+    volume: 0.7
+    pitchMin: 1.1
+    pitchMax: 1.25
+    category: 1
+  - name: EnemyThrow
+    clips:
+    - {fileID: 8300000, guid: 220544336f0471d4cb6f3344b7c884e6, type: 3}
+    - {fileID: 8300000, guid: 479e8108114b0964b8a2a8a6b4a06524, type: 3}
+    - {fileID: 8300000, guid: 6f5ef8eaa1bd8a4489ba1c1ccfbda026, type: 3}
+    volume: 0.8
+    pitchMin: 0.75
+    pitchMax: 0.85
+    category: 1
+  - name: LeapLand
+    clips:
+    - {fileID: 8300000, guid: 0861ca0abf8339c4ea878ce1939bd262, type: 3}
+    - {fileID: 8300000, guid: df841c49cacfbb840abeceb50508c58b, type: 3}
+    - {fileID: 8300000, guid: 565e5ecc5bbec8349b4385b9309acce4, type: 3}
+    - {fileID: 8300000, guid: bc21baa6ca603694693a9426c7a061b3, type: 3}
+    - {fileID: 8300000, guid: b4489a0564c9fe94980be8ce13fbdbc9, type: 3}
+    volume: 1
+    pitchMin: 0.65
+    pitchMax: 0.75
+    category: 1
+  - name: PropBreak
+    clips:
+    - {fileID: 8300000, guid: 9999eb5002852c54a8da28dabd654451, type: 3}
+    - {fileID: 8300000, guid: 4628c4e9e4870cd49a6621a0f092ce8f, type: 3}
+    - {fileID: 8300000, guid: abd5ad3dbaf383d4690a02ef1923841b, type: 3}
+    - {fileID: 8300000, guid: 84d57c8d8669bb648b0346c57513cce6, type: 3}
+    - {fileID: 8300000, guid: 705c212502c5803498d242159f5ac52c, type: 3}
+    volume: 0.9
+    pitchMin: 0.8
+    pitchMax: 1
+    category: 1
+  - name: GateClose
+    clips:
+    - {fileID: 8300000, guid: cbec0a674af60d6488f0921b6523f158, type: 3}
+    - {fileID: 8300000, guid: 7605d9e6cdebf2940bdb891c0f03df9f, type: 3}
+    - {fileID: 8300000, guid: 30acdbaef46f4eb4fb3924e93f6f4247, type: 3}
+    - {fileID: 8300000, guid: 5aa7002c2671e7548bdab2290b8dfbd6, type: 3}
+    - {fileID: 8300000, guid: e172979592ab6ec4db62972b5505804b, type: 3}
+    volume: 0.9
+    pitchMin: 0.85
+    pitchMax: 0.9
+    category: 1
+  - name: CueSweep
+    clips:
+    - {fileID: 8300000, guid: b1fe8bc02b097a9409c79abffa87ecbd, type: 3}
+    volume: 0.9
+    pitchMin: 1
+    pitchMax: 1
+    category: 1
+  - name: CueCharge
+    clips:
+    - {fileID: 8300000, guid: e0e2a6a51559ded4987a16b7e5a5d61a, type: 3}
+    volume: 1
+    pitchMin: 1
+    pitchMax: 1
+    category: 1
+  - name: CueThrow
+    clips:
+    - {fileID: 8300000, guid: 051c01e5bf3a3d440a5e531ed8005384, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    category: 1
+  - name: CueLeap
+    clips:
+    - {fileID: 8300000, guid: 7c686b4fb946e234790c7f1d0947dc54, type: 3}
+    volume: 1
+    pitchMin: 1
+    pitchMax: 1
+    category: 1
+  - name: CueRetreat
+    clips:
+    - {fileID: 8300000, guid: 68232ed74fd29fc4791a01275ef8a8dd, type: 3}
+    volume: 0.85
+    pitchMin: 1
+    pitchMax: 1
+    category: 1
+  - name: UiClick
+    clips:
+    - {fileID: 8300000, guid: 345a030115f88a84c99a7b5db44b56f2, type: 3}
+    - {fileID: 8300000, guid: ca6a91d7b5b722748b57166d864d3bc2, type: 3}
+    - {fileID: 8300000, guid: 2bd63dec2ae7100419d7319456234438, type: 3}
+    - {fileID: 8300000, guid: 5762b0c30b13bf94db6326a59f305a82, type: 3}
+    - {fileID: 8300000, guid: 3e5e5ddbb3ec49c41aa796a80a75fe64, type: 3}
+    volume: 0.6
+    pitchMin: 1
+    pitchMax: 1
+    category: 2
+  - name: UiTick
+    clips:
+    - {fileID: 8300000, guid: 537e0e3193155e94098eecc6d6684daa, type: 3}
+    - {fileID: 8300000, guid: ca125a06be287ee45b556b79aa1efbdb, type: 3}
+    - {fileID: 8300000, guid: 2ad73ea1977fa4c46b377656c345f794, type: 3}
+    - {fileID: 8300000, guid: 1273ef3d1c32c4d408221b0ab361d585, type: 3}
+    - {fileID: 8300000, guid: 0aeb517d5a681a04494183e6189fa106, type: 3}
+    - {fileID: 8300000, guid: 483bde750d4c6fb4b836ec41f98f4013, type: 3}
+    - {fileID: 8300000, guid: 710d4445eb813cc4e9057de826884ed2, type: 3}
+    - {fileID: 8300000, guid: 00e4d457e113b9d4787a9b24ec5b8553, type: 3}
+    volume: 0.35
+    pitchMin: 1
+    pitchMax: 1.1
+    category: 2
+  - name: UiConfirm
+    clips:
+    - {fileID: 8300000, guid: 2ccd9b74a21984240b320a2dbdf650e3, type: 3}
+    - {fileID: 8300000, guid: aedc28620c80a594e8ce5548f97b76df, type: 3}
+    - {fileID: 8300000, guid: 40911036c176d414fa8819f1d69ec26d, type: 3}
+    - {fileID: 8300000, guid: 924f01bf012167940aba5a8b3684dc54, type: 3}
+    volume: 0.6
+    pitchMin: 1
+    pitchMax: 1
+    category: 2
+  - name: UiDenied
+    clips:
+    - {fileID: 8300000, guid: 009543dafca13e844900ad2d25e0d056, type: 3}
+    - {fileID: 8300000, guid: d0e07e5f6d0a14d42a4173681c334232, type: 3}
+    - {fileID: 8300000, guid: 57eb4562716f7204e9b81151f34868d8, type: 3}
+    - {fileID: 8300000, guid: 7968eb265ab3831439e31ee0e1214273, type: 3}
+    - {fileID: 8300000, guid: faf873ab6e79f8a49b39f19e028f5b9e, type: 3}
+    - {fileID: 8300000, guid: c81a6aed563cb0d4b8f48440872c6e35, type: 3}
+    - {fileID: 8300000, guid: 273bc79e3fd56354f9444222821d466a, type: 3}
+    - {fileID: 8300000, guid: 8ea67ba5013905d47b46f7296378857f, type: 3}
+    volume: 0.5
+    pitchMin: 1
+    pitchMax: 1
+    category: 2
+  - name: Victory
+    clips:
+    - {fileID: 8300000, guid: 2a423ab33f428ca4999b81b2e3f8ea39, type: 3}
+    volume: 0.9
+    pitchMin: 1
+    pitchMax: 1
+    category: 2
+  - name: Defeat
+    clips:
+    - {fileID: 8300000, guid: e8621cc7dc562ef4691f0237780aceb2, type: 3}
+    volume: 0.9
+    pitchMin: 1
+    pitchMax: 1
+    category: 2
+  - name: BgmTitle
+    clips:
+    - {fileID: 8300000, guid: bd941ed21e95d4147bd86a97e30fbb63, type: 3}
+    volume: 0.55
+    pitchMin: 1
+    pitchMax: 1
+    category: 0
+  - name: BgmBattle
+    clips:
+    - {fileID: 8300000, guid: 9d9a16ab1551f6a46808abaf8f2a4521, type: 3}
+    volume: 0.5
+    pitchMin: 1
+    pitchMax: 1
+    category: 0

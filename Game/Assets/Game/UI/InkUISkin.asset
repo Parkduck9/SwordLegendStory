@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad676b298f001478ec3a230a7b2fca, type: 3}
+  m_Name: InkUISkin
+  m_EditorClassIdentifier: Assembly-CSharp::SwordPrototype.UI.InkUISkin
+  body: {fileID: 11400000, guid: 1dbf1126651356146b9dc154f32fe7bf, type: 2}
+  title: {fileID: 11400000, guid: d86b22d563cf9ff4598252ead23f868c, type: 2}
+  panel: {fileID: 21300000, guid: 152df58b51f4e194eb897a38590dee44, type: 3}
+  brush: {fileID: 21300000, guid: 4193dd6290945bd428a669f627716c91, type: 3}
+  circle: {fileID: 21300000, guid: ee2447870c08e9f4fbe48809f0bffb09, type: 3}
+  seal: {fileID: 21300000, guid: 28fdbd4d86b202c4c8fbc786c0b97b54, type: 3}
