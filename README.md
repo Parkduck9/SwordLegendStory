@@ -129,6 +129,7 @@ md/   설계도·구현 현황·결정 기록      html/   같은 내용의 시�
 
 단계마다 **설계도 → 사용자 확인 → 구현 → 규칙 검사 → Play 확인** 순서로 진행하고, 결정과 결과를 문서에 남깁니다.
 
+- **이어서 작업하기(인계):** [`md/handoff.md`](md/handoff.md) · AI 작업 규칙 [`AGENTS.md`](AGENTS.md)(Codex) / [`CLAUDE.md`](CLAUDE.md)(Claude Code)
 - 작업 기준: [`md/roadmap.md`](md/roadmap.md) · [`html/roadmap.html`](html/roadmap.html)
 - 현재 상태: [`md/implementation-status.md`](md/implementation-status.md)
 - 요구사항·결정 기록: [`md/game-plan.md`](md/game-plan.md)

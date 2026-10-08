@@ -288,6 +288,7 @@
 | 2026-10-08 | **R7** 캐릭터 모델: 후보 비교(html/model-preview.html) 후 사용자 '1순위' → Quaternius Universal Base Characters 무료판(CC0 확인). 남자 기본 모델 + 먹빛 무복·도포·깃·끝동, 수묵 톤 피부·머리, 플레이어 짧은 머리+삿갓 · 적 짧게 깎은 머리+수염 | 구현, 규칙 검사, 미리보기 html/r7-face-*.png |
 | 2026-10-08 | 사용자 답: git 보류 · 옷 보강 진행 · 삿갓 그림자 유지 · zip 유지. Play 의견 2차 7가지(같은 쪽 이어 베기 부자연 → 회전, 애니메이션 부족, 적 공격 짧게, 연속 공격으로 너무 쉬움, 3~6m 적 합 공격 방어 입력, 적 기술 확률·추가) → R8 설계 | 옷 보강 구현 · R8 확인 대기 |
 | 2026-10-08 | R8 확정: 위아래 크게 베기·↑↑↓↓ 불가·같은 쪽 회전(보정 유지) / KayKit / 적 ×0.7 / 턴 교대+재진입 1.2초+적 적응 / 합 공격 방어(속도 스탯 시간, 3개 성공 시 반격 1회·적응 덜 오름) / 기술 확률표. git 보류, 작업 후 C:\Unity\1\SwordLegendStory 로 .gitignore 만들어 옮기기 요청 | 구현, 규칙 검사, 미리보기 html/r8-*.png |
+| 2026-10-08 | 저장소 이전(C:\Unity\1\SwordLegendStory, GitHub Parkduck9/SwordLegendStory) · 첫 커밋·README · 다른 PC에서 Codex/Claude로 이어서 작업 → AGENTS.md·CLAUDE.md·md/handoff.md(+html) 작성, 다음 계획 정리 | 문서 |
 
 다음 담당자 작업: 사용자 답변을 질문 번호와 함께 이 표에 기록 → 관련 요구/계획 수정 → HTML 동기화 → 승인된 단계만 구현 → 실제 검증 결과와 남은 문제 기록.
 

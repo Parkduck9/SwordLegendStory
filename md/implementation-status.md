@@ -39,6 +39,7 @@
 
 ### 남은 일
 
+0. 다른 PC·AI 인계: [`handoff.md`](handoff.md) · 작업 규칙 [`../AGENTS.md`](../AGENTS.md) (2026-10-08 GitHub `Parkduck9/SwordLegendStory` 푸시)
 1. 사용자 Play 확인(S0~S8-4 + R1~R8) → 의견 반영
 2. R5 후속(필요 시): 상성표(`StatTuning.stanceMatrix` 64칸) · 적 스탯 반영
 3. S8-5 템포 조정(Play 의견 기반) → Windows 빌드

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>검협전 인계 문서</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fffdf8;--ink:#2a2826;--muted:#6d6862;--line:#ddd8cc;--accent:#8a2f25;--ok:#2e6b4f;--soft:#efe9dc}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1c1b19;--card:#262421;--ink:#ece7de;--muted:#a59f95;--line:#3b3833;--accent:#e08a7c;--ok:#7cc3a0;--soft:#2e2b27}}
+:root[data-theme="dark"]{--bg:#1c1b19;--card:#262421;--ink:#ece7de;--muted:#a59f95;--line:#3b3833;--accent:#e08a7c;--ok:#7cc3a0;--soft:#2e2b27}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Malgun Gothic","Noto Sans KR",sans-serif;line-height:1.75}
+main{max-width:1080px;margin:auto;padding:32px 16px 64px}
+header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+.eyebrow{font-size:13px;letter-spacing:.1em;color:var(--accent)}h1{font-size:clamp(26px,5vw,40px);margin:8px 0}
+h2{font-size:21px;margin:0 0 10px}.meta{color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.step{background:var(--soft);border-radius:10px;padding:12px 14px}.step b{display:block;color:var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:600}
+.scroll{overflow-x:auto}.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:1px 9px;border:1px solid currentColor}
+.ok{color:var(--ok)}.wait{color:var(--accent)}code{font-family:Consolas,monospace;font-size:.92em;overflow-wrap:anywhere}
+ol li,ul li{margin:4px 0}a{color:var(--accent)}
+.next{counter-reset:n}.next li{list-style:none;position:relative;padding-left:40px;margin:12px 0}
+.next li::before{counter-increment:n;content:counter(n);position:absolute;left:0;top:2px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;line-height:28px;font-weight:700}
+@media(max-width:640px){table{min-width:560px}}
+</style>
+</head>
+<body><main>
+<header>
+<div class="eyebrow">검협전 · 인계 문서 · 2026-10-08</div>
+<h1>다른 PC·다른 AI로 이어서 작업하기</h1>
+<p class="meta">원문 <a href="../md/handoff.md">md/handoff.md</a> · AI 작업 규칙 <a href="../AGENTS.md">AGENTS.md</a>(Codex) · <a href="../CLAUDE.md">CLAUDE.md</a>(Claude Code) · 설계도 <a href="roadmap.html">roadmap.html</a></p>
+</header>
+
+<section class="card">
+<h2>1. 새 PC에서 시작하기</h2>
+<div class="grid">
+<div class="step"><b>① 받기</b>GitHub <code>Parkduck9/SwordLegendStory</code> clone 또는 GitHub Desktop</div>
+<div class="step"><b>② Unity 6000.3.25f1</b>Unity Hub에서 같은 버전 설치</div>
+<div class="step"><b>③ Add → <code>Game</code></b>처음 열 때 Library 재생성(몇 분)</div>
+<div class="step"><b>④ Title.unity → Play</b><code>Assets/Game/Scenes/Title.unity</code></div>
+<div class="step"><b>⑤ AI 작업</b>Codex는 AGENTS.md, Claude는 CLAUDE.md를 자동으로 읽음</div>
+<div class="step"><b>⑥ 검사</b>에디터 닫고 <code>BuildSceneAndVerify</code> → <code>STAT_RULES_OK</code></div>
+</div>
+<p class="meta">외부 에셋은 모두 저장소에 포함. 비교용 <code>html/model-preview/</code> 사진만 제외(배포 권리 불명확).</p>
+</section>
+
+<section class="card">
+<h2>2. 지금 상태</h2>
+<div class="scroll"><table>
+<tr><th>범위</th><th>내용</th><th>상태</th></tr>
+<tr><td>S0~S7</td><td>이동·락온·입구 · 스탯 5종 · 8방향 선택 전투 · 대쉬·패링·특수기 · 적 AI · 교환 연출 · 점프·맵 파괴 · 타이틀·스탯 배분·승패</td><td><span class="tag ok">검사 통과</span></td></tr>
+<tr><td>S8-1~4</td><td>수묵 렌더·환경 · 캐릭터·애니메이션 · 수묵 UI · 사운드</td><td><span class="tag ok">검사 통과</span></td></tr>
+<tr><td>R1~R4</td><td>메뉴 중 시간 정지 · 투사체 경로 판정 · 현황 문서 · 휠 오른쪽</td><td><span class="tag ok">구현</span></td></tr>
+<tr><td>R5</td><td>검 자세 판정(휘두르는 각도 ±10%, 움직임→자세)</td><td><span class="tag ok">구현</span></td></tr>
+<tr><td>R6</td><td>실제 검술 겨눔 자세 3종 · 적 피격 3단계(먹빛 자국)</td><td><span class="tag ok">구현</span></td></tr>
+<tr><td>R7</td><td>캐릭터 모델 교체(Quaternius, CC0) · 무협 의상 · 옷 보강</td><td><span class="tag ok">구현</span></td></tr>
+<tr><td>R8</td><td>회전 베기 규칙 · KayKit 동작 · 적 0.7배 · 턴 교대·재진입·적 적응 · 합 공격 방어 · 적 기술 확률표</td><td><span class="tag wait">Play 미확인</span></td></tr>
+</table></div>
+<p class="meta">마지막 검사 2026-10-08 <code>STAT_RULES_OK</code></p>
+</section>
+
+<section class="card">
+<h2>3. 다음 할 일</h2>
+<ol class="next">
+<li><b>사용자 Play 확인 (S0~S8-4 + R1~R8)</b> — 합 공격·턴 교대·적 기술·새 동작·모델. 의견은 R9 설계로.</li>
+<li><b>S8-5 템포 조정</b> — <code>StatTuning</code>·<code>EnemyMoveset</code>의 예고·후딜, 선택 시간, 방어 입력, 적응, 재진입, 피해량.</li>
+<li><b>애니메이션 보강</b> — 플레이어 공격을 KayKit 한손 검 동작으로, 적 검 방향 보정. 부족하면 Quaternius 유료판(사용자 구매) 검토.</li>
+<li><b>Windows 빌드</b> — Title·Foundation 빌드 설정, 라이선스 문서 포함, 실행 확인.</li>
+</ol>
+<p class="meta">후보(설계 → 사용자 확인 후): 상성표(<code>stanceMatrix</code> 64칸) · 적 종류·보스 패턴 · 맵 추가 · 옷 상의 자락·신발 다듬기</p>
+</section>
+
+<section class="card">
+<h2>4. 알려진 문제·한계</h2>
+<ul>
+<li>R1~R8 직접 조작 미확인 — 합 공격 입력 시간, 턴 교대 리듬, 난이도는 시험값.</li>
+<li>적 공격 동작 중 검 방향은 쥔 손 방향 추정이라 일부 동작에서 어색할 수 있음.</li>
+<li>플레이어 베기는 IK 궤적 + 기본 동작(KayKit 동작으로 바꿀 여지).</li>
+<li>KayKit은 다른 체형용 재타깃 — 손·발 위치 약간 어긋날 수 있음.</li>
+<li>적 손목 끝동이 일부 자세에서 비스듬한 판처럼 보임 · 무료 남자 모델은 근육질 체형 하나.</li>
+<li>Windows 빌드 미작성 · 미사용 파일 <code>T_Hair_2_*</code> 정리 후보.</li>
+</ul>
+</section>
+
+<section class="card">
+<h2>5. 작업 규칙 요약 (AGENTS.md)</h2>
+<div class="grid">
+<div class="step"><b>한국어</b>답변·진행 설명·문서·새 주석</div>
+<div class="step"><b>설계 먼저</b>설계도+체크리스트 → 사용자 확인 → 구현 → 검사 → 문서</div>
+<div class="step"><b>문서 동기화</b>roadmap·현황·결정 기록·상태 띠·LICENSES·handoff</div>
+<div class="step"><b>에셋</b>무료 + 출처 표기 의무 없음만, 라이선스 확인 후 기록</div>
+<div class="step"><b>승인</b>다운로드·커밋·푸시·설치·삭제는 먼저 묻기</div>
+<div class="step"><b>장면은 코드로</b>PrototypeBuilder를 고치고 다시 생성</div>
+</div>
+</section>
+</main></body>
+</html>
