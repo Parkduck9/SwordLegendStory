@@ -2,7 +2,11 @@
 
 맨 위 "현재 상태"만 최신이다. 그 아래는 날짜별 변경 이력이며 당시 상태를 그대로 보존한다(지우지 않음). 진행 단계는 `roadmap.md`의 S 번호를 기준으로 한다.
 
-## 현재 상태 (2026-10-08 갱신)
+## 현재 상태 (2026-10-12 갱신)
+
+> **2026-10-12:** Play 의견 반영 — 적 공격 +0.12초(겨냥 고정 후 0.27초) · **R9 플레이어 8방향 베기를 실제 검 동작으로**(Play 확인 대기) · 사진을 `html/images/<단계>/`로 정리 · 복구 장면(`Assets/_Recovery`) 삭제.
+
+> **QA 추가(2026-10-10):** 입구 전투 시작·적 피해·패배·R 재시작 직접 확인(부분 QA). 근접 예약·콤보·합 공격은 미검증. 입구 지붕 시야 가림 수정 후보는 정상 조작 재현과 사용자 확인 대기. [상세 QA](play-qa.md).
 
 ### 실행
 
@@ -18,7 +22,7 @@
 | 루트 | PlayerMovement · ThirdPersonCamera · EncounterTrigger |
 | Battle(규칙) | CharacterStats · StatTuning · StatEffects · AttackDirection · ComboRules · SelectionSession · DefenseSession(+EnemyAdaptation) · CombatResolver · SideBiasTracker · ThrowingKnifeState · GuardParry · Cooldown · BattleClock · SwordStance · BattleFlow · Health · PlayerStats · PlayerDash · PlayerJump |
 | Enemy | EnemyBrain · EnemyMoveset · AttackShape · TelegraphView · EnemyProjectile · EnemyPose |
-| Presentation | ExchangeDirector · ReactionLibrary · HitFeedback · IFighterVisual · FighterRig · AnimatorRig · Kamae · SlashMark |
+| Presentation | ExchangeDirector · ReactionLibrary · HitFeedback · IFighterVisual · FighterRig · AnimatorRig · Kamae · SlashMark · SwingClips |
 | World | DestructibleProp · PropBreaker · GroundScar · ArenaGate |
 | Flow | RunSetup · GameSettings · StatAllocation · StatDescriber · RunRecord |
 | UI | Ui · InkUISkin · CombatHudView · SelectionWheelView · WheelGraphic · ControlsHintView · ResultView · PauseView · TitleView · HoverHint |
@@ -31,9 +35,10 @@
 | S0~S8-4 | 완료 | 완료 | `BuildSceneAndVerify` → STAT_RULES_OK (2026-10-08) | 미실시 | 진행 중 (2026-10-08 Play 시작) |
 | review R1·R2·R4 | 완료 | 완료 | STAT_RULES_OK (R1 시계·R2 경로 판정 7항·R4 배치 2해상도) | 미실시 | 대기 |
 | R5 검 자세 판정 | 완료 | 완료 | STAT_RULES_OK (각도 단계·보정·표시=판정·확정 성공·상성표 교체·이동→자세 검사 9항) | 미실시 | 보정 체감 약하나 유지 |
-| R6 검 이동 자세·적 피격 | 완료 | 완료 | STAT_RULES_OK (애니메이터 구성 4항 · 자세 표·하체·베임 단계 5항) | 자동 Play 모드 미리보기 `R6Preview` → R6_PREVIEW_OK, `html/r6-*.png` | 대기 |
+| R6 검 이동 자세·적 피격 | 완료 | 완료 | STAT_RULES_OK (애니메이터 구성 4항 · 자세 표·하체·베임 단계 5항) | 자동 Play 모드 미리보기 `R6Preview` → R6_PREVIEW_OK, `html/images/r6/r6-*.png` | 대기 |
 | R7 캐릭터 모델 교체 | 완료 | 완료 | STAT_RULES_OK (키·정면·옷/피부·머리·라이선스) | 미리보기 `html/r7-face-*.png` | 대기 |
-| R8 Play 의견 2차 | 완료 | 완료 | STAT_RULES_OK (확률·방어·적응·회전 규칙 등) | 미리보기 `html/r8-*.png` | 대기 |
+| R8 Play 의견 2차 | 완료 | 완료 | STAT_RULES_OK (확률·방어·적응·회전 규칙 등) | 미리보기 `html/images/r8/r8-*.png` | 대기 |
+| R9 플레이어 베기 동작 | 완료 | 완료 | STAT_RULES_OK (8개 상태·동작·길이·구간·맞는 순간 0.22초) | 미리보기 `html/images/r9/cut-*.png` | 대기 |
 
 - Play에서 발견·반영: 캐릭터 뒤 보고 달림(수정), 회전 베기 카메라 회전(고정으로 변경).
 
@@ -48,6 +53,16 @@
 ---
 
 # 날짜별 변경 이력
+
+## R9 플레이어 베기 동작 · 적 공격 늦춤 (2026-10-12, roadmap.md R9)
+
+- Play 의견: 위 → 위좌·위우 베기 어색, 팔 부자연스러움, 적 공격이 너무 빨라 피하기 어려움(0.1~0.15초 늦게).
+- 적: `EnemyMoveset.attackDelaySeconds` 0.12초를 겨냥 고정 뒤 구간에만 더함(`LockSeconds` 0.27 · `TelegraphTotal`). 데이터의 예고 값(×0.7)은 그대로.
+- 플레이어 베기: `Presentation/SwingClips`(8방향 동작·구간 표) + `AnimatorRig.Cut`(속도 변수 `CutSpeed`, 동작 구동·IK 끔, 끝나면 겨눔) + 애니메이터 상태 `Cut_*` 8개(`CharacterBuilder`) + `ExchangeDirector.PlayStrikes`(일반 베기만, 회전은 기존). 블록 인형(`FighterRig`)은 기존 궤적.
+- 배정 변경: 좌우 반전은 왼손이 베게 되어 제외, KayKit 한손 동작은 팔이 벌어져 제외 → 전부 UAL 오른손 동작(연속 베기는 한 수씩).
+- 도구: `Editor/SwingClipPreview`(후보 동작 사진 `html/images/r9/clips/` + 칼끝 궤적 `md/r9-swing-paths.txt`), `R6Preview`에 8방향 베기 사진 추가.
+- 검사: CheckCharacters에 R9 항목(상태 8개·동작·길이·구간·0.22초·표 순서), 적 늦춤 값. `STAT_RULES_OK`, `R6_PREVIEW_OK`.
+- 정리: 사진을 `html/images/{s0,s8,r6,r7,r8,r9}/`로 옮기고 모든 문서·도구 경로 수정(AGENTS.md 규칙 추가). `Assets/_Recovery` 삭제(사용자 확인).
 
 ## 프로젝트와 실행 (2026-10-07 P1 당시 — 과거 기록)
 
@@ -141,7 +156,7 @@
 - 화면(`Scripts/UI/`): CombatHudView(붓 체력바·적 상태·거리·쿨타임 먹 원 5·무방비 알림·전투 기록·먹 번짐 배경), SelectionWheelView + WheelGraphic(원형 8칸·바깥 시간 고리·반복 색 띠·회전 베기·가운데 비도·낙관 슬롯·안내), ControlsHintView(첫 진입만 + F1), ResultView, PauseView(설정 슬라이더·전체화면), TitleView(타이틀·조작법·스탯 배분·확인 창). 값·버튼 동작은 기존 IMGUI와 같은 경로.
 - 기존 IMGUI 스크립트(CombatHUD, PrototypeHUD, TitleMenu, ResultScreen, PauseMenu) 삭제.
 - 수정 이력: 휠 고리가 안 보이던 원인 = 직접 만든 Graphic에 CanvasRenderer가 붙지 않음 → 명시적으로 추가 + 검사 추가. HUD 글자 가독성: 테두리 재질이 작은 글자를 뭉개 제거, 굵은 글씨 + 먹 번짐 배경으로 해결.
-- 검증: STAT_RULES_OK(스킨, 글꼴 한글·화살표·●○ 생성, 동적 글꼴, HUD·휠(평소 숨김)·고리 그리기 부품·안내·결과·일시정지·이벤트 시스템, IMGUI 제거, OFL 문서, 타이틀 장면 TitleView). 미리보기 `html/s8-3-title.png`, `s8-3-alloc.png`, `s8-3-battle.png`.
+- 검증: STAT_RULES_OK(스킨, 글꼴 한글·화살표·●○ 생성, 동적 글꼴, HUD·휠(평소 숨김)·고리 그리기 부품·안내·결과·일시정지·이벤트 시스템, IMGUI 제거, OFL 문서, 타이틀 장면 TitleView). 미리보기 `html/images/s8/s8-3-title.png`, `images/s8/s8-3-alloc.png`, `images/s8/s8-3-battle.png`.
 - Play 확인 필요: 버튼·슬라이더 조작, 마우스 잠금/해제 전환, 휠 반응, 다른 해상도.
 
 ## 캐릭터·애니메이션 (roadmap S8-2) — 2026-10-08 (Claude)
@@ -150,7 +165,7 @@
 - `Editor/CharacterBuilder.cs`: 애니메이터 컨트롤러를 코드로 생성(이동 블렌드 + 상태 13개, IK 패스 켬). 마네킹 플레이어 1.8m · 적 2.25m, 먹빛 몸, 코드로 만든 도포 자락·허리띠·삿갓(플레이어), 직검(술)·대도. 모델이 없으면 기존 블록 인형으로 생성.
 - `Presentation/IFighterVisual.cs`(+ FighterCue 동작 신호 13종), `AnimatorRig.cs`(속도 → 이동 블렌드, 공중·착지 자동, 동작 신호 → 상태 전환, 오른손 Humanoid IK로 8방향 검 궤적, 검을 손 위치에 두고 날을 궤적 방향으로). FighterRig도 같은 계약 구현(신호 무시).
 - ExchangeDirector: 블록 인형 전용 몸 기울임 대신 동작 신호 추가, 같은 방향 회전 베기는 캐릭터 루트를 360° 돌림. EnemyPose는 AnimatorRig가 있으면 신호로 위임. 승패 시 쓰러짐·승리 동작.
-- 검증: STAT_RULES_OK(상태 14종·동작 연결·IK 패스, 두 캐릭터 Humanoid 아바타·루트 모션 끔·AnimatorRig·키·도포·허리띠·삿갓·직검/대도, 연출 리그 각 1개). 미리보기 `html/s8-2-preview-idle.png`, `-swing.png`(편집 모드라 IK 미반영).
+- 검증: STAT_RULES_OK(상태 14종·동작 연결·IK 패스, 두 캐릭터 Humanoid 아바타·루트 모션 끔·AnimatorRig·키·도포·허리띠·삿갓·직검/대도, 연출 리그 각 1개). 미리보기 `html/images/s8/s8-2-preview-idle.png`, `-swing.png`(편집 모드라 IK 미반영).
 - 알려진 한계: 막기·백스텝·투척·기지개는 팩에 전용 동작이 없어 대체 동작 사용(roadmap 대응표). 도포 자락은 골반 뼈에 붙은 단단한 원뿔대라 다리 동작에 따라 겹칠 수 있음. Play 확인 필요.
 
 ## 렌더·환경 (roadmap S8-1) — 2026-10-07 (Claude)
@@ -162,7 +177,7 @@
 - `Editor/GeneratedArt.cs`: 석판 바닥·돌담·나무 질감과 먼 산 고리 3겹 메시를 코드로 생성(`Art/Generated/`). 외부 다운로드 없음.
 - 입구: 나무 기둥·들보·지붕판, 진입 후 목조 문 두 짝이 0.6초 동안 닫힘(ArenaGate가 투명 벽 + 문 회전 담당).
 - 재질 전부 URP Lit/Unlit. 런타임 생성 효과(예고·잔상·파편·자국)는 Sprites/Default 유지(URP에서 정상 렌더 확인).
-- 검증: 규칙 검사 STAT_RULES_OK(URP 지정, 먹선 셰이더 지원, 후처리 4종, 안개·배경, 먼 산, 모든 렌더러 URP 셰이더, 소품 충돌체 크기 유지, 카메라 후처리). 미리보기 `html/s8-1-preview.png`, `html/s8-1-preview-close.png`(그래픽 장치로 배치 렌더).
+- 검증: 규칙 검사 STAT_RULES_OK(URP 지정, 먹선 셰이더 지원, 후처리 4종, 안개·배경, 먼 산, 모든 렌더러 URP 셰이더, 소품 충돌체 크기 유지, 카메라 후처리). 미리보기 `html/images/s8/s8-1-preview.png`, `html/images/s8/s8-1-preview-close.png`(그래픽 장치로 배치 렌더).
 - 소품 모델(2026-10-08): Kenney Nature Kit 2.1에서 16개 FBX만 `Art/Kenney/NatureKit/`에 복사(License.txt 동봉, `Art/LICENSES.md` 기록). 라이선스 CC0 — 공식 지원 페이지와 동봉 License.txt 모두 "상업 무료, 출처 표기 의무 없음" 확인. 소품은 판정용 BoxCollider(크기 고정) + 자식 모델 구조로 바꿈, 모델 높이·너비·바닥을 상자에 맞춤(검사). 파괴 조각 크기는 충돌체 기준.
 - 남은 일: Play 모드 프레임·문 닫힘·소품 엄폐 체감 확인.
 
@@ -219,7 +234,7 @@
 - 애니메이터: 이동 = FreeformDirectional2D(MoveX·MoveZ: 대기·걷기·조깅·달리기·옆으로 달리기 좌우·뒷걸음), 상태 추가 DodgeBack/Left/Right·BlockHit·Spinning·Slice·Chop·Stab·SpinAttack·Kick·JumpChop, Hit·HitHead·Throw를 KayKit으로. AnimatorRig: 다리 비틀기 흉내 제거, 적 공격 동작 신호(`Act`) 동안 IK 끄고 검은 쥔 손 방향(새끼→검지 마디)을 따름.
 - 적: `EnemyMoveset` 10종(새 기술 5) · 예고·후딜 ×0.7 · 거리별 확률표(`EnemySkillBand`) · `Choose(…, roll, roll2)`. `EnemyBrain`: 밀쳐 차기 넉백(`BattleFlow.KnockPlayer`), 부채 투척 3발, 찌르기 돌진, 회전 베기, 합 공격 → `BattleFlow.BeginDefense`, 턴 교대(`OnExchangeFinished(…, turnCounter)` → 강제 합 공격). `EnemyPose.SetStrike(kind)`가 기술별 동작.
 - 흐름: `BattleState.Defend` + `DefenseSession`(3칸 보여주기 → 입력, 속도 스탯 시간) → `ExchangeDirector.PlayDefense`(적 베기, 막음 = BlockHit·불꽃·튕김 / 맞음 = 피격·자국) → 모두 막으면 `BeginSelection(reward)` 반격. 재진입 `AttackReentry` 1.2초, 적 적응 `EnemyAdaptation`(선택 시작 때 `SelectionAdaptation`으로 고정). 실시간 피격 시 플레이어 움찔·자국(`PlayerHurtVisual`).
-- 검사: CheckEnemy(확률 빈도 1000회 · 직전 절반 · 3연속 금지 · 후퇴 40% · ×0.7 · 10종), CheckPresentation(R8 회전·↑↑ 불가), CheckDefenseAndPacing(패턴·스탯 시간·입력·초과·적응·재진입), CheckCharacters(2D 이동·KayKit 상태·라이선스). 미리보기 `html/r8-*.png`.
+- 검사: CheckEnemy(확률 빈도 1000회 · 직전 절반 · 3연속 금지 · 후퇴 40% · ×0.7 · 10종), CheckPresentation(R8 회전·↑↑ 불가), CheckDefenseAndPacing(패턴·스탯 시간·입력·초과·적응·재진입), CheckCharacters(2D 이동·KayKit 상태·라이선스). 미리보기 `html/images/r8/r8-*.png`.
 
 ## R7 캐릭터 모델 교체 (2026-10-08, roadmap.md R7)
 
@@ -243,13 +258,13 @@
 - 규칙(`Battle/`): SwordStance를 Presentation에서 Battle로 이동. 실시간 이동(캐릭터 기준 8방향)을 0.25초 유지하면 `StatTuning.moveStance` 표의 자세(기본: 이동 반대쪽), 공중 `airStance`(↑) 즉시, 대쉬는 PlayerDash.Dashed → 반대쪽 즉시, 멈춤 2초 → `restStance`(↘).
 - 판정: `StatEffects.SwingSteps`(0~4칸) · `StanceBonus`(바꾸는 지점 하나: `stanceMatrix` 64칸이 차 있으면 상성표, 아니면 `stanceSwingBonus` {0, −0.10, 0, +0.05, +0.10}). StrikeContext.stanceBonus. CombatResolver.PreviewChance/Resolve가 시작 자세(첫 타 = 선택 시작 때 자세 `BattleFlow.SelectionStance`, 다음 타 = 앞 예약 방향 `SwingStart`)를 받음. 마무리·반격은 기존대로 확정 성공.
 - 보이기: IFighterVisual.HoldBlade — AnimatorRig는 검을 약 0.2초에 걸쳐 자세로 옮김(블록 인형은 즉시). 선택 휠 칸마다 "크게 +10% / 넓게 +5% / 짧게 -10%"(값은 StanceBonus에서 읽음), 안내줄에 "검 ↗".
-- 검사: CheckStance 9항. 미리보기 `html/s8-3-battle.png`(↗ 예약 후 ↙ 크게 +10% 등).
+- 검사: CheckStance 9항. 미리보기 `html/images/s8/s8-3-battle.png`(↗ 예약 후 ↙ 크게 +10% 등).
 
 ## review R1·R2·R4 적용 (2026-10-08, review-fix-plan.md 9절 1순위 안)
 
 - R1 BattleClock: 메뉴 시간을 뺀 전투 시각·Δ. Health 시간 무적, PlayerDash 충전, 전투 기록, AnimatorRig 동작 신호가 사용. 메뉴 중 EnemyMayAct=false. 씬 시작·종료 시 초기화.
 - R2 EnemyProjectile.Sweep: 이전→다음 위치를 투사체 반지름 간격으로 훑어 엄폐 → 몸 캡슐(CharacterController) 순서로 검사. 높이 반영, 빠른 이동 통과 없음.
-- R4 선택 휠: 화면 가로 68%·세로 48%, 0.78배, 기준점 가운데. 가운데(적)·왼쪽(플레이어·검) 비움. 검사가 16:9·16:10에서 화면 안·조작 안내/쿨타임 원과 안 겹침을 계산 확인. 미리보기를 실제 포커스 카메라 구도로 갱신(`html/s8-3-battle.png`).
+- R4 선택 휠: 화면 가로 68%·세로 48%, 0.78배, 기준점 가운데. 가운데(적)·왼쪽(플레이어·검) 비움. 검사가 16:9·16:10에서 화면 안·조작 안내/쿨타임 원과 안 겹침을 계산 확인. 미리보기를 실제 포커스 카메라 구도로 갱신(`html/images/s8/s8-3-battle.png`).
 - R3: 이 문서 맨 위 "현재 상태" 신설, 과거 섹션은 이력으로 표시.
 
 ## Play 의견 반영 — 회전 베기 카메라 고정 (2026-10-08)
@@ -274,7 +289,7 @@
 ## 검증 결과 (2026-10-07 P1 당시 — 과거 기록)
 
 - unity-build.log: FOUNDATION_BUILD_OK 및 종료 코드 0. C# 컴파일, 씬 생성 성공.
-- html/foundation-preview.png: Unity Camera.Render 결과. 원형 맵/진입로/중앙 적 배치를 이미지로 확인.
+- html/images/s0/foundation-preview.png: Unity Camera.Render 결과. 원형 맵/진입로/중앙 적 배치를 이미지로 확인.
 - unity-verify.log 및 unity-verify-second.log: UnityEditor.Search.SearchDatabase의 ArgumentOutOfRangeException 발생. Play Mode 검증은 실패로 기록. 해당 예외를 숨기거나 테스트 성공으로 취급하지 않음.
 - 현재 로그에서 게임 스크립트의 컴파일 오류는 발견되지 않았으나 직접 이동·락온·입구 통과 조작은 검증하지 못함.
 - 처음 샌드박스 실행은 로컬 라이선스 IPC 연결 실패. 승인된 일반 실행으로 컴파일·씬 생성을 완료함.

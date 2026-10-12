@@ -111,7 +111,7 @@ namespace SwordPrototype.Enemy
             last = kind;
             hasLast = true;
             Current = moveset.Get(kind);
-            timer = Current.telegraphSeconds;
+            timer = moveset.TelegraphTotal(Current);
             moveStart = transform.position;
             moveEnd = kind == EnemyAttackKind.LeapSlam ? Ground(player.position)
                 : kind == EnemyAttackKind.RetreatShot ? moveStart - Flat(player.position - moveStart).normalized * Current.travel
@@ -124,8 +124,8 @@ namespace SwordPrototype.Enemy
         private void UpdateTelegraph(float dt)
         {
             timer -= dt;
-            bool locked = timer <= moveset.lockBeforeHit;
-            float progress = 1f - Mathf.Clamp01(timer / Current.telegraphSeconds);
+            bool locked = timer <= moveset.LockSeconds;
+            float progress = 1f - Mathf.Clamp01(timer / moveset.TelegraphTotal(Current));
             if (!locked)
             {
                 // 고정 전까지는 플레이어를 따라간다.

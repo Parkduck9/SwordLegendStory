@@ -1,3 +1,7 @@
+> **2026-10-12:** R9 플레이어 베기 = `Presentation/SwingClips` 표 + `AnimatorRig.Cut`(애니메이터 `Cut_*` 상태, `CutSpeed`). 적 공격 늦춤 = `EnemyMoveset.attackDelaySeconds`.
+
+> **QA 추가(2026-10-10):** 입구 전투 시작·적 피해·패배·R 재시작 직접 확인(부분 QA). 근접 예약·콤보·합 공격은 미검증. 입구 지붕 시야 가림 수정 후보는 정상 조작 재현과 사용자 확인 대기. [상세 QA](play-qa.md).
+
 > **최신 상태(2026-10-08):** 이 문서는 초기 구조 설계(1.0) 기록이다. 현재 작업 기준은 [단계별 설계도](roadmap.md), 실제 구현·검증 결과는 [구현 현황](implementation-status.md)을 본다. S0~S7 구현, S8-1~S8-4(렌더·캐릭터·UI·사운드) 구현 완료, 검토 R1~R5 적용(R5 검 자세 판정: `Battle/SwordStance` + `StatEffects.StanceBonus`, 값은 `StatTuning` "Sword stance"), R6 검 이동 자세(`Presentation/Kamae` 표 · 애니메이터 "Arms" 층 · UAL2 CC0)·적 피격 3단계(`SlashMark`) · R7 캐릭터 모델(Quaternius Universal Base Characters, `Editor/BaseCharacterDress`) · R8(합 공격 방어 `DefenseSession`·적 기술 확률표·KayKit 동작) 적용, 다음은 Play 확인 → S8-5 템포 조정.
 
 # 3D 무협 액션 — 구현 설계서

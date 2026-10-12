@@ -35,7 +35,7 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 @media(max-width:760px){.steps{grid-template-columns:1fr 1fr}main{padding:24px 16px}section{padding:18px}}
 </style>
 </head>
-<body><main>
+<body><div style="padding:14px;margin:16px;background:#e6eee7;color:#292d2c"><b>QA 추가 · 2026-10-10:</b> 입구 전투·적 피해·패배·재시작 부분 확인. 근접 예약·콤보·합 공격 미검증. 지붕 시야 가림 수정 후보 검토 대기. <a href="play-qa.html">직접 QA 결과와 수정 방향</a></div><main>
 <p class="label">설계 → 확인 → 구현 → 검증 → 갱신</p>
 <h1>단계별 설계도 · 체크리스트</h1>
 <p>갱신 2026-10-07. 원문 기록: <a href="../md/roadmap.md">md/roadmap.md</a> · 요구사항 <a href="../md/game-plan.md">game-plan.md</a> · 구현 현황 <a href="../md/implementation-status.md">implementation-status.md</a></p>
@@ -496,7 +496,7 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 </ul>
 </section>
 <section id="s81">
-<h2>S8-1 렌더·환경 · 세부 설계 <span class="badge impl">구현 완료 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (Unity URP)</h3><img src="s8-1-preview.png" alt="수묵풍 전투장 전경" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="s8-1-preview-close.png" alt="플레이어 시점 전투장" style="width:100%;border-radius:12px">
+<h2>S8-1 렌더·환경 · 세부 설계 <span class="badge impl">구현 완료 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (Unity URP)</h3><img src="images/s8/s8-1-preview.png" alt="수묵풍 전투장 전경" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="images/s8/s8-1-preview-close.png" alt="플레이어 시점 전투장" style="width:100%;border-radius:12px">
 <p class="small">목표: 캐릭터는 아직 블록이지만 전투장 전체를 "안개 낀 수묵 무협"으로. 충돌체·판정 크기는 그대로, 보이는 것만 교체.</p>
 <svg viewBox="0 0 960 300" role="img" aria-label="수묵 분위기 시안">
 <defs>
@@ -527,7 +527,7 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 <tr><td>기둥·바위</td><td>CC0 로우폴리 모델(충돌체 유지) · 같은 재질 조각</td></tr>
 </table></div>
 <p class="small">외부 자원 후보: Kenney 또는 Quaternius(CC0) 바위·돌담·목조 팩 1~2개, ambientCG 또는 Poly Haven(CC0) 석판 질감 1종 — 내용·크기 확인 후 파일별 승인.</p>
-<p class="small">검증: URP 에셋 지정 · 모든 렌더러 URP 호환(분홍 없음) · 충돌체 크기 불변 · 진입 경로 · 전투장 미리보기 이미지 html/s8-1-preview.png · Play로 분위기·예고 가독성·프레임 확인.</p>
+<p class="small">검증: URP 에셋 지정 · 모든 렌더러 URP 호환(분홍 없음) · 충돌체 크기 불변 · 진입 경로 · 전투장 미리보기 이미지 html/images/s8/s8-1-preview.png · Play로 분위기·예고 가독성·프레임 확인.</p>
 <ul class="check">
 <li class="ok">URP 17.3.0 설치</li>
 <li class="ok">안개 낀 흐린 저녁 · 한지색 안개 · 먼 산 3겹</li>
@@ -539,7 +539,7 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 </ul>
 </section>
 <section id="s82">
-<h2>S8-2 캐릭터·애니메이션 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (편집 모드 · IK는 플레이 중에만 반영)</h3><img src="s8-2-preview-idle.png" alt="수묵 의상 마네킹 플레이어와 적" style="width:100%;border-radius:12px">
+<h2>S8-2 캐릭터·애니메이션 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (편집 모드 · IK는 플레이 중에만 반영)</h3><img src="images/s8/s8-2-preview-idle.png" alt="수묵 의상 마네킹 플레이어와 적" style="width:100%;border-radius:12px">
 <p class="small">목표: 블록 인형 → 사람 모양 캐릭터 + 실제 애니메이션. 8방향 검 궤적·판정·연출 규칙은 그대로, 보이는 몸만 교체.</p>
 <h3>1. 출처 비교 (공식 페이지 확인 2026-10-08)</h3>
 <div class="scroll"><table>
@@ -599,7 +599,7 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 </ul>
 </section>
 <section id="s83">
-<h2>S8-3 UI 교체 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (Unity · 편집 모드라 캐릭터는 T자세)</h3><img src="s8-3-title.png" alt="타이틀" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="s8-3-alloc.png" alt="스탯 배분" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="s8-3-battle.png" alt="선택 휠과 전투 HUD" style="width:100%;border-radius:12px">
+<h2>S8-3 UI 교체 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2><h3>실제 렌더 미리보기 (Unity · 편집 모드라 캐릭터는 T자세)</h3><img src="images/s8/s8-3-title.png" alt="타이틀" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="images/s8/s8-3-alloc.png" alt="스탯 배분" style="width:100%;border-radius:12px;margin-bottom:10px"><img src="images/s8/s8-3-battle.png" alt="선택 휠과 전투 HUD" style="width:100%;border-radius:12px">
 <p class="small">목표: 임시 IMGUI → 수묵 분위기 정식 UI, 한글·화살표 깨짐 해결. 보여주는 값과 버튼 동작은 지금과 같음.</p>
 <h3>1. 글꼴 라이선스 (공식 Google Fonts 저장소 확인)</h3>
 <div class="scroll"><table>
@@ -751,7 +751,7 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 </section>
 <section id="r5">
 <h2>R5 검 자세 판정 · 세부 설계 <span class="badge impl">구현 · Play 확인 대기</span></h2>
-<figure><img src="s8-3-battle.png" alt="선택 휠: 오른쪽 위를 예약한 뒤 왼쪽 아래 칸에 크게 +10%, 위 칸에 짧게 -10% 표시" style="width:100%;border-radius:10px"><figcaption class="small">↗ 예약 후 다음 타: ↙ 크게 +10% · ↓·← 넓게 +5% · ↑·→ 짧게 −10%. 값은 StatTuning에서 바꾸면 휠·판정이 함께 바뀜.</figcaption></figure>
+<figure><img src="images/s8/s8-3-battle.png" alt="선택 휠: 오른쪽 위를 예약한 뒤 왼쪽 아래 칸에 크게 +10%, 위 칸에 짧게 -10% 표시" style="width:100%;border-radius:10px"><figcaption class="small">↗ 예약 후 다음 타: ↙ 크게 +10% · ↓·← 넓게 +5% · ↑·→ 짧게 −10%. 값은 StatTuning에서 바꾸면 휠·판정이 함께 바뀜.</figcaption></figure>
 <h3>일정</h3>
 <div class="scroll"><table>
 <tr><th>순서</th><th>작업</th></tr>
@@ -823,11 +823,11 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 <h2>R6 검 이동 자세 · 적 피격 반응 <span class="badge impl">구현 · Play 확인 대기</span></h2>
 <p class="small">Play 모드에서 실제로 움직이며 찍은 미리보기(IK·팔 층이 반영된 실제 모습). UAL2 무료판(CC0, 라이선스 확인)에는 옆·뒷걸음 동작이 없어 다리 돌림 + 상체 되비틀기 · 걷기 거꾸로 재생으로 만들었습니다.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px">
-<figure><img src="r6-run-low.png" alt="앞으로 달리며 칼을 낮게 든 하단 자세" style="width:100%;border-radius:8px"><figcaption class="small">앞으로 달리기 · 하단(↓)</figcaption></figure>
-<figure><img src="r6-strafe-mid.png" alt="옆걸음하며 칼끝을 앞으로 겨눈 중단 자세" style="width:100%;border-radius:8px"><figcaption class="small">왼쪽 옆걸음 · 중단(→) — 다리는 옆, 상체·칼끝은 적</figcaption></figure>
-<figure><img src="r6-back-high.png" alt="뒷걸음하며 칼을 머리 위로 든 상단 자세" style="width:100%;border-radius:8px"><figcaption class="small">뒷걸음 · 상단(↑) — 걷기 거꾸로 재생</figcaption></figure>
-<figure><img src="r6-wound-graze.png" alt="적 가슴에 얇은 먹 선이 남은 스침" style="width:100%;border-radius:8px"><figcaption class="small">스침 — 얇은 먹 선 + 움찔</figcaption></figure>
-<figure><img src="r6-wound-cut.png" alt="적이 몸을 젖히며 사선 자국이 남은 베임" style="width:100%;border-radius:8px"><figcaption class="small">베임 — 굵은 사선 + 상체 젖힘·비틀림</figcaption></figure>
+<figure><img src="images/r6/r6-run-low.png" alt="앞으로 달리며 칼을 낮게 든 하단 자세" style="width:100%;border-radius:8px"><figcaption class="small">앞으로 달리기 · 하단(↓)</figcaption></figure>
+<figure><img src="images/r6/r6-strafe-mid.png" alt="옆걸음하며 칼끝을 앞으로 겨눈 중단 자세" style="width:100%;border-radius:8px"><figcaption class="small">왼쪽 옆걸음 · 중단(→) — 다리는 옆, 상체·칼끝은 적</figcaption></figure>
+<figure><img src="images/r6/r6-back-high.png" alt="뒷걸음하며 칼을 머리 위로 든 상단 자세" style="width:100%;border-radius:8px"><figcaption class="small">뒷걸음 · 상단(↑) — 걷기 거꾸로 재생</figcaption></figure>
+<figure><img src="images/r6/r6-wound-graze.png" alt="적 가슴에 얇은 먹 선이 남은 스침" style="width:100%;border-radius:8px"><figcaption class="small">스침 — 얇은 먹 선 + 움찔</figcaption></figure>
+<figure><img src="images/r6/r6-wound-cut.png" alt="적이 몸을 젖히며 사선 자국이 남은 베임" style="width:100%;border-radius:8px"><figcaption class="small">베임 — 굵은 사선 + 상체 젖힘·비틀림</figcaption></figure>
 </div>
 <p class="small">Play 의견: 이동 중 검이 부자연스럽고, 적이 "살짝 베이는" 느낌이 부족. 무료(CC0) 에셋만 Claude가 받아서 진행: Quaternius Universal Animation Library 2 [Standard] 17MB.</p>
 <h3>A. 보이는 검 자세 3종 (판정 8방향은 그대로)</h3>
@@ -853,24 +853,24 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 <h2>R7 캐릭터 모델 교체 <span class="badge impl">구현 · Play 확인 대기</span></h2>
 <p class="small">후보 비교는 <a href="model-preview.html">model-preview.html</a>. 선택: Quaternius Universal Base Characters 무료판(CC0, 라이선스 확인). 마네킹 대신 얼굴·손가락이 있는 사람 모델에 먹빛 무복·도포·깃·끝동, 피부·머리는 수묵 톤. 예전 마네킹은 남겨 둠(되돌리기 가능).</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px">
-<figure><img src="r7-face-player.png" alt="새 모델 플레이어: 짧은 머리, 삿갓, 청록 끝동" style="width:100%;border-radius:8px"><figcaption class="small">플레이어 — 짧은 머리 · 삿갓(그림자) · 청록 깃·끝동</figcaption></figure>
-<figure><img src="r7-face-enemy.png" alt="새 모델 적: 짧게 깎은 머리, 붉은 깃" style="width:100%;border-radius:8px"><figcaption class="small">적 — 짧게 깎은 머리 · 수염 · 붉은 깃 · 베인 자국</figcaption></figure>
-<figure><img src="r6-wound-graze.png" alt="새 모델 적이 대도를 든 전신" style="width:100%;border-radius:8px"><figcaption class="small">적 전신 — 대도 · 붉은 도포</figcaption></figure>
-<figure><img src="r6-strafe-mid.png" alt="새 모델 플레이어 옆걸음 전신" style="width:100%;border-radius:8px"><figcaption class="small">플레이어 전신 — 옆걸음 · 중단 자세</figcaption></figure>
+<figure><img src="images/r7/r7-face-player.png" alt="새 모델 플레이어: 짧은 머리, 삿갓, 청록 끝동" style="width:100%;border-radius:8px"><figcaption class="small">플레이어 — 짧은 머리 · 삿갓(그림자) · 청록 깃·끝동</figcaption></figure>
+<figure><img src="images/r7/r7-face-enemy.png" alt="새 모델 적: 짧게 깎은 머리, 붉은 깃" style="width:100%;border-radius:8px"><figcaption class="small">적 — 짧게 깎은 머리 · 수염 · 붉은 깃 · 베인 자국</figcaption></figure>
+<figure><img src="images/r6/r6-wound-graze.png" alt="새 모델 적이 대도를 든 전신" style="width:100%;border-radius:8px"><figcaption class="small">적 전신 — 대도 · 붉은 도포</figcaption></figure>
+<figure><img src="images/r6/r6-strafe-mid.png" alt="새 모델 플레이어 옆걸음 전신" style="width:100%;border-radius:8px"><figcaption class="small">플레이어 전신 — 옆걸음 · 중단 자세</figcaption></figure>
 </div>
 </section>
 
 <section id="r8">
 <h2>R8 Play 의견 2차 <span class="badge impl">구현 · Play 확인 대기</span></h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
-<figure><img src="r6-strafe-mid.png" alt="옆으로 달리기 실제 동작" style="width:100%;border-radius:8px"><figcaption class="small">옆으로 달리기(KayKit)</figcaption></figure>
-<figure><img src="r6-back-high.png" alt="뒷걸음 실제 동작" style="width:100%;border-radius:8px"><figcaption class="small">뒷걸음(KayKit)</figcaption></figure>
-<figure><img src="r8-enemy-kick.png" alt="적 밀쳐 차기" style="width:100%;border-radius:8px"><figcaption class="small">적 밀쳐 차기(새 기술)</figcaption></figure>
-<figure><img src="r8-enemy-spin.png" alt="적 회전 베기" style="width:100%;border-radius:8px"><figcaption class="small">적 회전 베기(새 기술)</figcaption></figure>
-<figure><img src="r8-player-block.png" alt="플레이어가 검으로 막으며 튕겨냄" style="width:100%;border-radius:8px"><figcaption class="small">합 공격 방어 — 막으며 튕겨냄</figcaption></figure>
+<figure><img src="images/r6/r6-strafe-mid.png" alt="옆으로 달리기 실제 동작" style="width:100%;border-radius:8px"><figcaption class="small">옆으로 달리기(KayKit)</figcaption></figure>
+<figure><img src="images/r6/r6-back-high.png" alt="뒷걸음 실제 동작" style="width:100%;border-radius:8px"><figcaption class="small">뒷걸음(KayKit)</figcaption></figure>
+<figure><img src="images/r8/r8-enemy-kick.png" alt="적 밀쳐 차기" style="width:100%;border-radius:8px"><figcaption class="small">적 밀쳐 차기(새 기술)</figcaption></figure>
+<figure><img src="images/r8/r8-enemy-spin.png" alt="적 회전 베기" style="width:100%;border-radius:8px"><figcaption class="small">적 회전 베기(새 기술)</figcaption></figure>
+<figure><img src="images/r8/r8-player-block.png" alt="플레이어가 검으로 막으며 튕겨냄" style="width:100%;border-radius:8px"><figcaption class="small">합 공격 방어 — 막으며 튕겨냄</figcaption></figure>
 </div>
 <p class="small">확정: 같은 쪽 이어 베기 = 회전(보정 유지), ↑↑·↓↓ 불가 · 적 예고·후딜 ×0.7 · 턴 교대 + 재진입 1.2초 + 적 적응(+5%/타, 최대 25%, 회복) · 합 공격 3칸 기억 입력(속도 스탯으로 시간 약간↑, 모두 막으면 반격 1회) · 새 기술 5종 + 거리별 확률표.</p>
-<p class="small">옷 보강 완료(근육 굴곡을 다듬어 천처럼, 발은 천 신발 모양) — <a href="r6-run-low.png">달리기 미리보기</a>. git 보류 · 삿갓 그림자 유지.</p>
+<p class="small">옷 보강 완료(근육 굴곡을 다듬어 천처럼, 발은 천 신발 모양) — <a href="images/r6/r6-run-low.png">달리기 미리보기</a>. git 보류 · 삿갓 그림자 유지.</p>
 <div class="scroll"><table>
 <tr><th>#</th><th>의견</th><th>제안</th></tr>
 <tr><td>1</td><td>↗→↘ 이어 베기 부자연</td><td>같은 쪽 연속(↖←↙끼리 / ↗→↘끼리)이면 회전 베기</td></tr>
@@ -881,6 +881,48 @@ svg{width:100%;height:auto}svg text{font-family:system-ui,'Malgun Gothic',sans-s
 <tr><td>6</td><td>적 기술 단조로움</td><td>새 기술 5개(회전 베기·밀쳐 차기·합 공격·찌르기 돌진·부채 투척) + 거리별 확률표, 도약은 모든 거리 확률</td></tr>
 </table></div>
 <p class="small">세부 확률표와 확인할 질문은 roadmap.md R8.</p>
+<p class="small"><b>2026-10-12 Play 의견:</b> 적 공격이 너무 빨라 피하기 어려움 → 모든 적 공격 +0.12초. 겨냥이 고정된 뒤에만 더해 피할 시간 0.15→0.27초(규칙 검사 통과).</p>
+</section>
+
+<section id="r9">
+<h2>R9 플레이어 베기 동작 교체 <span class="badge impl">구현 · Play 확인 대기</span></h2>
+<h3>구현 결과 — 8방향 맞는 순간 (실제 게임 경로, Play 모드)</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px">
+<figure><img src="images/r9/cut-Up.png" alt="위로 올려 베기" style="width:100%;border-radius:8px"><figcaption class="small">↑ 올려 베기 · Sword_Regular_A</figcaption></figure>
+<figure><img src="images/r9/cut-UpRight.png" alt="오른쪽 위로 올려 베기" style="width:100%;border-radius:8px"><figcaption class="small">↗ · Sword_Regular_Combo 둘째 수</figcaption></figure>
+<figure><img src="images/r9/cut-Right.png" alt="내디디며 가로 베기" style="width:100%;border-radius:8px"><figcaption class="small">→ · Sword_Dash</figcaption></figure>
+<figure><img src="images/r9/cut-DownRight.png" alt="오른쪽 아래로 감아 베기" style="width:100%;border-radius:8px"><figcaption class="small">↘ · Sword_Regular_B</figcaption></figure>
+<figure><img src="images/r9/cut-Down.png" alt="내려 베기 직전" style="width:100%;border-radius:8px"><figcaption class="small">↓ · Sword_Regular_Combo 첫 수</figcaption></figure>
+<figure><img src="images/r9/cut-DownLeft.png" alt="왼쪽 아래로 크게 베기" style="width:100%;border-radius:8px"><figcaption class="small">↙ · Sword_Attack</figcaption></figure>
+<figure><img src="images/r9/cut-Left.png" alt="오른쪽에서 왼쪽 가로 베기" style="width:100%;border-radius:8px"><figcaption class="small">← · Sword_Regular_Combo 셋째 수</figcaption></figure>
+<figure><img src="images/r9/cut-UpLeft.png" alt="왼쪽 위로 올려 베기" style="width:100%;border-radius:8px"><figcaption class="small">↖ · Sword_Regular_A 앞부분</figcaption></figure>
+</div>
+<p class="small"><b>구현 중 바뀐 배정:</b> 좌우 반전은 한손 동작에서 왼손이 베게 되어 못 쓰고, KayKit 한손 동작(↓↘→)은 이 몸에서 팔이 뻣뻣하게 벌어져서 8방향 모두 Quaternius UAL 오른손 동작(연속 베기는 한 수씩 잘라 씀)으로 바꿨습니다. 표는 <code>Scripts/Presentation/SwingClips.cs</code> 한곳 · 규칙 검사 STAT_RULES_OK.</p>
+<h3>설계 때 조사 (아래 표는 첫 안 — 구현 배정은 위 사진과 roadmap.md)</h3>
+<p class="small">Play 의견(2026-10-12): 위 → 위좌·위우 베기가 어색, 팔이 부자연스러움 → 사용자 선택 3번: 코드로 그리던 궤적을 실제 한손 검 동작으로. 판정·성공률·검 자세 규칙은 그대로, 보이는 부분만 바뀝니다. 동작은 이미 저장소에 있는 KayKit·Quaternius(CC0) — 새로 받을 것 없음.</p>
+<p class="small"><b>원인:</b> 지금은 칼 방향을 시작→목표로 직선 보간 + 손만 IK로 끌어서, 위→위좌는 45°만 까딱하고 칼을 쳐든 채 끝납니다. 팔은 어깨·팔꿈치가 뻣뻣합니다.</p>
+<h3>후보 동작 (실제 플레이어 모델, 뒤 왼쪽 위에서 · 시작 → 베는 순간 → 끝)</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+<figure><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px"><img src="images/r9/clips/Melee_1H_Attack_Chop-0.jpg" alt="내려 베기 시작" style="width:100%"><img src="images/r9/clips/Melee_1H_Attack_Chop-1.jpg" alt="내려 베기 머리 위" style="width:100%"><img src="images/r9/clips/Melee_1H_Attack_Chop-2.jpg" alt="내려 베기 끝" style="width:100%"></div><figcaption class="small">↓ 내려 베기 — Melee_1H_Attack_Chop</figcaption></figure>
+<figure><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px"><img src="images/r9/clips/Sword_Regular_A-1.jpg" alt="올려 베기 아래" style="width:100%"><img src="images/r9/clips/Sword_Regular_A-2.jpg" alt="올려 베기 왼쪽 위" style="width:100%"><img src="images/r9/clips/Sword_Regular_A-3.jpg" alt="올려 베기 머리 위" style="width:100%"></div><figcaption class="small">↑ 올려 베기(끝까지) · ↖ 앞부분에서 멈춤 · ↗ 좌우 반전 — Sword_Regular_A</figcaption></figure>
+<figure><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px"><img src="images/r9/clips/Melee_1H_Attack_Slice_Diagonal-0.jpg" alt="사선 베기 시작" style="width:100%"><img src="images/r9/clips/Melee_1H_Attack_Slice_Diagonal-1.jpg" alt="사선 베기 왼쪽 위" style="width:100%"><img src="images/r9/clips/Melee_1H_Attack_Slice_Diagonal-2.jpg" alt="사선 베기 오른쪽 아래" style="width:100%"></div><figcaption class="small">↘ 사선 베기 · ↙ 좌우 반전 — Melee_1H_Attack_Slice_Diagonal</figcaption></figure>
+<figure><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px"><img src="images/r9/clips/Melee_1H_Attack_Slice_Horizontal-0.jpg" alt="가로 베기 시작" style="width:100%"><img src="images/r9/clips/Melee_1H_Attack_Slice_Horizontal-1.jpg" alt="가로 베기 오른쪽" style="width:100%"><img src="images/r9/clips/Melee_1H_Attack_Slice_Horizontal-2.jpg" alt="가로 베기 끝" style="width:100%"></div><figcaption class="small">→ 가로 베기 · ← 좌우 반전 — Melee_1H_Attack_Slice_Horizontal</figcaption></figure>
+</div>
+<div class="scroll"><table>
+<tr><th>방향(끝나는 곳)</th><th>배정 동작(안)</th><th>칼끝 궤적(조사)</th></tr>
+<tr><td>↓</td><td>Melee_1H_Attack_Chop</td><td>머리 위 → 가슴 앞</td></tr>
+<tr><td>↑</td><td>Sword_Regular_A 끝까지</td><td>오른쪽 아래 → 머리 위</td></tr>
+<tr><td>↖ / ↗</td><td>Sword_Regular_A 앞부분 / 좌우 반전</td><td>오른쪽 아래 → 왼쪽 위 / 반대</td></tr>
+<tr><td>↘ / ↙</td><td>Melee_1H_Attack_Slice_Diagonal / 좌우 반전</td><td>왼쪽 위 → 오른쪽 아래 / 반대</td></tr>
+<tr><td>→ / ←</td><td>Melee_1H_Attack_Slice_Horizontal / 좌우 반전</td><td>왼쪽 → 오른쪽 / 반대</td></tr>
+<tr><td>회전 · 마무리 · 지나가며 베기</td><td>지금과 같음</td><td>—</td></tr>
+</table></div>
+<p class="small">시간은 지금처럼 한 타 0.22초(3타 ≤ 1.5초). 동작마다 칼이 가장 빠른 순간이 맞는 순간에 오도록 시작 지점·속도를 정하고, 남은 동작은 반응 연출과 겹치며 겨눔 자세로 돌아갑니다. 후보 14개 전체 사진: <code>html/images/r9/clips/</code> · 궤적 수치: <code>md/r9-swing-paths.txt</code>.</p>
+<ul class="small">
+<li>애니메이터 방향별 베기 상태 8개(반전 포함) · AnimatorRig 방향 베기 신호(IK 끔) + 동작별 시작·속도·멈춤 표</li>
+<li>ExchangeDirector 일반 베기 → 방향 동작 · 규칙 검사(8방향 상태·반전 짝·3타 ≤ 1.5초) · 8방향 끝 자세 사진</li>
+<li>확인할 것: 배정표대로 할지(↑·↖·↗가 같은 올려 베기에서 나옴) · 미리보기 첫 장면에서 삿갓이 머리에서 벗어남(게임에서도 보이면 같이 수정)</li>
+</ul>
 </section>
 
 <section id="next">

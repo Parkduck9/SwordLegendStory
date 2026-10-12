@@ -267,6 +267,17 @@ namespace SwordPrototype.Presentation
             }
         }
 
+        // R9: 방향 베기 — 표의 시작 지점에서, 맞는 순간이 contactSeconds 뒤에 오도록 재생하고 끝나면 겨눔 자세로 돌아간다.
+        private static readonly int CutSpeedId = Animator.StringToHash("CutSpeed");
+        public void Cut(Battle.AttackDirection direction, float contactSeconds)
+        {
+            SwingClips.Entry e = SwingClips.Of(direction);
+            animator.SetFloat(CutSpeedId, e.Speed(contactSeconds));
+            animator.CrossFadeInFixedTime(e.state, 0.05f, 0, e.start);
+            cueTimer = e.Seconds(contactSeconds);
+            animDriven = true;
+        }
+
         // 동작이 팔·검을 직접 움직이는 신호(IK 끔). 다른 신호가 오면 해제.
         private void Act(string state, float seconds)
         {

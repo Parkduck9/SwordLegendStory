@@ -77,7 +77,7 @@
 <section class="card" id="r4">
 <span class="tag">R4 · UI 개선 · 배치 확인 필요</span>
 <h2>공격을 고르면서 검의 시작 위치도 볼 수 있어야 합니다</h2>
-<figure><img src="s8-3-battle.png" alt="저장된 전투 미리보기. 중앙의 큰 선택 휠이 플레이어와 검을 겹쳐 가리는 모습"><figcaption>기존 s8-3 저장 미리보기입니다. 현재 작업 중인 최신 화면과는 다를 수 있습니다.</figcaption></figure>
+<figure><img src="images/s8/s8-3-battle.png" alt="저장된 전투 미리보기. 중앙의 큰 선택 휠이 플레이어와 검을 겹쳐 가리는 모습"><figcaption>기존 s8-3 저장 미리보기입니다. 현재 작업 중인 최신 화면과는 다를 수 있습니다.</figcaption></figure>
 <p>현재 선택 휠은 화면 중앙 근처에 크게 배치되어 있습니다. 사용자가 원하는 “플레이어와 검에 카메라 포커싱”이 잘 보이려면 인물과 선택 UI가 서로 가리는 면적을 줄여야 합니다.</p>
 <svg viewBox="0 0 920 320" role="img" aria-label="플레이어와 검은 왼쪽 중앙, 방향 선택 휠은 오른쪽에 둔 화면 제안">
 <rect x="24" y="24" width="872" height="267" rx="10" fill="#eeeee3" stroke="#b8c0b5"/>
@@ -141,7 +141,7 @@
 <tr><td>2</td><td>가운데 유지 + 축소 + 반투명</td><td>시선 이동 없음</td><td>겹침 남고 글씨가 묻힘</td><td>덜 가리지만 여전히 가림</td></tr>
 <tr><td>3</td><td>포커스 카메라 구도 변경</td><td>UI 그대로</td><td>카메라 연출 전체 재조정</td><td>손이 많이 감</td></tr>
 </tbody></table></div>
-<figure><img src="s8-3-battle.png" alt="선택 화면: 휠이 오른쪽에 있고 가운데 적과 왼쪽 플레이어가 보임"><figcaption>R4 적용 후 실제 포커스 카메라 구도(편집 모드라 캐릭터는 기본 자세).</figcaption></figure>
+<figure><img src="images/s8/s8-3-battle.png" alt="선택 화면: 휠이 오른쪽에 있고 가운데 적과 왼쪽 플레이어가 보임"><figcaption>R4 적용 후 실제 포커스 카메라 구도(편집 모드라 캐릭터는 기본 자세).</figcaption></figure>
 <h3>R5 · 검 자세·적 스탯 판정 — 1순위로 구현(2026-10-08)</h3>
 <div class="table-wrap"><table><thead><tr><th>순위</th><th>해결법</th><th>장점</th><th>단점</th><th>한줄평</th></tr></thead><tbody>
 <tr><td><b>1</b></td><td><b>각도 수식</b> — 직전 검 끝자세→목표 방향 각도 차로 성공률 ±</td><td>정할 수치 1~2개, HUD에 바로 보임</td><td>상성 깊이 얕음</td><td>작게 시작해 체감 확인</td></tr>

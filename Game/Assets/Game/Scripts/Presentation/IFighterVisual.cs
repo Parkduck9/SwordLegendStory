@@ -53,5 +53,7 @@ namespace SwordPrototype.Presentation
         void ResetPose();
         void SetTrail(bool on);
         void Cue(FighterCue cue);
+        /// <summary>R9: 방향 베기 실제 동작(SwingClips 표). contactSeconds 뒤가 맞는 순간. 블록 인형은 기존 궤적(SetBlade)만 쓴다.</summary>
+        void Cut(Battle.AttackDirection direction, float contactSeconds);
     }
 }

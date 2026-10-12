@@ -78,7 +78,7 @@ namespace SwordPrototype.Editor
             {
                 rig.HoldStance(AttackDirection.Down);
                 player.transform.position = origin + Vector3.forward * Mathf.Repeat(t * 4f, 3f);
-                if (step == 0 && t > 2.0f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(3.6f, 1.3f, 0.6f), player.transform.position + head, "../html/r6-run-low.png"); }
+                if (step == 0 && t > 2.0f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(3.6f, 1.3f, 0.6f), player.transform.position + head, "../html/images/r6/r6-run-low.png"); }
                 return;
             }
             // 2) 왼쪽 옆걸음 + 중단(→) — 앞 비스듬히
@@ -91,7 +91,7 @@ namespace SwordPrototype.Editor
                     object Get(string n) => typeof(AnimatorRig).GetField(n, f).GetValue(rig);
                     Debug.Log($"R6_DIAG strafe sword.up={SwordUp(player)} rootFwd={player.transform.forward} modelYaw={rig.transform.localEulerAngles.y:0} speed={Get("speed")} moveX={Get("moveX")} moveZ={Get("moveZ")} cue={Get("cueTimer")} dt={Time.deltaTime:0.000} frame={Time.frameCount}");
                 }
-                if (step == 1 && t > 4.2f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(-1.2f, 1.5f, 3.6f), player.transform.position + head, "../html/r6-strafe-mid.png"); }
+                if (step == 1 && t > 4.2f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(-1.2f, 1.5f, 3.6f), player.transform.position + head, "../html/images/r6/r6-strafe-mid.png"); }
                 return;
             }
             // 3) 뒷걸음 + 상단(↑) — 옆에서
@@ -99,38 +99,58 @@ namespace SwordPrototype.Editor
             {
                 rig.HoldStance(AttackDirection.Up);
                 player.transform.position = origin + Vector3.back * Mathf.Repeat((t - 4.4f) * 2.5f, 3f);
-                if (step == 2 && t > 6.4f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(3.6f, 1.4f, 0.4f), player.transform.position + head, "../html/r6-back-high.png"); }
+                if (step == 2 && t > 6.4f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(3.6f, 1.4f, 0.4f), player.transform.position + head, "../html/images/r6/r6-back-high.png"); }
                 return;
             }
             // 4) 적 베임: 스침(→ 방향) 직후 · 베임(↘ 방향) 직후
             Vector3 eye = enemy.transform.position + new Vector3(-3.6f, 1.7f, -2.4f), look = enemy.transform.position + Vector3.up * 1.4f;
             if (step == 3) { Debug.Log($"R6_DIAG before chestTilt={ChestTilt(enemyRig):0.0}"); step++; enemyRig.Wound(Vector3.right, 0); }
             if (step == 4 && t > 6.63f) Debug.Log($"R6_DIAG graze chestTilt={ChestTilt(enemyRig):0.0}");
-            if (step == 4 && t > 6.63f) { step++; ScenePreview.Shot(cam, eye, look, "../html/r6-wound-graze.png"); }
+            if (step == 4 && t > 6.63f) { step++; ScenePreview.Shot(cam, eye, look, "../html/images/r6/r6-wound-graze.png"); }
             if (step == 5 && t > 8.2f) { step++; enemyRig.Wound((Vector3.right + Vector3.down).normalized, 1); }
             if (step == 6 && t > 8.23f) Debug.Log($"R6_DIAG cut chestTilt={ChestTilt(enemyRig):0.0}");
-            if (step == 6 && t > 8.23f) { step++; ScenePreview.Shot(cam, eye, look, "../html/r6-wound-cut.png"); }
+            if (step == 6 && t > 8.23f) { step++; ScenePreview.Shot(cam, eye, look, "../html/images/r6/r6-wound-cut.png"); }
             // 5) R7 얼굴 가까이(플레이어·적)
             if (step == 7 && t > 8.6f)
             {
                 step++;
                 Transform Head(GameObject g) => g.GetComponentInChildren<Animator>().GetBoneTransform(HumanBodyBones.Head);
                 var ph = Head(player); var eh = Head(enemy);
-                ScenePreview.Shot(cam, ph.position + player.transform.forward * 0.9f + Vector3.up * 0.05f + player.transform.right * 0.25f, ph.position + Vector3.up * 0.08f, "../html/r7-face-player.png");
-                ScenePreview.Shot(cam, eh.position + enemy.transform.forward * 1.1f + Vector3.up * 0.05f + enemy.transform.right * 0.3f, eh.position + Vector3.up * 0.08f, "../html/r7-face-enemy.png");
+                ScenePreview.Shot(cam, ph.position + player.transform.forward * 0.9f + Vector3.up * 0.05f + player.transform.right * 0.25f, ph.position + Vector3.up * 0.08f, "../html/images/r7/r7-face-player.png");
+                ScenePreview.Shot(cam, eh.position + enemy.transform.forward * 1.1f + Vector3.up * 0.05f + enemy.transform.right * 0.3f, eh.position + Vector3.up * 0.08f, "../html/images/r7/r7-face-enemy.png");
                 foreach (var tr in eh.GetComponentsInChildren<Transform>()) if (tr.name.StartsWith("Hair")) Debug.Log($"R7_DIAG enemy {tr.name} pos={tr.position} headPos={eh.position} lossy={tr.lossyScale} renderer={(tr.GetComponent<Renderer>() ? tr.GetComponent<Renderer>().bounds.ToString() : "-")}");
             }
             // 6) R8 KayKit 적 공격 동작(동작이 팔·검을 직접 움직임)
             Vector3 side = enemy.transform.position + enemy.transform.right * 4.2f + Vector3.up * 1.6f + enemy.transform.forward * 1.2f;
             if (step == 8 && t > 8.8f) { step++; enemyRig.Cue(FighterCue.Slice); }
-            if (step == 9 && t > 9.05f) { step++; ScenePreview.Shot(cam, side, enemy.transform.position + Vector3.up * 1.3f, "../html/r8-enemy-slice.png"); }
+            if (step == 9 && t > 9.05f) { step++; ScenePreview.Shot(cam, side, enemy.transform.position + Vector3.up * 1.3f, "../html/images/r8/r8-enemy-slice.png"); }
             if (step == 10 && t > 9.6f) { step++; enemyRig.Cue(FighterCue.SpinAttack); }
-            if (step == 11 && t > 9.95f) { step++; ScenePreview.Shot(cam, side, enemy.transform.position + Vector3.up * 1.3f, "../html/r8-enemy-spin.png"); }
+            if (step == 11 && t > 9.95f) { step++; ScenePreview.Shot(cam, side, enemy.transform.position + Vector3.up * 1.3f, "../html/images/r8/r8-enemy-spin.png"); }
             if (step == 12 && t > 10.6f) { step++; enemyRig.Cue(FighterCue.Kick); }
-            if (step == 13 && t > 10.85f) { step++; ScenePreview.Shot(cam, side, enemy.transform.position + Vector3.up * 1.1f, "../html/r8-enemy-kick.png"); }
+            if (step == 13 && t > 10.85f) { step++; ScenePreview.Shot(cam, side, enemy.transform.position + Vector3.up * 1.1f, "../html/images/r8/r8-enemy-kick.png"); }
             if (step == 14 && t > 11.4f) { step++; rig.Cue(FighterCue.BlockHit); rig.SetBlade(FighterRig.BladeDirection(new Vector2(0.7f, 0.7f), 0.9f), 0.5f); }
-            if (step == 15 && t > 11.55f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(2.6f, 1.5f, 2.2f), player.transform.position + Vector3.up * 1.2f, "../html/r8-player-block.png"); }
-            if (step == 16 && t > 12f)
+            if (step == 15 && t > 11.55f) { step++; ScenePreview.Shot(cam, player.transform.position + new Vector3(2.6f, 1.5f, 2.2f), player.transform.position + Vector3.up * 1.2f, "../html/images/r8/r8-player-block.png"); }
+            // 7) R9 8방향 베기(실제 AnimatorRig 경로): 방향마다 Cut → 맞는 순간에 한 장, 1초 간격
+            const float cutStart = 12f, cutGap = 1f, contact = ReactionLibrary.Windup + ReactionLibrary.Swing;
+            if (step >= 16 && step < 32)
+            {
+                int i = (step - 16) / 2;
+                var dir = (AttackDirection)i;
+                float at = cutStart + i * cutGap;
+                if ((step & 1) == 0 && t > at)
+                {
+                    step++;
+                    if (i == 0) { rig.ResetPose(); player.transform.SetPositionAndRotation(origin, Quaternion.identity); }
+                    rig.Cut(dir, contact);
+                }
+                else if ((step & 1) == 1 && t > at + contact)
+                {
+                    step++;
+                    ScenePreview.Shot(cam, player.transform.TransformPoint(new Vector3(-1.1f, 2.1f, -2.9f)), player.transform.TransformPoint(new Vector3(0.2f, 1.2f, 0.6f)), $"../html/images/r9/cut-{dir}.png");
+                }
+                return;
+            }
+            if (step == 32 && t > cutStart + 8 * cutGap)
             {
                 SessionState.SetBool(Key, false);
                 EditorApplication.update -= Tick;

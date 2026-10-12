@@ -72,6 +72,7 @@ namespace SwordPrototype.Presentation
 
         /// <summary>블록 인형은 동작 신호가 없다(몸 기울임·검 방향으로만 표현).</summary>
         public void Cue(FighterCue cue) { }
+        public void Cut(Battle.AttackDirection direction, float contactSeconds) { }
 
         /// <summary>검 궤적 잔상.</summary>
         public void SetTrail(bool on)

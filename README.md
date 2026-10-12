@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="html/s8-3-title.png" alt="검협전 타이틀 화면 — 붓글씨 제목과 낙관" width="720">
+<img src="html/images/s8/s8-3-title.png" alt="검협전 타이틀 화면 — 붓글씨 제목과 낙관" width="720">
 
 # 검협전 · SwordLegendStory
 
@@ -31,16 +31,16 @@
 
 <table>
 <tr>
-<td width="50%"><img src="html/r6-strafe-mid.png" alt="삿갓 쓴 검객이 칼끝을 겨눈 채 옆걸음하는 모습"><br><sub>옆걸음 · 칼끝을 적에게(중단 자세)</sub></td>
-<td width="50%"><img src="html/r8-player-block.png" alt="검을 세워 적의 공격을 막는 검객"><br><sub>합 공격 방어 — 막으며 튕겨내기</sub></td>
+<td width="50%"><img src="html/images/r6/r6-strafe-mid.png" alt="삿갓 쓴 검객이 칼끝을 겨눈 채 옆걸음하는 모습"><br><sub>옆걸음 · 칼끝을 적에게(중단 자세)</sub></td>
+<td width="50%"><img src="html/images/r8/r8-player-block.png" alt="검을 세워 적의 공격을 막는 검객"><br><sub>합 공격 방어 — 막으며 튕겨내기</sub></td>
 </tr>
 <tr>
-<td><img src="html/r8-enemy-kick.png" alt="대도를 든 적이 밀쳐 차기를 하는 모습"><br><sub>적 기술 · 밀쳐 차기</sub></td>
-<td><img src="html/r6-wound-cut.png" alt="적의 가슴에 사선으로 먹빛 베인 자국이 남은 모습"><br><sub>베임 — 몸을 젖히며 남는 붓 자국</sub></td>
+<td><img src="html/images/r8/r8-enemy-kick.png" alt="대도를 든 적이 밀쳐 차기를 하는 모습"><br><sub>적 기술 · 밀쳐 차기</sub></td>
+<td><img src="html/images/r6/r6-wound-cut.png" alt="적의 가슴에 사선으로 먹빛 베인 자국이 남은 모습"><br><sub>베임 — 몸을 젖히며 남는 붓 자국</sub></td>
 </tr>
 <tr>
-<td><img src="html/s8-1-preview.png" alt="먼 산과 안개에 둘러싸인 원형 전투장 전경"><br><sub>원형 전투장 · 부서지는 돌기둥</sub></td>
-<td><img src="html/r7-face-enemy.png" alt="짧게 깎은 머리에 붉은 깃을 단 적의 얼굴"><br><sub>적 — 수묵 톤 얼굴과 붉은 깃</sub></td>
+<td><img src="html/images/s8/s8-1-preview.png" alt="먼 산과 안개에 둘러싸인 원형 전투장 전경"><br><sub>원형 전투장 · 부서지는 돌기둥</sub></td>
+<td><img src="html/images/r7/r7-face-enemy.png" alt="짧게 깎은 머리에 붉은 깃을 단 적의 얼굴"><br><sub>적 — 수묵 톤 얼굴과 붉은 깃</sub></td>
 </tr>
 </table>
 

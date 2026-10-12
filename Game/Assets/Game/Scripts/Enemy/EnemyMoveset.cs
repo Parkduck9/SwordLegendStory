@@ -49,6 +49,10 @@ namespace SwordPrototype.Enemy
         public float arenaRadius = 24f;
         public float attackGap = 0.3f;              // 공격 사이 최소 간격
         public float lockBeforeHit = 0.15f;         // 예고 마지막 고정 구간(0.2 → 예고가 짧아져 0.15)
+        // 2026-10-12 Play 의견 "적 공격이 너무 빨라 피하기 어려움(0.1~0.15초 늦게)" → 겨냥이 고정된 뒤 구간에만 더해 피할 시간을 늘림
+        public float attackDelaySeconds = 0.12f;
+        public float LockSeconds => lockBeforeHit + attackDelaySeconds;
+        public float TelegraphTotal(EnemyAttackDefinition a) => a.telegraphSeconds + attackDelaySeconds;
         public float hitStunSeconds = 0.4f;         // 플레이어 공격 성공 시 경직
         public float parryRecoverySeconds = 0.3f;   // 무방비 해제 후 후딜
         public float minResumeTelegraph = 0.3f;     // 전부 막힌 뒤 남은 예고 최소

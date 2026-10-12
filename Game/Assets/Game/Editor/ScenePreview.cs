@@ -25,11 +25,11 @@ namespace SwordPrototype.Editor
             Pose(player, "Locomotion", 0.3f);
             Pose(enemy, "Guard", 0.3f);
             // 장면을 연 직후 첫 렌더는 질감이 덜 올라와 있을 수 있어 한 번 버린다.
-            Shot(cam, new Vector3(0, 1.7f, -7.5f), new Vector3(0, 1.1f, -0.6f), "../html/s8-2-preview-idle.png");
-            Shot(cam, new Vector3(0, 1.7f, -7.5f), new Vector3(0, 1.1f, -0.6f), "../html/s8-2-preview-idle.png");
+            Shot(cam, new Vector3(0, 1.7f, -7.5f), new Vector3(0, 1.1f, -0.6f), "../html/images/s8/s8-2-preview-idle.png");
+            Shot(cam, new Vector3(0, 1.7f, -7.5f), new Vector3(0, 1.1f, -0.6f), "../html/images/s8/s8-2-preview-idle.png");
             Pose(player, "Swing", 0.45f);
             Pose(enemy, "Hit", 0.2f);
-            Shot(cam, new Vector3(0, 1.7f, -7.5f), new Vector3(0, 1.1f, -0.6f), "../html/s8-2-preview-swing.png");
+            Shot(cam, new Vector3(0, 1.7f, -7.5f), new Vector3(0, 1.1f, -0.6f), "../html/images/s8/s8-2-preview-swing.png");
             Debug.Log("S82_PREVIEW_OK");
             if (Application.isBatchMode) EditorApplication.Exit(0);
         }
@@ -64,12 +64,12 @@ namespace SwordPrototype.Editor
             UseCamera(cam);
             var title = Object.FindFirstObjectByType<SwordPrototype.UI.TitleView>();
             Call(title, "Awake"); Call(title, "Start");
-            Shot(cam, cam.transform.position, cam.transform.position + Vector3.forward, "../html/s8-3-title.png");
-            Shot(cam, cam.transform.position, cam.transform.position + Vector3.forward, "../html/s8-3-title.png");
+            Shot(cam, cam.transform.position, cam.transform.position + Vector3.forward, "../html/images/s8/s8-3-title.png");
+            Shot(cam, cam.transform.position, cam.transform.position + Vector3.forward, "../html/images/s8/s8-3-title.png");
             var alloc = (GameObject)typeof(SwordPrototype.UI.TitleView).GetField("allocPage", any).GetValue(title);
             typeof(SwordPrototype.UI.TitleView).GetMethod("Show", any).Invoke(title, new object[] { alloc });
             Call(title, "Update");
-            Shot(cam, cam.transform.position, cam.transform.position + Vector3.forward, "../html/s8-3-alloc.png");
+            Shot(cam, cam.transform.position, cam.transform.position + Vector3.forward, "../html/images/s8/s8-3-alloc.png");
 
             // 전투 HUD · 선택 휠
             EditorSceneManager.OpenScene("Assets/Game/Scenes/Foundation.unity");
@@ -102,8 +102,8 @@ namespace SwordPrototype.Editor
             player.rotation = Quaternion.identity;
             Vector3 focusEye = player.position + Vector3.up * 1.7f + player.right * 0.9f - player.forward * 2.4f;
             Vector3 focusLook = player.position + player.forward * 1.4f + Vector3.up * 1.1f;
-            Shot(cam, focusEye, focusLook, "../html/s8-3-battle.png");
-            Shot(cam, focusEye, focusLook, "../html/s8-3-battle.png");
+            Shot(cam, focusEye, focusLook, "../html/images/s8/s8-3-battle.png");
+            Shot(cam, focusEye, focusLook, "../html/images/s8/s8-3-battle.png");
             Debug.Log("S83_PREVIEW_OK");
             if (Application.isBatchMode) EditorApplication.Exit(0);
         }
@@ -123,8 +123,8 @@ namespace SwordPrototype.Editor
         {
             EditorSceneManager.OpenScene("Assets/Game/Scenes/Foundation.unity");
             var cam = Camera.main;
-            Shot(cam, new Vector3(18, 16, -40), new Vector3(0, 1, -2), "../html/s8-1-preview.png");
-            Shot(cam, new Vector3(1.2f, 2.6f, -21f), new Vector3(0, 1.4f, 0), "../html/s8-1-preview-close.png");
+            Shot(cam, new Vector3(18, 16, -40), new Vector3(0, 1, -2), "../html/images/s8/s8-1-preview.png");
+            Shot(cam, new Vector3(1.2f, 2.6f, -21f), new Vector3(0, 1.4f, 0), "../html/images/s8/s8-1-preview-close.png");
             Debug.Log("S81_PREVIEW_OK");
             if (Application.isBatchMode) EditorApplication.Exit(0);
         }

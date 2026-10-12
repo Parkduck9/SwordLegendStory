@@ -45,7 +45,7 @@ crashlytics-build.properties
 /Examples/**/obj/
 
 # 검토용으로 받은 외부 미리보기 사진(배포 권리가 명확하지 않음 — 비교 페이지 model-preview.html은 로컬에서만)
-/html/model-preview/
+/html/images/model-preview/
 
 # 운영체제
 .DS_Store

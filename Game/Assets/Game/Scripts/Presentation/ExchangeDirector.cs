@@ -79,7 +79,9 @@ namespace SwordPrototype.Presentation
                 if (o.finisher) view.PlaySpin(finisherSpinSeconds);
                 FaceEachOther();
                 Rig(playerRig, r => r.SetTrail(true));
-                Rig(playerRig, r => r.Cue(FighterCue.Swing));
+                // R9: 일반 베기는 방향별 실제 검 동작(맞는 순간 = 준비 + 궤적 시간), 회전 베기는 아래에서 회전 동작
+                if (spin) Rig(playerRig, r => r.Cue(FighterCue.Swing));
+                else Rig(playerRig, r => r.Cut(o.direction, ReactionLibrary.Windup + ReactionLibrary.Swing));
                 // S8-4: 베기 바람(방향마다 음높이 조금씩 다름), 같은 방향이면 회전 베기 소리
                 Sound.Play(spin ? Sfx.SpinSwing : Sfx.Swing, player.position + Vector3.up * 1.3f, 0.9f + (int)o.direction * 0.03f);
 

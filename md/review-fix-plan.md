@@ -104,7 +104,7 @@ Time.timeScale=0만 검사해서 모든 시간을 멈추는 방식은 피한다.
 
 ### 확인한 사실
 
-`UI/SelectionWheelView.cs`는 중심 부근 `(0.5, 0.52)`에 560×560 기준 휠을 배치한다. 비선택 칸의 어두운 배경도 높은 불투명도(0.9)를 사용한다. 저장된 `html/s8-3-battle.png`에서는 플레이어와 검이 휠 아래에 크게 겹친다. 게임 전체 해상도에서 동일한지는 Play 확인이 필요하다.
+`UI/SelectionWheelView.cs`는 중심 부근 `(0.5, 0.52)`에 560×560 기준 휠을 배치한다. 비선택 칸의 어두운 배경도 높은 불투명도(0.9)를 사용한다. 저장된 `html/images/s8/s8-3-battle.png`에서는 플레이어와 검이 휠 아래에 크게 겹친다. 게임 전체 해상도에서 동일한지는 Play 확인이 필요하다.
 
 ### 내가 수정한다면
 
@@ -203,7 +203,7 @@ Time.timeScale=0만 검사해서 모든 시간을 멈추는 방식은 피한다.
 | R1 | `Battle/BattleClock` 신설. Health 무적·PlayerDash 충전·RunRecord·결과 화면·AnimatorRig가 사용. 메뉴 중 EnemyMayAct=false | 메뉴 3초 동안 전투 시각 정지·재개 후 이어짐·초기화 (규칙 검사) |
 | R2 | `EnemyProjectile.Sweep` 경로 훑기 + CharacterController 캡슐 | 지상 피격 / 점프한 몸 아래 통과 없음 / 점프 중 닿으면 피격 / 10m 한 프레임 통과 검출 / 앞 엄폐 우선 / 뒤 엄폐 무시 / 옆 빗나감 (7항) |
 | R3 | `implementation-status.md` 맨 위 "현재 상태"(실행·모듈·검증 단계 5칸·남은 일), 과거 섹션은 이력 표시 | 모듈 목록을 실제 Scripts 폴더와 대조 |
-| R4 | 휠 가로 68%·세로 48%·0.78배·기준점 가운데 | 16:9·16:10에서 가운데 비움·화면 안·조작 안내/쿨타임 원과 안 겹침 (계산 검사), 포커스 구도 미리보기 `html/s8-3-battle.png` |
+| R4 | 휠 가로 68%·세로 48%·0.78배·기준점 가운데 | 16:9·16:10에서 가운데 비움·화면 안·조작 안내/쿨타임 원과 안 겹침 (계산 검사), 포커스 구도 미리보기 `html/images/s8/s8-3-battle.png` |
 | R5 | 사용자 결정(각도 수식 먼저 + 움직임→검 자세) 후 구현. 상세는 `roadmap.md` R5 · `implementation-status.md` | CheckStance 9항 |
 
 전체 `BuildSceneAndVerify` → STAT_RULES_OK. Play 재현은 사용자 확인 대기.

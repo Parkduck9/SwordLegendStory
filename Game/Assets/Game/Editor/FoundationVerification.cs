@@ -53,7 +53,7 @@ namespace SwordPrototype.Editor
             var texture = new Texture2D(1280,800,TextureFormat.RGB24,false);
             texture.ReadPixels(new Rect(0,0,1280,800),0,0);
             texture.Apply();
-            File.WriteAllBytes(Path.GetFullPath("../html/foundation-preview.png"),texture.EncodeToPNG());
+            File.WriteAllBytes(Path.GetFullPath("../html/images/s0/foundation-preview.png"),texture.EncodeToPNG());
             camera.targetTexture = null;
             RenderTexture.active = null;
             rt.Release();

@@ -28,7 +28,7 @@ namespace SwordPrototype.Editor
         public const string UpperMaskPath = "Assets/Game/Art/Generated/ArmsMask.mask";
 
         // 첫 라이브러리에서 찾고, 없으면 R6 두 번째 라이브러리(UAL2, CC0)에서 찾는다.
-        private static AnimationClip Clip(string name)
+        internal static AnimationClip Clip(string name)
             => AssetDatabase.LoadAllAssetsAtPath(CharacterImport.LibraryPath).OfType<AnimationClip>().FirstOrDefault(c => c.name == "Armature|" + name)
             ?? AssetDatabase.LoadAllAssetsAtPath(CharacterImport.Library2Path).OfType<AnimationClip>().FirstOrDefault(c => c.name == "Armature|" + name)
             ?? KayKitImport.Clip(name);   // R8 KayKit(이름에 접두사 없음)
@@ -107,6 +107,16 @@ namespace SwordPrototype.Editor
             State("SpinAttack", "Melee_2H_Attack_Spin", 2.6f);
             State("Kick", "Melee_Unarmed_Attack_Kick", 1.6f);
             State("JumpChop", "Melee_1H_Attack_Jump_Chop", 1.6f);
+            // R9: 플레이어 8방향 베기(표: Presentation/SwingClips). 재생 속도는 AnimatorRig가 CutSpeed로 정한다.
+            controller.AddParameter("CutSpeed", AnimatorControllerParameterType.Float);
+            foreach (var cut in SwordPrototype.Presentation.SwingClips.Table)
+            {
+                var s = machine.AddState(cut.state);
+                s.motion = Clip(cut.clip);
+                s.speedParameter = "CutSpeed";
+                s.speedParameterActive = true;
+                s.writeDefaultValues = true;
+            }
             State("Throw", "Throw", 2f);          // R8 KayKit 던지기(이전 Spell_Simple_Shoot)
             State("Stagger", "Spell_Simple_Enter", 0.6f);
             State("Death", "Death01");

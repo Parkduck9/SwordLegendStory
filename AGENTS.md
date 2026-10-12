@@ -31,8 +31,8 @@ Unity 에디터가 이 프로젝트를 열고 있으면 배치 실행이 안 된
 |---|---|---|
 | 장면 생성 + 전체 규칙 검사 | `UNITY -batchmode -nographics -projectPath Game -executeMethod SwordPrototype.Editor.StatRulesVerification.BuildSceneAndVerify -logFile verify.log` | 로그에 `STAT_RULES_OK` (실패는 `[스탯 규칙 실패] …`) |
 | 동작 모음 다시 가져오기 | `…CharacterImport.ConfigureAndReport` / `…KayKitImport.ConfigureAndReport` / `…BaseCharacterImport.ConfigureAndReport` | `UAL_REPORT_OK` / `KAYKIT_REPORT_OK` / `UBC_REPORT_OK` |
-| Play 모드 미리보기(실제 동작·IK) | `UNITY -batchmode -projectPath Game -executeMethod SwordPrototype.Editor.R6Preview.Run -logFile r6.log` (**-nographics 없이**) | `R6_PREVIEW_OK`, `html/r6-*.png`·`r7-*`·`r8-*` 갱신 |
-| UI 미리보기 | `…ScenePreview.CaptureS83` (-nographics 없이) | `S83_PREVIEW_OK`, `html/s8-3-*.png` |
+| Play 모드 미리보기(실제 동작·IK) | `UNITY -batchmode -projectPath Game -executeMethod SwordPrototype.Editor.R6Preview.Run -logFile r6.log` (**-nographics 없이**) | `R6_PREVIEW_OK`, `html/images/r6·r7·r8/` 갱신 |
+| UI 미리보기 | `…ScenePreview.CaptureS83` (-nographics 없이) | `S83_PREVIEW_OK`, `html/images/s8/s8-3-*.png` |
 
 - 새 규칙·기능을 넣으면 `StatRulesVerification`에 검사를 추가한다(통과 항목은 로그에 안 남고 실패만 남는다).
 - `Library/`는 저장소에 없다. 새 PC에서 처음 열면 몇 분 동안 다시 만든다.
@@ -42,5 +42,5 @@ Unity 에디터가 이 프로젝트를 열고 있으면 배치 실행이 안 된
 - 사용자 표현: "진행해" = 설계 확인됨, 구현 시작. "추천대로" = 각 항목 1순위로.
 - 설계 확인 질문은 한 번에 모아서, 정할 것만 짧게.
 - 큰 작업 중에는 짧은 진행 상황을 한국어로 알린다.
-- 미리보기 사진은 `html/`에 저장하고 roadmap.html에 붙인다.
+- 미리보기 사진은 `html/images/<단계>/`(s0 · s8 · r6 · r7 · r8 · r9 …, 후보 조사 사진은 그 아래 하위 폴더)에 저장하고 roadmap.html에 붙인다. `html/` 바로 아래에는 사진을 두지 않는다.
 - 커밋 메시지는 한국어, BOM 없는 UTF-8.

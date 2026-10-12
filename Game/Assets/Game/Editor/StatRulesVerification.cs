@@ -126,6 +126,24 @@ namespace SwordPrototype.Editor
 
             // R6: UAL2 동작(검 막기·넉백), 두 팔 위 층, 뒷걸음 거꾸로 재생
             UnityEditor.Animations.AnimatorState St(string n) => controller.layers[0].stateMachine.states.Select(s => s.state).FirstOrDefault(s => s.name == n);
+            // R9: 8방향 베기 상태 — 표의 동작·길이와 일치, 시작 < 맞는 순간 < 끝, 맞는 순간이 연출 시간과 같음
+            var cuts = SwordPrototype.Presentation.SwingClips.Table;
+            float contact = SwordPrototype.Presentation.ReactionLibrary.Windup + SwordPrototype.Presentation.ReactionLibrary.Swing;
+            bool cutsOk = cuts.Length == 8 && cuts.Select(c => c.state).Distinct().Count() == 8;
+            foreach (var c in cuts)
+            {
+                var st = St(c.state);
+                var clip = st?.motion as AnimationClip;
+                bool ok = clip != null && clip.name.EndsWith(c.clip) && Mathf.Abs(clip.length - c.length) < 0.02f
+                    && st.speedParameterActive && st.speedParameter == "CutSpeed"
+                    && 0f <= c.start && c.start < c.contact && c.contact < c.end && c.end <= 1f
+                    && Mathf.Abs((c.contact - c.start) * c.length / c.Speed(contact) - contact) < 0.001f;
+                if (!ok) Check(false, $"R9 베기 상태 {c.state}: 동작 {c.clip} 연결·길이·시간 표");
+                cutsOk &= ok;
+            }
+            Check(cutsOk, "R9 8방향 베기 상태(실제 검 동작) 표와 일치");
+            Check(SwordPrototype.Presentation.SwingClips.Of(AttackDirection.UpLeft).state == "Cut_UpLeft" && SwordPrototype.Presentation.SwingClips.Of(AttackDirection.DownRight).state == "Cut_DownRight",
+                "R9 베기 표 순서 = AttackDirection 순서");
             Check(St("Guard")?.motion?.name == "Armature|Sword_Block" && St("Knockback")?.motion?.name == "Armature|Hit_Knockback", "R6 막기 = Sword_Block · 깊게 베임 = Hit_Knockback (UAL2)");
             // R8: KayKit 옆으로 달리기·뒷걸음을 넣은 2D 방향 섞기, 적 공격·회피·막기 동작
             var tree = St("Locomotion")?.motion as UnityEditor.Animations.BlendTree;
@@ -532,6 +550,8 @@ namespace SwordPrototype.Editor
                 "R8 큰 근접 공격 뒤 3.5m 안: 40% 확률 후퇴 사격");
             Check(Mathf.Abs(m.Get(EnemyAttackKind.Sweep).telegraphSeconds - 0.35f) < 0.001f && Mathf.Abs(m.Get(EnemyAttackKind.LeapSlam).recoverySeconds - 0.7f) < 0.001f,
                 "R8 적 예고·후딜 ×0.7 (휘두르기 예고 0.35초, 도약 후딜 0.7초)");
+            Check(Mathf.Abs(m.TelegraphTotal(m.Get(EnemyAttackKind.Sweep)) - 0.47f) < 0.001f && Mathf.Abs(m.LockSeconds - 0.27f) < 0.001f,
+                "적 공격 0.12초 늦춤: 휘두르기 예고 0.47초, 겨냥 고정 후 0.27초");
             Check(m.attacks.Select(a => a.kind).Distinct().Count() == System.Enum.GetValues(typeof(EnemyAttackKind)).Length, "R8 모든 기술 데이터 존재(10종)");
 
             var fan = SwordPrototype.Enemy.AttackShape.Fan(3.5f, 140f);

@@ -25,7 +25,7 @@ ol li,ul li{margin:4px 0}a{color:var(--accent)}
 @media(max-width:640px){table{min-width:560px}}
 </style>
 </head>
-<body><main>
+<body><div style="padding:14px;margin:16px;background:#e6eee7;color:#292d2c"><b>QA 추가 · 2026-10-10:</b> 입구 전투·적 피해·패배·재시작 부분 확인. 근접 예약·콤보·합 공격 미검증. 지붕 시야 가림 수정 후보 검토 대기. <a href="play-qa.html">직접 QA 결과와 수정 방향</a></div><main>
 <header>
 <div class="eyebrow">검협전 · 인계 문서 · 2026-10-08</div>
 <h1>다른 PC·다른 AI로 이어서 작업하기</h1>
@@ -42,7 +42,7 @@ ol li,ul li{margin:4px 0}a{color:var(--accent)}
 <div class="step"><b>⑤ AI 작업</b>Codex는 AGENTS.md, Claude는 CLAUDE.md를 자동으로 읽음</div>
 <div class="step"><b>⑥ 검사</b>에디터 닫고 <code>BuildSceneAndVerify</code> → <code>STAT_RULES_OK</code></div>
 </div>
-<p class="meta">외부 에셋은 모두 저장소에 포함. 비교용 <code>html/model-preview/</code> 사진만 제외(배포 권리 불명확).</p>
+<p class="meta">외부 에셋은 모두 저장소에 포함. 비교용 <code>html/images/model-preview/</code> 사진만 제외(배포 권리 불명확).</p>
 </section>
 
 <section class="card">
@@ -55,17 +55,18 @@ ol li,ul li{margin:4px 0}a{color:var(--accent)}
 <tr><td>R5</td><td>검 자세 판정(휘두르는 각도 ±10%, 움직임→자세)</td><td><span class="tag ok">구현</span></td></tr>
 <tr><td>R6</td><td>실제 검술 겨눔 자세 3종 · 적 피격 3단계(먹빛 자국)</td><td><span class="tag ok">구현</span></td></tr>
 <tr><td>R7</td><td>캐릭터 모델 교체(Quaternius, CC0) · 무협 의상 · 옷 보강</td><td><span class="tag ok">구현</span></td></tr>
-<tr><td>R8</td><td>회전 베기 규칙 · KayKit 동작 · 적 0.7배 · 턴 교대·재진입·적 적응 · 합 공격 방어 · 적 기술 확률표</td><td><span class="tag wait">Play 미확인</span></td></tr>
+<tr><td>R8</td><td>회전 베기 규칙 · KayKit 동작 · 적 0.7배 · 턴 교대·재진입·적 적응 · 합 공격 방어 · 적 기술 확률표</td><td><span class="tag ok">일부 Play 반영</span></td></tr>
+<tr><td>R9</td><td>플레이어 8방향 베기를 실제 검 동작(UAL)으로 · 적 공격 +0.12초 · 사진 폴더 정리</td><td><span class="tag wait">Play 미확인</span></td></tr>
 </table></div>
-<p class="meta">마지막 검사 2026-10-08 <code>STAT_RULES_OK</code></p>
+<p class="meta">마지막 검사 2026-10-12 <code>STAT_RULES_OK</code> · <code>R6_PREVIEW_OK</code></p>
 </section>
 
 <section class="card">
 <h2>3. 다음 할 일</h2>
 <ol class="next">
-<li><b>사용자 Play 확인 (S0~S8-4 + R1~R8)</b> — 합 공격·턴 교대·적 기술·새 동작·모델. 의견은 R9 설계로.</li>
+<li><b>사용자 Play 확인 (R9 베기 동작 + 적 공격 늦춤)</b> — 특히 ↑→↖·↗ 이어 베기, 팔 움직임, 피하기 쉬워졌는지.</li>
 <li><b>S8-5 템포 조정</b> — <code>StatTuning</code>·<code>EnemyMoveset</code>의 예고·후딜, 선택 시간, 방어 입력, 적응, 재진입, 피해량.</li>
-<li><b>애니메이션 보강</b> — 플레이어 공격을 KayKit 한손 검 동작으로, 적 검 방향 보정. 부족하면 Quaternius 유료판(사용자 구매) 검토.</li>
+<li><b>애니메이션 보강 나머지</b> — 평소 겨눔 팔(IK), 적 검 방향 보정, 입구 지붕 시야 가림(<a href="play-qa.html">play-qa</a>). 부족하면 Quaternius 유료판(사용자 구매) 검토.</li>
 <li><b>Windows 빌드</b> — Title·Foundation 빌드 설정, 라이선스 문서 포함, 실행 확인.</li>
 </ol>
 <p class="meta">후보(설계 → 사용자 확인 후): 상성표(<code>stanceMatrix</code> 64칸) · 적 종류·보스 패턴 · 맵 추가 · 옷 상의 자락·신발 다듬기</p>
